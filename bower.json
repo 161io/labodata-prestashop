@@ -1,0 +1,6 @@
+{
+  "name": "161io-labodata-prestashop",
+  "dependencies": {
+    "js-cookie": "~2.1.4"
+  }
+}
