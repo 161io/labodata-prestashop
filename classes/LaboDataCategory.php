@@ -14,6 +14,11 @@ class LaboDataCategory extends LaboDataQuery
     const DB_TABLE_MANUFACTURER = 'manufacturer_labodata';
 
     /**
+     * @const string Table des caracteries (valeurs)
+     */
+    const DB_TABLE_FEATURE_VALUE = 'feature_value_labodata';
+
+    /**
      * @const string Table des categories
      */
     const DB_TABLE_CATEGORY = 'category_labodata';

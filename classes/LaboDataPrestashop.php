@@ -14,16 +14,6 @@ class LaboDataPrestashop
     protected static $instance;
 
     /**
-     * @var int[]
-     */
-    protected $manufacturerLabodataIds;
-
-    /**
-     * @var int[]
-     */
-    protected $categoryLabodataIds;
-
-    /**
      * @var Language
      */
     protected $lang;
@@ -31,7 +21,26 @@ class LaboDataPrestashop
     /**
      * @var int[]
      */
-    protected $typeIds;
+    protected $manufacturerLabodataIds;
+
+    /**
+     * @var int[]
+     */
+    protected $featureValueLabodataIds;
+    /**
+     * @var int[]
+     */
+    protected $categoryLabodataIds;
+
+    /**
+     * @var int[]
+     */
+    protected $featureIds;
+
+    /**
+     * @var int[]
+     */
+    protected $categoryTypeIds;
 
     /**
      * @return self
@@ -45,9 +54,36 @@ class LaboDataPrestashop
     }
 
     /**
+     * Langue par defaut
+     *
+     * @param bool $toInt
+     * @return int|Language
+     */
+    public function getLang($toInt = true)
+    {
+        if (null === $this->lang) {
+            $this->lang = new Language(Configuration::get('PS_LANG_DEFAULT'));
+        }
+        if ($toInt) {
+            return (int) $this->lang->id;
+        }
+        return $this->lang;
+    }
+
+
+
+    /**
+     * @return string
+     */
+    public function getLangCode()
+    {
+        return $this->getLang(false)->iso_code;
+    }
+
+    /**
      * Correspondance entre les marques LaboData et les marques Prestashop
      *
-     * @return int[]
+     * @return int[] id_manufacturer
      */
     public function getManufacturerLabodataIds()
     {
@@ -73,7 +109,7 @@ class LaboDataPrestashop
 
     /**
      * @param int $idLabodata
-     * @return int|null
+     * @return int|null id_manufacturer
      */
     public function getIdManufacturerByIdLabodata($idLabodata)
     {
@@ -83,119 +119,6 @@ class LaboDataPrestashop
         }
         return null;
     }
-
-    /**
-     * Correspondance entre les categories LaboData et les categories Prestashop
-     *
-     * @return int[]
-     */
-    public function getCategoryLabodataIds()
-    {
-        if (null === $this->categoryLabodataIds) {
-            // Nettoyage
-            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` WHERE `id_category` NOT IN (SELECT `id_category` FROM `'._DB_PREFIX_.'category`);';
-            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
-
-            $sql = new DbQuery();
-            $sql->from(LaboDataCategory::DB_TABLE_CATEGORY);
-            $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
-
-            if (function_exists('array_column')) { // PHP 5.5+
-                $this->categoryLabodataIds = array_column($ids, 'id_category', 'id_labodata');
-            } else {
-                foreach ($ids as $_ids) {
-                    $this->categoryLabodataIds[$_ids['id_labodata']] = $_ids['id_category'];
-                }
-            }
-        }
-        return $this->categoryLabodataIds;
-    }
-
-    /**
-     * @param int $idLabodata
-     * @return int|null
-     */
-    public function getIdCategoryByIdLabodata($idLabodata)
-    {
-        $ids = $this->getCategoryLabodataIds();
-        if (isset($ids[$idLabodata])) {
-            return (int) $ids[$idLabodata];
-        }
-        return null;
-    }
-
-    /**
-     * Langue par defaut
-     *
-     * @param bool $toInt
-     * @return int|Language
-     */
-    public function getLang($toInt = true)
-    {
-        if (null === $this->lang) {
-            $this->lang = new Language(Configuration::get('PS_LANG_DEFAULT'));
-        }
-        if ($toInt) {
-            return (int) $this->lang->id;
-        }
-        return $this->lang;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLangCode()
-    {
-        return $this->getLang(false)->iso_code;
-    }
-
-    /**
-     * Retourner l'identifiant de la categorie type
-     *
-     * @param array $categoryType
-     * @param bool $autoAdd La creer, si elle n'existe pas
-     * @return int|null
-     */
-    public function getTypeId($categoryType, $autoAdd = false)
-    {
-        if (!isset($categoryType['name'], $categoryType['title_fr'])) {
-            return null;
-        }
-        $name = $categoryType['name'];
-        $title = $categoryType['title_fr'];
-
-        if (isset($this->typeIds[$name])) {
-            return $this->typeIds[$name];
-        }
-
-        //$idParentCategory = Configuration::get('PS_ROOT_CATEGORY');
-        $idParentCategory = Configuration::get('PS_HOME_CATEGORY');
-        $category = Category::searchByNameAndParentCategoryId($this->getLang(), $title, $idParentCategory);
-
-        if ($category) {
-            $this->typeIds[$name] = (int) $category['id_category'];
-            return $this->typeIds[$name];
-        }
-
-        if (!$autoAdd) {
-            return null;
-        }
-
-        $category = new Category();
-        $category->is_root_category = false;
-        $category->id_parent = $idParentCategory;
-        $category->active = true;
-        $category->name = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_title = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_description = LaboDataCopyPaste::createMultiLangField($title);
-        $category->link_rewrite = LaboDataCopyPaste::createMultiLangField(Tools::link_rewrite($name));
-        $category->add();
-
-        $this->typeIds[$name] = (int) $category->id;
-        return $this->typeIds[$name];
-    }
-
-
 
     /**
      * Ajouter une marque Prestashop
@@ -240,6 +163,266 @@ class LaboDataPrestashop
         ));
     }
 
+
+
+    /**
+     * Correspondance entre les categories LaboData et les caracteristiques (valeurs) Prestashop
+     *
+     * @return int[] id_feature_value
+     */
+    public function getFeatureValueLabodataIds()
+    {
+        if (null === $this->featureValueLabodataIds) {
+            // Nettoyage
+            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` WHERE `id_feature_value` NOT IN (SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value`);';
+            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+
+            $sql = new DbQuery();
+            $sql->from(LaboDataCategory::DB_TABLE_FEATURE_VALUE);
+            $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+
+            if (function_exists('array_column')) { // PHP 5.5+
+                $this->featureValueLabodataIds = array_column($ids, 'id_feature_value', 'id_labodata');
+            } else {
+                foreach ($ids as $_ids) {
+                    $this->featureValueLabodataIds[$_ids['id_labodata']] = $_ids['id_feature_value'];
+                }
+            }
+        }
+        return $this->featureValueLabodataIds;
+    }
+
+    /**
+     * @param int $idLabodata
+     * @return int|null id_feature_value
+     */
+    public function getIdFeatureValueByIdLabodata($idLabodata)
+    {
+        $ids = $this->getFeatureValueLabodataIds();
+        if (isset($ids[$idLabodata])) {
+            return (int) $ids[$idLabodata];
+        }
+        return null;
+    }
+
+    /**
+     * Recherche une Feature depuis un name
+     *
+     * @param string $name
+     * @return int|null id_feature
+     */
+    public function getFeatureIdByName($name)
+    {
+        $rq = Db::getInstance()->getRow('
+			SELECT `id_feature` FROM `'._DB_PREFIX_.'feature_lang`
+			WHERE `name` = \''.pSQL($name).'\'
+			GROUP BY `id_feature`
+		');
+        if (empty($rq['id_feature'])) {
+            return null;
+        }
+        return (int) $rq['id_feature'];
+    }
+
+    /**
+     * Recherche une FeatureValue depuis un name
+     *
+     * @param string $name
+     * @param int $idFeature
+     * @return int|null id_feature_value
+     */
+    public function getFeatureValueIdByName($name, $idFeature = null)
+    {
+        $idFeature = (int) $idFeature;
+
+        $sql  = 'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value_lang` ';
+        $sql .= 'WHERE `value` = \''.pSQL($name).'\' ';
+        if ($idFeature) {
+            $sql .= 'AND `id_feature_value` IN ( ';
+            $sql .= 'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` WHERE `id_feature` = \''.$idFeature.'\' ';
+            $sql .= ') ';
+        }
+        $sql .= 'GROUP BY `id_feature_value`';
+
+        $rq = Db::getInstance()->getRow($sql);
+        if (empty($rq['id_feature_value'])) {
+            return null;
+        }
+        return (int) $rq['id_feature_value'];
+    }
+
+    /**
+     * Retourner l'identifiant du type de caracteristique
+     *
+     * @param array $laboDataCategoryType
+     * @param bool $autoAdd La creer, si elle n'existe pas
+     * @return int|null id_feature
+     */
+    public function getFeatureId($laboDataCategoryType, $autoAdd = false)
+    {
+        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title_fr'])) {
+            return null;
+        }
+        $name = $laboDataCategoryType['name'];
+        $title = $laboDataCategoryType['title_fr'];
+
+        if (isset($this->categoryTypeIds[$name])) {
+            return $this->categoryTypeIds[$name];
+        }
+
+        $idFeature = $this->getFeatureIdByName($title);
+
+        if ($idFeature) {
+            $this->featureIds[$name] = (int) $idFeature;
+            return $this->featureIds[$name];
+        }
+
+        if (!$autoAdd) {
+            return null;
+        }
+
+        $feature = new Feature();
+        $feature->position = Feature::getHigherPosition() + 1;
+        $feature->name = LaboDataCopyPaste::createMultiLangField($title);
+        $feature->add();
+
+        $this->featureIds[$name] = (int) $feature->id;
+        return $this->featureIds[$name];
+    }
+
+    /**
+     * Ajouter une valeur de caracteristique
+     *
+     * @param array $laboDataCategory
+     * @return FeatureValue|null
+     */
+    public function addFeatureValue($laboDataCategory)
+    {
+        if (!isset($laboDataCategory['id'], $laboDataCategory['type'], $laboDataCategory['name'], $laboDataCategory['title_fr'])) {
+            return null;
+        }
+
+        $featureId = $this->getFeatureId($laboDataCategory['type'], true);
+        if (null === $featureId) {
+            return null;
+        }
+
+        //$name = $laboDataCategory['name'];
+        $title = $laboDataCategory['title_fr'];
+
+        $featureValue = new FeatureValue();
+        $featureValue->id_feature = $featureId;
+        $featureValue->value = LaboDataCopyPaste::createMultiLangField($title);
+        $featureValue->add();
+
+        $this->_addFeatureValueLabodata($featureValue, $laboDataCategory);
+
+        return $featureValue;
+    }
+
+    /**
+     * Jointure entre ids LaboData et Prestashop
+     *
+     * @param FeatureValue $featureValue
+     * @param array $laboDataCategory
+     * @return bool
+     */
+    protected function _addFeatureValueLabodata($featureValue, $laboDataCategory)
+    {
+        return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_FEATURE_VALUE, array(
+            'id_feature_value' => (int) $featureValue->id,
+            'id_labodata'      => (int) $laboDataCategory['id'],
+        ));
+    }
+
+
+
+    /**
+     * Correspondance entre les categories LaboData et les categories Prestashop
+     *
+     * @return int[] id_category
+     */
+    public function getCategoryLabodataIds()
+    {
+        if (null === $this->categoryLabodataIds) {
+            // Nettoyage
+            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` WHERE `id_category` NOT IN (SELECT `id_category` FROM `'._DB_PREFIX_.'category`);';
+            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+
+            $sql = new DbQuery();
+            $sql->from(LaboDataCategory::DB_TABLE_CATEGORY);
+            $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+
+            if (function_exists('array_column')) { // PHP 5.5+
+                $this->categoryLabodataIds = array_column($ids, 'id_category', 'id_labodata');
+            } else {
+                foreach ($ids as $_ids) {
+                    $this->categoryLabodataIds[$_ids['id_labodata']] = $_ids['id_category'];
+                }
+            }
+        }
+        return $this->categoryLabodataIds;
+    }
+
+    /**
+     * @param int $idLabodata
+     * @return int|null id_category
+     */
+    public function getIdCategoryByIdLabodata($idLabodata)
+    {
+        $ids = $this->getCategoryLabodataIds();
+        if (isset($ids[$idLabodata])) {
+            return (int) $ids[$idLabodata];
+        }
+        return null;
+    }
+
+    /**
+     * Retourner l'identifiant de la categorie type
+     *
+     * @param array $laboDataCategoryType
+     * @param bool $autoAdd La creer, si elle n'existe pas
+     * @return int|null id_category
+     */
+    public function getCategoryTypeId($laboDataCategoryType, $autoAdd = false)
+    {
+        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title_fr'])) {
+            return null;
+        }
+        $name = $laboDataCategoryType['name'];
+        $title = $laboDataCategoryType['title_fr'];
+
+        if (isset($this->categoryTypeIds[$name])) {
+            return $this->categoryTypeIds[$name];
+        }
+
+        //$idParentCategory = Configuration::get('PS_ROOT_CATEGORY');
+        $idParentCategory = Configuration::get('PS_HOME_CATEGORY');
+        $category = Category::searchByNameAndParentCategoryId($this->getLang(), $title, $idParentCategory);
+
+        if ($category) {
+            $this->categoryTypeIds[$name] = (int) $category['id_category'];
+            return $this->categoryTypeIds[$name];
+        }
+
+        if (!$autoAdd) {
+            return null;
+        }
+
+        $category = new Category();
+        $category->is_root_category = false;
+        $category->id_parent = $idParentCategory;
+        $category->active = true;
+        $category->name = LaboDataCopyPaste::createMultiLangField($title);
+        $category->meta_title = LaboDataCopyPaste::createMultiLangField($title);
+        $category->meta_description = LaboDataCopyPaste::createMultiLangField($title);
+        $category->link_rewrite = LaboDataCopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $category->add();
+
+        $this->categoryTypeIds[$name] = (int) $category->id;
+        return $this->categoryTypeIds[$name];
+    }
+
     /**
      * Ajouter une categorie Prestashop
      *
@@ -252,8 +435,8 @@ class LaboDataPrestashop
             return null;
         }
 
-        $typeId = $this->getTypeId($laboDataCategory['type'], true);
-        if (null === $typeId) {
+        $categoryTypeId = $this->getCategoryTypeId($laboDataCategory['type'], true);
+        if (null === $categoryTypeId) {
             return null;
         }
 
@@ -262,7 +445,7 @@ class LaboDataPrestashop
 
         $category = new Category();
         $category->is_root_category = false;
-        $category->id_parent = $typeId;
+        $category->id_parent = $categoryTypeId;
         $category->active = true;
         $category->name = LaboDataCopyPaste::createMultiLangField($title);
         $category->meta_title = LaboDataCopyPaste::createMultiLangField($title);
@@ -310,8 +493,20 @@ class LaboDataPrestashop
         $this->_hydrateProduct($product, $laboDataProduct);
         $product->save();
 
-        $prestashopCategories = $this->_convertCategoriesLaboDataToPrestashop($laboDataProduct);
-        $product->addToCategories($prestashopCategories);
+        $prestashopIds = $this->_convertCategoriesLaboDataToPrestashop($laboDataProduct);
+        if ('feature' == LaboData::MODE_CATEGORY) {
+            $this->_product_addToFeatureValues($product, $prestashopIds);
+        } else {
+            $product->addToCategories($prestashopIds);
+        }
+        if ($laboDataProduct->getBio()) {
+            $idFeature = Feature::addFeatureImport('BIO');
+            $idFeatureValue = $this->getFeatureValueIdByName('BIO', $idFeature);
+            if (!$idFeatureValue) {
+                $idFeatureValue = FeatureValue::addFeatureValueImport($idFeature, 'BIO');
+            }
+            $product->addFeaturesToDB($idFeature, $idFeatureValue);
+        }
 
         $this->_addImage($product, $laboDataProduct);
 
@@ -429,14 +624,44 @@ class LaboDataPrestashop
             return array();
         }
 
-        $prestashopCategories = array();
+        $prestashopIds = array();
         foreach ($laboDataCategory as $idLabodata) {
-            $prestashopId = $this->getIdCategoryByIdLabodata($idLabodata);
+            if ('feature' == LaboData::MODE_CATEGORY) {
+                $prestashopId = $this->getIdFeatureValueByIdLabodata($idLabodata);
+            } else { // 'category'
+                $prestashopId = $this->getIdCategoryByIdLabodata($idLabodata);
+            }
             if (!$prestashopId) { continue; }
-            $prestashopCategories[] = $prestashopId;
+            $prestashopIds[] = $prestashopId;
         }
 
-        return $prestashopCategories;
+        return $prestashopIds;
+    }
+
+    /**
+     * @param Product $product
+     * @param int[] $featureValueIds
+     * @return bool
+     */
+    protected function _product_addToFeatureValues($product, $featureValueIds)
+    {
+        if (empty($featureValueIds)) { return false; }
+
+        $featureValueIds = array_map('intval', $featureValueIds);
+        $sql  = 'SELECT `id_feature_value`, `id_feature` FROM `'._DB_PREFIX_.'feature_value` ';
+        $sql .= 'WHERE `id_feature_value` IN (' . implode(', ', $featureValueIds) . ')';
+        $featureValues = Db::getInstance()->executeS($sql);
+        if (!$featureValues) { return false; }
+
+        foreach ($featureValues as $featureValue) {
+            Db::getInstance()->insert('feature_product', array(
+                'id_feature'       => (int) $featureValue['id_feature'],
+                'id_product'       => (int) $product->id,
+                'id_feature_value' => (int) $featureValue['id_feature_value'],
+            ));
+        }
+
+        return true;
     }
 
     /**

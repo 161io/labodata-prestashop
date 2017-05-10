@@ -13,7 +13,7 @@
       </div>
       <div class="modal-body">
         <div class="alert alert-info">
-          <strong>{l s='Avant d\'importer votre fiche produit, avez-vous pensé à créer les Catégories depuis l\'onglet ci-dessus ?' mod='labodata'}</strong><br/>
+          <strong>{l s='Avant d\'importer votre fiche produit, avez-vous pensé à créer les Caractéristiques depuis l\'onglet ci-dessus ?' mod='labodata'}</strong><br/>
           {l s='Pour un référencement naturel optimal, nous vous conseillons de remanier les textes sur vos produits phares.' mod='labodata'}<br/>
         </div>
 

@@ -27,6 +27,12 @@ require_once __DIR__ . '/classes/LaboDataSearch.php';
 class LaboData extends Module
 {
     /**
+     * @const string Type d'importation des categories LaboData ( category ou feature )
+     */
+    //const MODE_CATEGORY = 'category'; // 0.2.0
+    const MODE_CATEGORY = 'feature'; // 0.3.0
+
+    /**
      * @var AppKernel
      */
     protected $kernel;
@@ -35,7 +41,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.2.0';
+        $this->version = '0.3.0';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office
@@ -97,7 +103,7 @@ class LaboData extends Module
         return true;
     }
 
-    private function _installConfig()
+    public function _installConfig()
     {
         if (!Configuration::updateValue(LaboDataQuery::CONF_EMAIL, '') || !Configuration::updateValue(LaboDataQuery::CONF_SECRET_KEY, '')) {
             return false;
@@ -105,7 +111,7 @@ class LaboData extends Module
         return true;
     }
 
-    private function _uninstallConfig()
+    public function _uninstallConfig()
     {
         if (!Configuration::deleteByName(LaboDataQuery::CONF_EMAIL) || !Configuration::deleteByName(LaboDataQuery::CONF_SECRET_KEY)) {
             return false;
@@ -113,7 +119,7 @@ class LaboData extends Module
         return true;
     }
 
-    private function _installTabs()
+    public function _installTabs()
     {
         // "Catalogue" >> "LaboData"
         $languages = Language::getLanguages(true);
@@ -172,7 +178,7 @@ class LaboData extends Module
         $categoryTab->active = true;
         $categoryTab->name = array();
         foreach ($languages as $lang) {
-            $categoryTab->name[$lang['id_lang']] = $this->l('Marques et Catégories');
+            $categoryTab->name[$lang['id_lang']] = $this->l('Marques/Caractéristiques');
         }
         $categoryTab->class_name = 'LaboDataCategoryAdmin';
         $categoryTab->id_parent = $parentTab->id;
@@ -192,7 +198,7 @@ class LaboData extends Module
         $configTab->add();
     }
 
-    private function _uninstallTabs()
+    public function _uninstallTabs()
     {
         $tabs = Tab::getCollectionFromModule($this->name);
         if (empty($tabs)) { return true; }
@@ -203,13 +209,21 @@ class LaboData extends Module
         return true;
     }
 
-    private function _installTables()
+    public function _installTables()
     {
         Db::getInstance()->execute(
 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` (
   `id_manufacturer` INT(10) UNSIGNED NOT NULL,
   `id_labodata` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_manufacturer`, `id_labodata`)
+) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;'
+        );
+
+        Db::getInstance()->execute(
+'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` (
+  `id_feature_value` INT(10) UNSIGNED NOT NULL,
+  `id_labodata` INT(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id_feature_value`, `id_labodata`)
 ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;'
         );
 
@@ -224,9 +238,10 @@ class LaboData extends Module
         return true;
     }
 
-    private function _uninstallTables()
+    public function _uninstallTables()
     {
         Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'`;');
+        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'`;');
         Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'`;');
 
         return true;

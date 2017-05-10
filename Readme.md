@@ -22,5 +22,8 @@ Module https://www.labodata.fr permettant d'importer des fiches produits dans Pr
 ### Comment désinstaller "totalement" le module LaboData ?
 
 1. Supprimer le module dans Prestashop
-2. Supprimer les tables : `PREFIX_category_labodata` et `PREFIX_manufacturer_labodata`
+2. Supprimer les tables :
+    * `PREFIX_category_labodata`
+    * `PREFIX_feature_value_labodata`
+    * `PREFIX_manufacturer_labodata`
 

@@ -199,14 +199,25 @@ class LaboDataProduct extends LaboDataQuery
         return $this->getProductKey('code');
     }
 
+    /**
+     * @return int|null
+     */
     public function getWeight()
     {
         return $this->getProductKey('weight');
     }
 
     /**
+     * @return bool|null
+     */
+    public function getBio()
+    {
+        return $this->getProductKey('bio');
+    }
+
+    /**
      * @param string $lang
-     * @return string
+     * @return string|null
      */
     public function getTitle($lang = 'fr')
     {
@@ -215,7 +226,7 @@ class LaboDataProduct extends LaboDataQuery
 
     /**
      * @param string $lang
-     * @return string
+     * @return string|null
      */
     public function getContent($lang = 'fr')
     {

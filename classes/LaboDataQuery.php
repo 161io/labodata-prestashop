@@ -8,7 +8,7 @@ class LaboDataQuery
     const URL = 'https://www.labodata.fr';
     const API = '/api/v1';
 
-    const CONF_EMAIL = 'MOD_LABODATA_EMAIL';
+    const CONF_EMAIL      = 'MOD_LABODATA_EMAIL';
     const CONF_SECRET_KEY = 'MOD_LABODATA_KEY';
 
     /**

@@ -85,7 +85,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         $helper->simple_header = true;
         $helper->actions = array('add');
         $helper->identifier = 'id';
-        $helper->title = $this->module->l('Catégories LaboData');
+        //$helper->title = $this->module->l('Catégories LaboData');
         $helper->token = Tools::getAdminTokenLite($this->controller_name);
         $helper->currentIndex = ModuleAdminController::$currentIndex;
 
@@ -104,14 +104,22 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
             $exists = LaboDataPrestashop::getInstance()->getIdManufacturerByIdLabodata($id);
         } else {
-            $exists = LaboDataPrestashop::getInstance()->getIdCategoryByIdLabodata($id);
+            if ('feature' == LaboData::MODE_CATEGORY) {
+                $exists = LaboDataPrestashop::getInstance()->getIdFeatureValueByIdLabodata($id);
+            } else { // 'category'
+                $exists = LaboDataPrestashop::getInstance()->getIdCategoryByIdLabodata($id);
+            }
         }
 
         if ($exists) {
             return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Add') . '</a>';
         }
 
-        $action = LaboDataCategory::TYPE_BRAND == $this->typeSelected ? 'addManufacturer' : 'addCategory';
+        if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
+            $action = 'addManufacturer';
+        } else {
+            $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
+        }
         $link = $this->context->link->getAdminLink($this->controller_name) . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
         return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Add') . '</a>';
     }
@@ -162,6 +170,19 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                     $json['psIdManufacturer'] = null;
                     $json['growlType'] = 'error';
                     $json['growlMessage'] = $this->module->l('Erreur lors de la création de la marque');
+                }
+                break;
+            case 'addFeatureValue' :
+                $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
+                $psFeatureValue = LaboDataPrestashop::getInstance()->addFeatureValue($json['ldCategory']);
+                if ($psFeatureValue) {
+                    $json['psIdFeatureValue'] = $psFeatureValue->id;
+                    $json['growlType'] = 'notice';
+                    $json['growlMessage'] = $this->module->l('Caractéristique (valeur)') . ' : ' . $psFeatureValue->value[$this->context->language->id];
+                } else {
+                    $json['psIdFeatureValue'] = null;
+                    $json['growlType'] = 'error';
+                    $json['growlMessage'] = $this->module->l('Erreur lors de la création de la caractéristique (valeur)');
                 }
                 break;
             case 'addCategory' :

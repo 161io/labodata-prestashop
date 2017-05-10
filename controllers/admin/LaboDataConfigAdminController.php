@@ -41,7 +41,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         );
         $this->page_header_toolbar_btn['category'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataCategoryAdmin'),
-            'desc' => $this->module->l('Marques et Catégories'),
+            'desc' => $this->module->l('Marques/Caractéristiques'),
             'icon' => 'process-icon-new',
         );
     }
