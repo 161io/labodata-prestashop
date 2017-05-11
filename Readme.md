@@ -19,6 +19,11 @@ Module https://www.labodata.fr permettant d'importer des fiches produits dans Pr
 * Enfin, vous devez configurer vos accès dans l'onglet **Configuration** du module
 
 
+### Comment personnaliser les templates d'injection du "Résumé" et de la "Description"
+
+Modifier l'un des fichiers `views/templates/import/*.tpl`
+
+
 ### Comment désinstaller "totalement" le module LaboData ?
 
 1. Supprimer le module dans Prestashop
