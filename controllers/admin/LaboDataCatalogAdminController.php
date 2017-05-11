@@ -3,6 +3,7 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Api\Account;
 use ModuleAdminController as NoTabModuleAdminController;
 
 class LaboDataCatalogAdminController extends NoTabModuleAdminController
@@ -128,12 +129,12 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $redirect = Tools::getValue('redirect');
         switch ($redirect) {
             case 'autoconnect' :
-                $autoconnect = new LaboDataAccountInformation();
+                $autoconnect = new Account();
                 Tools::redirect($autoconnect->getAutoconnect());
                 return true;
                 // no break
             case 'autopay' :
-                $autopay = new LaboDataAccountInformation();
+                $autopay = new Account();
                 Tools::redirect($autopay->getAutopay());
                 return true;
                 // no break

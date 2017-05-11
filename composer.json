@@ -8,7 +8,10 @@
   ],
   "homepage": "https://www.labodata.fr",
   "autoload": {
-    "classmap": ["classes/"]
+    "classmap": ["classes/"],
+    "psr-4": {
+      "LaboDataPrestaShop\\": "src/LaboDataPrestaShop/"
+    }
   },
   "require": {
     "ext-curl": "*",

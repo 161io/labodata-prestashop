@@ -3,6 +3,8 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Api\Query as LaboDataQuery;
+
 /**
  * Chargement et manipulation des categories LaboData
  */

@@ -6,19 +6,33 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit352d2f3216ef3570d6604e87c5c16307
 {
+    public static $prefixLengthsPsr4 = array (
+        'L' => 
+        array (
+            'LaboDataPrestaShop\\' => 19,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'LaboDataPrestaShop\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/LaboDataPrestaShop',
+        ),
+    );
+
     public static $classMap = array (
-        'LaboDataAccountInformation' => __DIR__ . '/../..' . '/classes/LaboDataAccountInformation.php',
         'LaboDataCategory' => __DIR__ . '/../..' . '/classes/LaboDataCategory.php',
         'LaboDataCopyPaste' => __DIR__ . '/../..' . '/classes/LaboDataCopyPaste.php',
         'LaboDataPrestashop' => __DIR__ . '/../..' . '/classes/LaboDataPrestashop.php',
         'LaboDataProduct' => __DIR__ . '/../..' . '/classes/LaboDataProduct.php',
-        'LaboDataQuery' => __DIR__ . '/../..' . '/classes/LaboDataQuery.php',
         'LaboDataSearch' => __DIR__ . '/../..' . '/classes/LaboDataSearch.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit352d2f3216ef3570d6604e87c5c16307::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit352d2f3216ef3570d6604e87c5c16307::$prefixDirsPsr4;
             $loader->classMap = ComposerStaticInit352d2f3216ef3570d6604e87c5c16307::$classMap;
 
         }, null, ClassLoader::class);

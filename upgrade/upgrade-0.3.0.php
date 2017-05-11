@@ -12,8 +12,12 @@ if (!defined('_PS_VERSION_')) {
  * @return bool
  */
 function upgrade_module_0_3_0($module) {
-    $module->_uninstallTabs();
-    $module->_installTables();
-    $module->_installTabs();
+    $install = new LaboDataPrestaShop\Install\Install($module);
+    $uninstall = new LaboDataPrestaShop\Install\Uninstall($module);
+
+    $uninstall->tab();
+    $install->table();
+    $install->tab();
+
     return true;
 }

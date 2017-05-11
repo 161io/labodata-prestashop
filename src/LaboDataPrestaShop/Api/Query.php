@@ -3,7 +3,11 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
-class LaboDataQuery
+namespace LaboDataPrestaShop\Api;
+
+use Configuration;
+
+class Query
 {
     const URL = 'https://www.labodata.fr';
     const API = '/api/v1';

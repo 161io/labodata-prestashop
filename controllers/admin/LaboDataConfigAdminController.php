@@ -3,6 +3,8 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Api\Account;
+use LaboDataPrestaShop\Api\Query as LaboDataQuery;
 use ModuleAdminController as NoTabModuleAdminController;
 
 /**
@@ -47,7 +49,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
     }
     public function renderList()
     {
-        $account = new LaboDataAccountInformation();
+        $account = new Account();
 
         $smarty = $this->context->smarty;
         $smarty->assign(array(

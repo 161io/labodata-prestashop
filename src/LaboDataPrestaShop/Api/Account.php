@@ -3,10 +3,12 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+namespace LaboDataPrestaShop\Api;
+
 /**
  * Compte LaboData et acces direct ( liens de redirection )
  */
-class LaboDataAccountInformation extends LaboDataQuery
+class Account extends Query
 {
     /**
      * @var array
@@ -84,7 +86,7 @@ class LaboDataAccountInformation extends LaboDataQuery
         if (isset($result['autoconnect'])) {
             return $result['autoconnect'];
         }
-        return LaboDataQuery::URL;
+        return self::URL;
     }
 
     /**
@@ -98,6 +100,6 @@ class LaboDataAccountInformation extends LaboDataQuery
         if (isset($result['autoconnect'])) {
             return $result['autoconnect'];
         }
-        return LaboDataQuery::URL;
+        return self::URL;
     }
 }
