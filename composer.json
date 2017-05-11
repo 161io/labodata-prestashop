@@ -1,0 +1,17 @@
+{
+  "name": "161io/labodata-prestashop",
+  "description": "Module LaboData pour Prestashop",
+  "type": "library",
+  "license": "(c) 161 SARL",
+  "keywords": [
+    "prestashop", "module", "labodata"
+  ],
+  "homepage": "https://www.labodata.fr",
+  "autoload": {
+    "classmap": ["classes/"]
+  },
+  "require": {
+    "ext-curl": "*",
+    "php": ">=5.3.0"
+  }
+}

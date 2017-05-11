@@ -8,14 +8,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require_once __DIR__ . '/classes/LaboDataQuery.php';
-
-require_once __DIR__ . '/classes/LaboDataAccountInformation.php';
-require_once __DIR__ . '/classes/LaboDataCategory.php';
-require_once __DIR__ . '/classes/LaboDataCopyPaste.php';
-require_once __DIR__ . '/classes/LaboDataPrestashop.php';
-require_once __DIR__ . '/classes/LaboDataProduct.php';
-require_once __DIR__ . '/classes/LaboDataSearch.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Dev.mode: config/defines.inc.php _PS_MODE_DEV_
