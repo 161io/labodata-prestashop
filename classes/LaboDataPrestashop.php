@@ -3,6 +3,8 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Stdlib\ArrayUtils;
+
 /**
  * Injection des elements LaboData vers Prestashop
  */
@@ -96,13 +98,7 @@ class LaboDataPrestashop
             $sql->from(LaboDataCategory::DB_TABLE_MANUFACTURER);
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            if (function_exists('array_column')) { // PHP 5.5+
-                $this->manufacturerLabodataIds = array_column($ids, 'id_manufacturer', 'id_labodata');
-            } else {
-                foreach ($ids as $_ids) {
-                    $this->manufacturerLabodataIds[$_ids['id_labodata']] = $_ids['id_manufacturer'];
-                }
-            }
+            $this->manufacturerLabodataIds = ArrayUtils::arrayColumn($ids, 'id_manufacturer', 'id_labodata');
         }
         return $this->manufacturerLabodataIds;
     }
@@ -181,13 +177,7 @@ class LaboDataPrestashop
             $sql->from(LaboDataCategory::DB_TABLE_FEATURE_VALUE);
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            if (function_exists('array_column')) { // PHP 5.5+
-                $this->featureValueLabodataIds = array_column($ids, 'id_feature_value', 'id_labodata');
-            } else {
-                foreach ($ids as $_ids) {
-                    $this->featureValueLabodataIds[$_ids['id_labodata']] = $_ids['id_feature_value'];
-                }
-            }
+            $this->featureValueLabodataIds = ArrayUtils::arrayColumn($ids, 'id_feature_value', 'id_labodata');
         }
         return $this->featureValueLabodataIds;
     }
@@ -353,13 +343,7 @@ class LaboDataPrestashop
             $sql->from(LaboDataCategory::DB_TABLE_CATEGORY);
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            if (function_exists('array_column')) { // PHP 5.5+
-                $this->categoryLabodataIds = array_column($ids, 'id_category', 'id_labodata');
-            } else {
-                foreach ($ids as $_ids) {
-                    $this->categoryLabodataIds[$_ids['id_labodata']] = $_ids['id_category'];
-                }
-            }
+            $this->categoryLabodataIds = ArrayUtils::arrayColumn($ids, 'id_category', 'id_labodata');
         }
         return $this->categoryLabodataIds;
     }
