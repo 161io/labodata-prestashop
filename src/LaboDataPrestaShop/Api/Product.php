@@ -3,9 +3,9 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
-use LaboDataPrestaShop\Api\Query as LaboDataQuery;
+namespace LaboDataPrestaShop\Api;
 
-class LaboDataProduct extends LaboDataQuery
+class Product extends Query
 {
     const ROOT_KEY = 'product';
 

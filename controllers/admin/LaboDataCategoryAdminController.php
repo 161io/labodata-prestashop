@@ -3,6 +3,7 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Api\Category as LaboDataCategory;
 use ModuleAdminController as NoTabModuleAdminController;
 
 class LaboDataCategoryAdminController extends NoTabModuleAdminController

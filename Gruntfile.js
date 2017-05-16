@@ -23,7 +23,9 @@ module.exports = function(grunt) {
     uglify: {
       labodata: {
         options: {
-          preserveComments: 'some'
+          output: {
+            comments: 'some'
+          }
         },
         files: [
           {

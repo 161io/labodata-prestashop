@@ -6,9 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'LaboDataCategory' => $baseDir . '/classes/LaboDataCategory.php',
-    'LaboDataCopyPaste' => $baseDir . '/classes/LaboDataCopyPaste.php',
     'LaboDataPrestashop' => $baseDir . '/classes/LaboDataPrestashop.php',
-    'LaboDataProduct' => $baseDir . '/classes/LaboDataProduct.php',
-    'LaboDataSearch' => $baseDir . '/classes/LaboDataSearch.php',
 );

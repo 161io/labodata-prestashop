@@ -8,7 +8,7 @@ namespace LaboDataPrestaShop\Install;
 use Configuration;
 use Db;
 use LaboData;
-use LaboDataCategory;
+use LaboDataPrestaShop\Api\Category;
 use LaboDataPrestaShop\Api\Query;
 use Language;
 use Tab;
@@ -130,7 +130,7 @@ class Install
     public function table()
     {
         Db::getInstance()->execute(
-'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` (
+'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.Category::DB_TABLE_MANUFACTURER.'` (
   `id_manufacturer` INT(10) UNSIGNED NOT NULL,
   `id_labodata` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_manufacturer`, `id_labodata`)
@@ -138,7 +138,7 @@ class Install
         );
 
         Db::getInstance()->execute(
-'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` (
+'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.Category::DB_TABLE_FEATURE_VALUE.'` (
   `id_feature_value` INT(10) UNSIGNED NOT NULL,
   `id_labodata` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_feature_value`, `id_labodata`)
@@ -146,7 +146,7 @@ class Install
         );
 
         Db::getInstance()->execute(
-'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` (
+'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.Category::DB_TABLE_CATEGORY.'` (
   `id_category` INT(10) UNSIGNED NOT NULL,
   `id_labodata` INT(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id_category`, `id_labodata`)

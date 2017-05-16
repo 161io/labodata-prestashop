@@ -3,14 +3,26 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+namespace LaboDataPrestaShop\Stdlib;
+
+use Configuration;
+use Context;
+use Hook;
+use Image;
+use ImageManager;
+use ImageType;
+use Language;
+use Tools;
+
 /**
  * TODO A reprendre
+ * @see \AdminImportControllerCore
  */
-class LaboDataCopyPaste
+class CopyPaste
 {
     /**
      * {@inheritDoc}
-     * @see AdminImportControllerCore::copyImg()
+     * @see \AdminImportControllerCore::copyImg()
      */
     public static function copyImg($id_entity, $id_image = null, $url = '', $entity = 'products', $regenerate = true)
     {
@@ -126,7 +138,7 @@ class LaboDataCopyPaste
 
     /**
      * {@inheritDoc}
-     * @see AdminImportControllerCore::get_best_path()
+     * @see \AdminImportControllerCore::get_best_path()
      */
     protected static function get_best_path($tgt_width, $tgt_height, $path_infos)
     {
@@ -143,7 +155,7 @@ class LaboDataCopyPaste
 
     /**
      * {@inheritDoc}
-     * @see AdminImportControllerCore::createMultiLangField()
+     * @see \AdminImportControllerCore::createMultiLangField()
      */
     public static function createMultiLangField($field)
     {

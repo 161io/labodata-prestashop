@@ -4,6 +4,9 @@
  */
 
 use LaboDataPrestaShop\Api\Account;
+use LaboDataPrestaShop\Api\Category as LaboDataCategory;
+use LaboDataPrestaShop\Api\Search;
+use LaboDataPrestaShop\Api\Product as LaboDataProduct;
 use ModuleAdminController as NoTabModuleAdminController;
 
 class LaboDataCatalogAdminController extends NoTabModuleAdminController
@@ -47,7 +50,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
 
     public function initContent()
     {
-        $laboDataSearch = LaboDataSearch::getInstance();
+        $laboDataSearch = Search::getInstance();
 
         // Connexion non configuree
         if (!$laboDataSearch->canConnect() || $laboDataSearch->isError()) {
@@ -68,7 +71,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             return '';
         }
 
-        $laboDataSearch = LaboDataSearch::getInstance();
+        $laboDataSearch = Search::getInstance();
 
         $adminLink = $this->context->link->getAdminLink($this->controller_name);
         $smarty = $this->context->smarty;
@@ -99,7 +102,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
      */
     private function smartyProductsFilter($products)
     {
-        $cost = LaboDataSearch::getInstance()->getCostQuery();
+        $cost = Search::getInstance()->getCostQuery();
 
         foreach ($products as &$product) {
             $product['_purchaseFull'] = (!empty($product['purchase']['image']) && !empty($product['purchase']['content']));

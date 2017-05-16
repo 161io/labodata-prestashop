@@ -4,6 +4,7 @@
  */
 
 use LaboDataPrestaShop\Api\Account;
+use LaboDataPrestaShop\Api\Category as LaboDataCategory;
 use LaboDataPrestaShop\Api\Query as LaboDataQuery;
 use ModuleAdminController as NoTabModuleAdminController;
 

@@ -8,7 +8,7 @@ namespace LaboDataPrestaShop\Install;
 use Configuration;
 use Db;
 use LaboData;
-use LaboDataCategory;
+use LaboDataPrestaShop\Api\Category;
 use LaboDataPrestaShop\Api\Query;
 use Tab;
 
@@ -56,16 +56,16 @@ class Uninstall
 
     public function table()
     {
-        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'`;');
-        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'`;');
-        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'`;');
+        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.Category::DB_TABLE_MANUFACTURER.'`;');
+        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.Category::DB_TABLE_FEATURE_VALUE.'`;');
+        Db::getInstance()->execute('DROP TABLE `'._DB_PREFIX_.Category::DB_TABLE_CATEGORY.'`;');
 
         return true;
     }
 
     public function cache()
     {
-        LaboDataCategory::getInstance()->deleteCache();
+        Category::getInstance()->deleteCache();
 
         return true;
     }

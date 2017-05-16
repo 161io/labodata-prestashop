@@ -3,12 +3,15 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
-use LaboDataPrestaShop\Api\Query as LaboDataQuery;
+namespace LaboDataPrestaShop\Api;
+
+use Context;
+use Tools;
 
 /**
  * Rechercher dans le catalogue LaboData
  */
-class LaboDataSearch extends LaboDataQuery
+class Search extends Query
 {
     /**
      * @var self

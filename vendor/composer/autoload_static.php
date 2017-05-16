@@ -21,11 +21,7 @@ class ComposerStaticInit352d2f3216ef3570d6604e87c5c16307
     );
 
     public static $classMap = array (
-        'LaboDataCategory' => __DIR__ . '/../..' . '/classes/LaboDataCategory.php',
-        'LaboDataCopyPaste' => __DIR__ . '/../..' . '/classes/LaboDataCopyPaste.php',
         'LaboDataPrestashop' => __DIR__ . '/../..' . '/classes/LaboDataPrestashop.php',
-        'LaboDataProduct' => __DIR__ . '/../..' . '/classes/LaboDataProduct.php',
-        'LaboDataSearch' => __DIR__ . '/../..' . '/classes/LaboDataSearch.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

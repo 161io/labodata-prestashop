@@ -3,12 +3,12 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
-use LaboDataPrestaShop\Api\Query as LaboDataQuery;
+namespace LaboDataPrestaShop\Api;
 
 /**
  * Chargement et manipulation des categories LaboData
  */
-class LaboDataCategory extends LaboDataQuery
+class Category extends Query
 {
     /**
      * @const string Table des marques

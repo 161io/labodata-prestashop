@@ -3,7 +3,10 @@
  * Copyright (c) 161 SARL, https://161.io
  */
 
+use LaboDataPrestaShop\Api\Category as LaboDataCategory;
+use LaboDataPrestaShop\Api\Product as LaboDataProduct;
 use LaboDataPrestaShop\Stdlib\ArrayUtils;
+use LaboDataPrestaShop\Stdlib\CopyPaste;
 
 /**
  * Injection des elements LaboData vers Prestashop
@@ -134,9 +137,9 @@ class LaboDataPrestashop
         $manufacturer = new Manufacturer();
         $manufacturer->active = true;
         $manufacturer->name = $title;
-        $manufacturer->meta_title = LaboDataCopyPaste::createMultiLangField($title);
-        $manufacturer->meta_description = LaboDataCopyPaste::createMultiLangField($title);
-        $manufacturer->link_rewrite = LaboDataCopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $manufacturer->meta_title = CopyPaste::createMultiLangField($title);
+        $manufacturer->meta_description = CopyPaste::createMultiLangField($title);
+        $manufacturer->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
         $manufacturer->add();
 
         $this->_addManufacturerLabodata($manufacturer, $laboDataCategory);
@@ -273,7 +276,7 @@ class LaboDataPrestashop
 
         $feature = new Feature();
         $feature->position = Feature::getHigherPosition() + 1;
-        $feature->name = LaboDataCopyPaste::createMultiLangField($title);
+        $feature->name = CopyPaste::createMultiLangField($title);
         $feature->add();
 
         $this->featureIds[$name] = (int) $feature->id;
@@ -302,7 +305,7 @@ class LaboDataPrestashop
 
         $featureValue = new FeatureValue();
         $featureValue->id_feature = $featureId;
-        $featureValue->value = LaboDataCopyPaste::createMultiLangField($title);
+        $featureValue->value = CopyPaste::createMultiLangField($title);
         $featureValue->add();
 
         $this->_addFeatureValueLabodata($featureValue, $laboDataCategory);
@@ -397,10 +400,10 @@ class LaboDataPrestashop
         $category->is_root_category = false;
         $category->id_parent = $idParentCategory;
         $category->active = true;
-        $category->name = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_title = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_description = LaboDataCopyPaste::createMultiLangField($title);
-        $category->link_rewrite = LaboDataCopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $category->name = CopyPaste::createMultiLangField($title);
+        $category->meta_title = CopyPaste::createMultiLangField($title);
+        $category->meta_description = CopyPaste::createMultiLangField($title);
+        $category->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
         $category->add();
 
         $this->categoryTypeIds[$name] = (int) $category->id;
@@ -431,10 +434,10 @@ class LaboDataPrestashop
         $category->is_root_category = false;
         $category->id_parent = $categoryTypeId;
         $category->active = true;
-        $category->name = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_title = LaboDataCopyPaste::createMultiLangField($title);
-        $category->meta_description = LaboDataCopyPaste::createMultiLangField($title);
-        $category->link_rewrite = LaboDataCopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $category->name = CopyPaste::createMultiLangField($title);
+        $category->meta_title = CopyPaste::createMultiLangField($title);
+        $category->meta_description = CopyPaste::createMultiLangField($title);
+        $category->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
         $category->add();
 
         $this->_addCategoryLabodata($category, $laboDataCategory);
@@ -660,7 +663,7 @@ class LaboDataPrestashop
             return $this;
         }
 
-        $product_has_images = (bool)Image::getImages($this->getLang(), (int)$product->id);
+        $product_has_images = (bool) Image::getImages($this->getLang(), (int) $product->id);
 
         $shops = Shop::getShops();
 
@@ -672,7 +675,7 @@ class LaboDataPrestashop
             ($image->validateFieldsLang(false, true)) === true && $image->add()
         ) {
             $image->associateTo($shops);
-            if (!LaboDataCopyPaste::copyImg($product->id, $image->id, $imageUrl, 'products', true))
+            if (!CopyPaste::copyImg($product->id, $image->id, $imageUrl, 'products', true))
             {
                 $image->delete();
             }
