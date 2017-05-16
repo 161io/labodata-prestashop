@@ -7,6 +7,8 @@ namespace LaboDataPrestaShop\Api;
 
 /**
  * Compte LaboData et acces direct ( liens de redirection )
+ *
+ * @method static Account getInstance()
  */
 class Account extends Query
 {

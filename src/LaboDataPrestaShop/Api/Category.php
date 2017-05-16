@@ -7,6 +7,8 @@ namespace LaboDataPrestaShop\Api;
 
 /**
  * Chargement et manipulation des categories LaboData
+ *
+ * @method static Category getInstance()
  */
 class Category extends Query
 {
@@ -31,11 +33,6 @@ class Category extends Query
     const TYPE_BRAND = 'brand';
 
     /**
-     * @var self
-     */
-    protected static $instance;
-
-    /**
      * @var array
      */
     protected $brands;
@@ -44,17 +41,6 @@ class Category extends Query
      * @var array
      */
     protected $categories;
-
-    /**
-     * @return self
-     */
-    public static function getInstance()
-    {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
 
     /**
      * Mini-cache des categories

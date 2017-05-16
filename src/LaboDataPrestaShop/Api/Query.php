@@ -21,6 +21,18 @@ class Query
     protected $error;
 
     /**
+     * @return self
+     */
+    public static function getInstance()
+    {
+        static $instance;
+        if (null === $instance) {
+            $instance = new static();
+        }
+        return $instance;
+    }
+
+    /**
      * @return mixed
      */
     public function getError()

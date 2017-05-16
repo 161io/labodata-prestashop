@@ -10,25 +10,11 @@ use Tools;
 
 /**
  * Rechercher dans le catalogue LaboData
+ *
+ * @method static Search getInstance()
  */
 class Search extends Query
 {
-    /**
-     * @var self
-     */
-    protected static $instance;
-
-    /**
-     * @return self
-     */
-    public static function getInstance()
-    {
-        if (null === self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
     /**
      * @var array
      */

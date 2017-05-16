@@ -7,6 +7,7 @@ use LaboDataPrestaShop\Api\Account;
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
 use LaboDataPrestaShop\Api\Search;
 use LaboDataPrestaShop\Api\Product as LaboDataProduct;
+use LaboDataPrestaShop\Import\ImportProduct;
 use ModuleAdminController as NoTabModuleAdminController;
 
 class LaboDataCatalogAdminController extends NoTabModuleAdminController
@@ -132,13 +133,11 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $redirect = Tools::getValue('redirect');
         switch ($redirect) {
             case 'autoconnect' :
-                $autoconnect = new Account();
-                Tools::redirect($autoconnect->getAutoconnect());
+                Tools::redirect(Account::getInstance()->getAutoconnect());
                 return true;
                 // no break
             case 'autopay' :
-                $autopay = new Account();
-                Tools::redirect($autopay->getAutopay());
+                Tools::redirect(Account::getInstance()->getAutopay());
                 return true;
                 // no break
         }
@@ -163,7 +162,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             $action = null;
         }
 
-        $laboDataPrestashop = LaboDataPrestashop::getInstance();
+        $laboDataPrestashop = ImportProduct::getInstance();
         $laboDataProduct = new LaboDataProduct();
         if ($action) {
             $laboDataProduct->getProduct($id, $type);

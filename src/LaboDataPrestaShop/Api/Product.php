@@ -5,6 +5,9 @@
 
 namespace LaboDataPrestaShop\Api;
 
+/**
+ * @method static Product getInstance()
+ */
 class Product extends Query
 {
     const ROOT_KEY = 'product';

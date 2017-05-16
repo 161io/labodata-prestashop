@@ -4,6 +4,9 @@
  */
 
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
+use LaboDataPrestaShop\Import\ImportCategory;
+use LaboDataPrestaShop\Import\ImportFeature;
+use LaboDataPrestaShop\Import\ImportManufacturer;
 use ModuleAdminController as NoTabModuleAdminController;
 
 class LaboDataCategoryAdminController extends NoTabModuleAdminController
@@ -103,12 +106,12 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     public function displayAddLink($token, $id, $name = null)
     {
         if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
-            $exists = LaboDataPrestashop::getInstance()->getIdManufacturerByIdLabodata($id);
+            $exists = ImportManufacturer::getInstance()->getIdManufacturerByIdLabodata($id);
         } else {
             if ('feature' == LaboData::MODE_CATEGORY) {
-                $exists = LaboDataPrestashop::getInstance()->getIdFeatureValueByIdLabodata($id);
+                $exists = ImportFeature::getInstance()->getIdFeatureValueByIdLabodata($id);
             } else { // 'category'
-                $exists = LaboDataPrestashop::getInstance()->getIdCategoryByIdLabodata($id);
+                $exists = ImportCategory::getInstance()->getIdCategoryByIdLabodata($id);
             }
         }
 
@@ -162,7 +165,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         switch ($action) {
             case 'addManufacturer' :
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psManufacturer = LaboDataPrestashop::getInstance()->addManufacturer($json['ldCategory']);
+                $psManufacturer = ImportManufacturer::getInstance()->addManufacturer($json['ldCategory']);
                 if ($psManufacturer) {
                     $json['psIdManufacturer'] = $psManufacturer->id;
                     $json['growlType'] = 'notice';
@@ -175,7 +178,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 break;
             case 'addFeatureValue' :
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psFeatureValue = LaboDataPrestashop::getInstance()->addFeatureValue($json['ldCategory']);
+                $psFeatureValue = ImportFeature::getInstance()->addFeatureValue($json['ldCategory']);
                 if ($psFeatureValue) {
                     $json['psIdFeatureValue'] = $psFeatureValue->id;
                     $json['growlType'] = 'notice';
@@ -188,7 +191,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 break;
             case 'addCategory' :
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psCategory = LaboDataPrestashop::getInstance()->addCategory($json['ldCategory']);
+                $psCategory = ImportCategory::getInstance()->addCategory($json['ldCategory']);
                 if ($psCategory) {
                     $json['psIdCategory'] = $psCategory->id;
                     $json['growlType'] = 'notice';
