@@ -34,8 +34,8 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     {
         parent::setMedia($isNewTheme);
 
-        //$this->addJS($this->module->getPathUri() . '/js/category.js');
-        $this->addJS($this->module->getPathUri() . '/js/category.min.js');
+        //$this->addJS($this->module->getPathUri() . '/views/js/category.js');
+        $this->addJS($this->module->getPathUri() . '/views/js/category.min.js');
     }
 
     private function buildHeaderToolbar()

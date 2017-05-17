@@ -12,9 +12,9 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'css/',
+            cwd: 'views/css/',
             src: ['**/*.css', '!**/*.min.css'],
-            dest: 'css/',
+            dest: 'views/css/',
             ext: '.min.css'
           }
         ]
@@ -30,9 +30,9 @@ module.exports = function(grunt) {
         files: [
           {
             expand: true,
-            cwd: 'js/',
+            cwd: 'views/js/',
             src: ['**/*.js', '!**/*.min.js'],
-            dest: 'js/',
+            dest: 'views/js/',
             ext: '.min.js'
           }
         ]
@@ -40,11 +40,11 @@ module.exports = function(grunt) {
     },
     watch: {
       cssmin: {
-        files: ['css/**/*.css', '!**/*.min.css'],
+        files: ['views/css/**/*.css', '!**/*.min.css'],
         tasks: 'cssmin'
       },
       uglify: {
-        files: ['js/**/*.js', '!**/*.min.js'],
+        files: ['views/js/**/*.js', '!**/*.min.js'],
         tasks: 'uglify'
       }
     }

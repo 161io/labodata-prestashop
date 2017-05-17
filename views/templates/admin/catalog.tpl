@@ -3,17 +3,22 @@
 <div class="panel">
   <div class="panel-heading"><i class="icon-search"></i> {l s='Effectuer une cherche dans LaboData' mod='labodata'}</div>
   <div class="panel-body">
-    <div class="text-right">
-      <span class="hidden-xs">{l s='Raccourcis' mod='labodata'} : &nbsp;</span>
-      <a class="btn btn-default" href="{$labodata_redirect_autoconnect}" target="_blank">
-        <i class="icon-user"></i><span class="hidden-xs hidden-sm"> {l s='Accéder à mon compte' mod='labodata'}</span>
-      </a>
-      <a class="btn btn-success" href="{$labodata_redirect_autopay}" id="labodata-autopay">
-        <i class="icon-credit-card"></i> <span class="hidden-xs hidden-sm">{l s='Approvisionner mon compte' mod='labodata'}</span><span class="visible-xs-inline visible-sm-inline">{l s='Approvisionner' mod='labodata'}</span>
-      </a>
-      <a class="btn btn-default" href="{$labodata_redirect_autopay}">
-        <span class="hidden-xs">{l s='Crédit dispo' mod='labodata'} : </span><span id="labodata-credit">{$labodata_credit}</span><span id="labodata-currency">{$labodata_currency}</span>
-      </a>
+    <div class="row">
+      <div class="col-sm-1 hidden-xs">
+        <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
+      </div>
+      <div class="col-sm-11 text-right">
+        <span class="hidden-xs">{l s='Raccourcis' mod='labodata'} : &nbsp;</span>
+        <a class="btn btn-default" href="{$labodata_redirect_autoconnect}" target="_blank">
+          <i class="icon-user"></i><span class="hidden-xs hidden-sm"> {l s='Accéder à mon compte' mod='labodata'}</span>
+        </a>
+        <a class="btn btn-success" href="{$labodata_redirect_autopay}" id="labodata-autopay">
+          <i class="icon-credit-card"></i> <span class="hidden-xs hidden-sm">{l s='Approvisionner mon compte' mod='labodata'}</span><span class="visible-xs-inline visible-sm-inline">{l s='Approvisionner' mod='labodata'}</span>
+        </a>
+        <a class="btn btn-default" href="{$labodata_redirect_autopay}">
+          <span class="hidden-xs">{l s='Crédit dispo' mod='labodata'} : </span><span id="labodata-credit">{$labodata_credit}</span><span id="labodata-currency">{$labodata_currency}</span>
+        </a>
+      </div>
     </div>
     <br/>
     <form method="get" class="row">
@@ -26,13 +31,15 @@
         </select>
       </div>
       <div class="form-group" id="queryGroup">
-        <input type="search" name="q" placeholder="{l s='Rechercher un produit, un médicament, un code cip...' mod='labodata'}" value="{$form_q|escape:'html':'UTF-8'}" autofocus="autofocus"/>
-        <input type="hidden" name="p" value="1"/>
-        <input type="hidden" name="controller" value="{$form_controller}"/>
-        <input type="hidden" name="token" value="{$form_token}"/>
-      </div>
-      <div class="text-right">
-        <button type="submit" class="btn btn-primary"><i class="icon-search"></i> {l s='Rechercher' mod='labodata'}</button>
+        <div class="input-group">
+          <input type="search" name="q" placeholder="{l s='Rechercher un produit, un médicament, un code cip...' mod='labodata'}" value="{$form_q|escape:'html':'UTF-8'}" autofocus="autofocus"/>
+          <input type="hidden" name="p" value="1"/>
+          <input type="hidden" name="controller" value="{$form_controller}"/>
+          <input type="hidden" name="token" value="{$form_token}"/>
+          <div class="input-group-btn">
+            <button type="submit" class="btn btn-primary"><i class="icon-search"></i><span class="hidden-xs"> {l s='Rechercher' mod='labodata'}</span></button>
+          </div>
+        </div>
       </div>
     </form>
   </div>

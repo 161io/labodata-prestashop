@@ -29,10 +29,10 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
     {
         parent::setMedia();
 
-        //$this->addJS($this->module->getPathUri() . '/js/js-cookie.js');
-        $this->addJS($this->module->getPathUri() . '/js/js-cookie.min.js');
-        //$this->addJS($this->module->getPathUri() . '/js/catalog.js');
-        $this->addJS($this->module->getPathUri() . '/js/catalog.min.js');
+        //$this->addJS($this->module->getPathUri() . '/views/js/js-cookie.js');
+        $this->addJS($this->module->getPathUri() . '/views/js/js-cookie.min.js');
+        //$this->addJS($this->module->getPathUri() . '/views/js/catalog.js');
+        $this->addJS($this->module->getPathUri() . '/views/js/catalog.min.js');
     }
 
     private function buildHeaderToolbar()
@@ -83,6 +83,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             'labodata_credit'               => $laboDataSearch->getCredit(),
             'labodata_cost'                 => $laboDataSearch->getCostQuery(),
             'labodata_currency'             => '&euro;',
+            'path_uri_img'    => $this->module->getPathUri() . '/views/img/',
             'form_controller' => $this->controller_name,
             'form_token'      => $this->token,
             'form_brand'      => (int) Tools::getValue('brand', 0),

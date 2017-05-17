@@ -63,10 +63,17 @@
     &nbsp;<a href="https://www.labodata.fr" target="_blank">www.labodata.fr</a>
   </div>
 
-  <p>&bull; {l s='Vous avez découvert un bug ? Vous désirez une nouvelle fonctionnalité ?' mod='labodata'}<br/>
-    <a href="https://github.com/161io/labodata-prestashop/issues" target="_blank">https://github.com/161io/labodata-prestashop/issues</a>
-  </p>
-  <p>&bull; {l s='Vous souhaitez contribuer à ce module ?' mod='labodata'}<br/>
-    <a href="https://github.com/161io/labodata-prestashop" target="_blank">https://github.com/161io/labodata-prestashop</a>
-  </p>
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-11">
+      <p>&bull; {l s='Vous avez découvert un bug ? Vous désirez une nouvelle fonctionnalité ?' mod='labodata'}<br/>
+        <a href="https://github.com/161io/labodata-prestashop/issues" target="_blank">https://github.com/161io/labodata-prestashop/issues</a>
+      </p>
+      <p>&bull; {l s='Vous souhaitez contribuer à ce module ?' mod='labodata'}<br/>
+        <a href="https://github.com/161io/labodata-prestashop" target="_blank">https://github.com/161io/labodata-prestashop</a>
+      </p>
+    </div>
+    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-0 col-sm-2 col-md-1">
+      <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img}logo.png" alt="LaboData" class="img-responsive center-block" width="60" height="64"/></a>
+    </div>
+  </div>
 </div>

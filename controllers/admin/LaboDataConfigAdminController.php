@@ -31,8 +31,8 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
     {
         parent::setMedia();
 
-        //$this->addJS($this->module->getPathUri() . '/js/config.js');
-        $this->addJS($this->module->getPathUri() . '/js/config.min.js');
+        //$this->addJS($this->module->getPathUri() . '/views/js/config.js');
+        $this->addJS($this->module->getPathUri() . '/views/js/config.min.js');
     }
 
     private function buildHeaderToolbar()
@@ -55,6 +55,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         $smarty = $this->context->smarty;
         $smarty->assign(array(
             'module_name'     => $this->module->name,
+            'path_uri_img'    => $this->module->getPathUri() . '/views/img/',
             'message_error'   => $this->messageError,
             'message_content' => $this->messageContent,
             'account'         => $account->canConnect() ? $account->getData() : null,
