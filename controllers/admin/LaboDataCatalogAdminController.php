@@ -87,7 +87,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             'form_controller' => $this->controller_name,
             'form_token'      => $this->token,
             'form_brand'      => (int) Tools::getValue('brand', 0),
-            'form_q'          => mb_substr(Tools::getValue('q', ''), 0, 200),
+            'form_q'          => mb_substr(trim(Tools::getValue('q', '')), 0, 200),
             'brands'          => LaboDataCategory::getInstance()->getBrands(),
             'products'   => $this->smartyProductsFilter($laboDataSearch->getProducts()),
             'pagination' => $laboDataSearch->getPagination(),

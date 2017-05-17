@@ -31,7 +31,7 @@ class Search extends Query
         if ('auto' == $options) {
             $options = array(
                 'brand' => Tools::getValue('brand', ''),
-                'q'     => Tools::getValue('q', ''),
+                'q'     => trim(Tools::getValue('q', '')),
                 'page'  => Tools::getValue('page', ''),
             );
         }

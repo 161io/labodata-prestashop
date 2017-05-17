@@ -3,6 +3,8 @@
 +function($) {
     'use strict';
 
+    var Translate;
+
     /**
      * @param {Boolean} show
      */
@@ -98,7 +100,7 @@
     }
 
     $(function() {
-        var Translate = window.LaboDataTranslate;
+        Translate = window.LaboDataTranslate;
 
         $('.table.configuration').find('td.pointer')
             .removeAttr('onclick')

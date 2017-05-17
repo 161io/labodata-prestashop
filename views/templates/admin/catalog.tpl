@@ -58,7 +58,19 @@
           <span class="text-muted">{l s='Descriptif' mod='labodata'}</span>
           <code>{l s='EAN/CIP' mod='labodata'}</code>
         </th>
-        <th style="width:140px">&nbsp;</th>
+        <th style="width:140px">
+          <div class="btn-group" id="labodata-import-group">
+            <button class="btn btn-primary" title="{l s='Importer toutes les photos'}" data-type="image">
+              <i class="icon-camera"></i>
+            </button>
+            <button class="btn btn-primary" title="{l s='Importer tous les descriptifs'}" data-type="content">
+              <i class="icon-file-text"></i>
+            </button>
+            <button class="btn btn-primary" title="{l s='Importer l\'ensemble des photos et des descriptifs'}" data-type="full">
+              <i class="icon-camera"></i> + <i class="icon-file-text"></i>
+            </button>
+          </div>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -75,23 +87,26 @@
             <button class="btn {if $product.purchase.image}btn-success{else}btn-default{/if}"
                     title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos'}{else}{l s='Acquérir les photos'} ({$labodata_cost.image}{$labodata_currency}){/if}"
                     data-type="image"
-                    data-credit="{if $product.purchase.image}0{else}{$labodata_cost.image}{/if}">
+                    data-credit="{if $product.purchase.image}0{else}{$labodata_cost.image}{/if}"
+                    data-init-credit="{$labodata_cost.image}">
               <i class="icon-camera"></i>
             </button>
             <button class="btn {if $product.purchase.content}btn-success{else}btn-default{/if}"
                     title="{if $product.purchase.content}{l s='Vous avez déjà acquis ces descriptifs'}{else}{l s='Acquérir les descriptifs'} ({$labodata_cost.content}{$labodata_currency}){/if}"
                     data-type="content"
-                    data-credit="{if $product.purchase.content}0{else}{$labodata_cost.content}{/if}">
+                    data-credit="{if $product.purchase.content}0{else}{$labodata_cost.content}{/if}"
+                    data-init-credit="{$labodata_cost.content}">
               <i class="icon-file-text"></i>
             </button>
             <button class="btn {if $product._purchaseFull}btn-success{else}btn-default{/if}"
                     title="{if $product._purchaseFull}{l s='Vous avez déjà acquis cette fiche'}{else}{l s='Acquérir les photos et les descriptifs'} ({$product._purchaseFullCredit}{$labodata_currency}){/if}"
                     data-type="full"
-                    data-credit="{if $product._purchaseFull}0{else}{$product._purchaseFullCredit}{/if}">
+                    data-credit="{if $product._purchaseFull}0{else}{$product._purchaseFullCredit}{/if}"
+                    data-init-credit="{$labodata_cost.full}">
               <i class="icon-camera"></i> + <i class="icon-file-text"></i>
             </button>
           </div>
-          <div>&nbsp;</div><div class="label label-state" data-msg-progress="{l s='En cours' mod='labodata'}" data-msg-done="{l s='Terminé' mod='labodata'}">&nbsp;</div>
+          <div>&nbsp;</div><div class="label label-state">&nbsp;</div>
         </td>
       </tr>
     {/foreach}
@@ -107,6 +122,18 @@
 </div>
 
 {include './catalog-modals.tpl'}
+
+<script>
+var LaboDataTranslate={
+  stateWait:"{l s='En attente' mod='labodata'}",
+  stateProgress:"{l s='En cours' mod='labodata'}",
+  stateDone:"{l s='Terminé' mod='labodata'}",
+  importGroupProgress:"{l s='Une importation par lot est en cours, merci de patienter...' mod='labodata'}",
+  importGroupDone:"{l s='Importation terminée avec succès' mod='labodata'}",
+  importGroupExit:"{l s='Une importation par lot est en cours. Voulez-vous quitter la page ?' mod='labodata'}",
+  errorInternal:"{l s='Une erreur internet s\'est produite, merci de recharger la page' mod='labodata'}"
+};
+</script>
 
 {else}
 

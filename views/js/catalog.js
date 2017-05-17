@@ -11,9 +11,11 @@
         IMPORT_ACTION_ADD   = 'add',
         IMPORT_ACTION_BUY   = 'buy';
 
+    var Translate;
     var $laboDataCredit,
         $laboDataResult,
         $modalLaboDataImport,
+        $modalLaboDataImportGroup,
         $modalLaboDataCredit;
 
     // Dernier action d'imporation // @see IMPORT_ACTION_XXX
@@ -87,7 +89,7 @@
             dataType: 'json'
         });
         xhr.done(function(data) {
-            if (data.success) {
+            if (data && data.success) {
                 // L'importation a fonctionne
                 var type = data.type;
                 //var action = data.action;
@@ -107,7 +109,7 @@
                     // Ajustement du prix sur un achat partiel
                     $tr.find('.btn[data-type="full"]').data('credit', $btnClick.data('init-credit'));
                 }
-                changeState($state, 'success', $state.data('msg-done'));
+                changeState($state, 'success', Translate.stateDone);
                 updatePiggy(data.apiResponse.credit);
 
                 if (onComplete) { onComplete(); }
@@ -116,21 +118,27 @@
 
             // L'importation a echoue
             changeState($state, 'danger');
-            if (data.apiResponse ) {
+            if (data && data.apiResponse) {
                 updatePiggy(data.apiResponse.credit);
                 if (data.apiResponse.error) {
                     $.growl.error({
                         title: '',
                         size: 'large',
-                        message: (data.apiResponse.error.message || 'Message not found')
+                        message: (data.apiResponse.error.message || Translate.errorInternal)
                     });
                 }
+            } else {
+                $.growl.error({
+                    title  : '',
+                    size   : 'large',
+                    message: Translate.errorInternal
+                });
             }
-            //setImportGroup(false, true);
+            setImportGroup(false, true);
         });
         xhr.fail(function(data) {
             changeState($state, 'danger');
-            //setImportGroup(false, true);
+            setImportGroup(false, true);
         });
         xhr.always(function() {
             if (!isImportGroup()) {
@@ -138,7 +146,7 @@
             }
         });
 
-        changeState($state, 'default', $state.data('msg-progress'));
+        changeState($state, 'default', Translate.stateProgress);
         $tr.find('button').prop('disabled', true).attr('disabled', 'disabled');
     }
 
@@ -171,19 +179,77 @@
     function isImportGroup() {
         return importGroup;
     }
+    /**
+     * Marquer l'importation par lot en cours
+     * @param {Boolean} flag
+     * @param {Boolean=} isError
+     */
+    function setImportGroup(flag, isError) {
+        importGroup = !!flag;
+
+        if (importGroup) {
+            $laboDataResult.find('tbody .btn[data-type]').prop('disabled', true);
+
+            window.onbeforeunload = function (e) {
+                var message = Translate.importGroupExit,
+                    e = e || window.event;
+                if (e) { // IE and Firefox
+                    e.returnValue = message;
+                }
+                return message; // Safari
+            };
+        } else {
+            $laboDataResult.find('tbody .btn[data-type]').prop('disabled', true);
+
+            window.onbeforeunload = null;
+
+            if (isError) {
+                $laboDataResult.find('tbody .label-state').html('Error');
+            }
+        }
+    }
+
+    /**
+     * Boucle d'importation par lot
+     */
+    function importLoop() {
+        var $btn = $laboDataResult.find('tbody .btn.waiting').first();
+        if (!$btn.length) {
+            setImportGroup(false);
+
+            $.growl.notice({
+                title  : '',
+                size   : 'large',
+                message: Translate.importGroupDone
+            });
+            return;
+        }
+
+        $btn.removeClass('waiting');
+        var $tr = $btn.parents('[data-product]');
+        changeState($tr.find('.label-state'), 'default', Translate.stateProgress);
+
+        importProduct({
+            id  : parseInt($tr.data('product')),
+            type: $btn.data('type')
+        }, importLoop);
+    }
 
 
 
     // Demarrage
     $(function() {
+        Translate = window.LaboDataTranslate;
 
         $laboDataCredit = $('#labodata-credit');
         $laboDataResult = $('#labodata-result');
-        $modalLaboDataImport = $('#modal-labodata-import');
-        $modalLaboDataCredit = $('#modal-labodata-credit');
+        $modalLaboDataImport      = $('#modal-labodata-import');
+        $modalLaboDataImportGroup = $('#modal-labodata-import-group');
+        $modalLaboDataCredit      = $('#modal-labodata-credit');
         currency = $('#labodata-currency').html();
 
         //$modalLaboDataImport.modal(); // preview
+        //$modalLaboDataImportGroup.modal(); // preview
         //$modalLaboDataCredit.modal(); // preview
 
         // Tooltip
@@ -248,6 +314,60 @@
                     type: dataType
                 });
                 $modalClone.modal('hide');
+            });
+
+            $modalClone.insertAfter($laboDataResult).modal('show');
+        });
+
+
+        // Importer par lot
+        $('#labodata-import-group .btn[data-type]').on('click', function() {
+            if (isImportGroup()) {
+                // Importation en cours...
+                $.growl.warning({
+                    title  : '',
+                    size   : 'large',
+                    message: Translate.importGroupProgress
+                });
+                return;
+            }
+
+            var $btn = $(this);
+            var dataType = $btn.data('type');
+            var $btns = $laboDataResult.find('tbody .btn[data-type="' + dataType + '"]');
+            var credit = 0;
+            $btns.each(function() {
+                credit += toFloat($(this).data('credit'));
+            });
+            var alreadyBought = !credit;
+
+            $btn.tooltip('hide');
+            var modalCloneId = $modalLaboDataImportGroup.attr('id') + '-clone';
+            $('#' + modalCloneId).remove();
+
+            // Credit insuffisant
+            if (!alreadyBought && credit > toFloat($laboDataCredit.text())) {
+                $modalLaboDataCredit.modal('show');
+                return;
+            }
+
+
+            var $modalClone = $modalLaboDataImportGroup.clone();
+            $modalClone.attr('id', modalCloneId);
+            $modalClone.find('[data-bought="' + (alreadyBought ? '0' : '1') + '"]').addClass('hide');
+            $modalClone.find('[data-type]').not('[data-type="' + dataType + '"]').addClass('hide');
+            $modalClone.find('[data-val="product"]').html($btns.length);
+            $modalClone.find('[data-val="credit"]').html(creditFormat(credit) + currency);
+
+            // Events
+            $modalClone.find('[data-submit="modal"]').on('click', function() {
+                setImportGroup(true);
+
+                $btns.addClass('waiting');
+                changeState($laboDataResult.find('tbody .label-state'), 'default', Translate.stateWait);
+
+                $modalClone.modal('hide');
+                importLoop();
             });
 
             $modalClone.insertAfter($laboDataResult).modal('show');
