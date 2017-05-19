@@ -4,6 +4,7 @@
   "repository": "https://github.com/161io/labodata-prestashop",
   "devDependencies": {
     "grunt": "^1.0.1",
+    "grunt-contrib-compress": "^1.4.1",
     "grunt-contrib-cssmin": "^2.2.0",
     "grunt-contrib-uglify": "^3.0.0",
     "grunt-contrib-watch": "^1.0.0"

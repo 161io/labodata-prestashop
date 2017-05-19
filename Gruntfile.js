@@ -7,6 +7,24 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    compress: {
+      labodata: {
+        options: {
+          archive: 'labodata.zip',
+        },
+        files: [
+          {
+            expand: true,
+            src: [
+              '**',
+              '!bower_components/**', '!node_modules/**',
+              '!composer.lock', '!config_*.xml', '!labodata.zip'
+            ],
+            dest: 'labodata/'
+          }
+        ]
+      }
+    },
     cssmin: {
       labodata: {
         files: [
@@ -50,10 +68,12 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['cssmin', 'uglify']);
+  grunt.registerTask('build', ['default', 'compress'])
 
 };
