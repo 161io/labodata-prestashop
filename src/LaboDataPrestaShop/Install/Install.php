@@ -93,7 +93,7 @@ class Install
         $catalogTab->active = true;
         $catalogTab->name = array();
         foreach ($languages as $lang) {
-            $catalogTab->name[$lang['id_lang']] = $module->l('Catalogue LaboData');
+            $catalogTab->name[$lang['id_lang']] = $module->lc('Catalogue LaboData');
         }
         $catalogTab->class_name = 'LaboDataCatalogAdmin';
         $catalogTab->id_parent = $parentTab->id;
@@ -105,7 +105,7 @@ class Install
         $categoryTab->active = true;
         $categoryTab->name = array();
         foreach ($languages as $lang) {
-            $categoryTab->name[$lang['id_lang']] = $module->l('Marques/Caractéristiques');
+            $categoryTab->name[$lang['id_lang']] = $module->lc('Marques/Caracteristiques');
         }
         $categoryTab->class_name = 'LaboDataCategoryAdmin';
         $categoryTab->id_parent = $parentTab->id;
@@ -117,7 +117,7 @@ class Install
         $configTab->active = true;
         $configTab->name = array();
         foreach ($languages as $lang) {
-            $configTab->name[$lang['id_lang']] = $module->l('Configuration');
+            $configTab->name[$lang['id_lang']] = $module->lc('Configuration');
         }
         $configTab->class_name = 'LaboDataConfigAdmin';
         $configTab->id_parent = $parentTab->id;

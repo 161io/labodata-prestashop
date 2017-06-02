@@ -10,6 +10,9 @@ use LaboDataPrestaShop\Api\Product as LaboDataProduct;
 use LaboDataPrestaShop\Import\ImportProduct;
 use ModuleAdminController as NoTabModuleAdminController;
 
+/**
+ * @property LaboData $module
+ */
 class LaboDataCatalogAdminController extends NoTabModuleAdminController
 {
     const ACTION_ADD  = 'add';
@@ -39,12 +42,12 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
     {
         $this->page_header_toolbar_btn['category'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataCategoryAdmin'),
-            'desc' => $this->module->l('Marques/Caractéristiques'),
+            'desc' => $this->module->lc('Marques/Caracteristiques'),
             'icon' => 'process-icon-new',
         );
         $this->page_header_toolbar_btn['config'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataConfigAdmin'),
-            'desc' => $this->module->l('Configuration'),
+            'desc' => $this->module->lc('Configuration'),
             'icon' => 'process-icon-configure',
         );
     }

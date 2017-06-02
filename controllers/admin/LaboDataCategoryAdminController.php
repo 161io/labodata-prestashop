@@ -9,6 +9,9 @@ use LaboDataPrestaShop\Import\ImportFeature;
 use LaboDataPrestaShop\Import\ImportManufacturer;
 use ModuleAdminController as NoTabModuleAdminController;
 
+/**
+ * @property LaboData $module
+ */
 class LaboDataCategoryAdminController extends NoTabModuleAdminController
 {
     /**
@@ -42,12 +45,12 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     {
         $this->page_header_toolbar_btn['catalog'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataCatalogAdmin'),
-            'desc' => $this->module->l('Catalogue LaboData'),
+            'desc' => $this->module->lc('Catalogue LaboData'),
             'icon' => 'process-icon-new',
         );
         $this->page_header_toolbar_btn['config'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataConfigAdmin'),
-            'desc' => $this->module->l('Configuration'),
+            'desc' => $this->module->lc('Configuration'),
             'icon' => 'process-icon-configure',
         );
     }
@@ -73,12 +76,12 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     {
         $this->fields_list = array(
             'id' => array(
-                'title' => $this->module->l('id'),
+                'title' => $this->module->lc('id'),
                 'width' => 100,
                 'type'  => 'text',
             ),
             'title_fr' => array(
-                'title' => $this->module->l('Titre'),
+                'title' => $this->module->lc('Titre'),
                 'width' => 140,
                 'type'  => 'text',
             ),
@@ -89,7 +92,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         $helper->simple_header = true;
         $helper->actions = array('add');
         $helper->identifier = 'id';
-        //$helper->title = $this->module->l('Catégories LaboData');
+        //$helper->title = $this->module->lc('Catégories LaboData');
         $helper->token = Tools::getAdminTokenLite($this->controller_name);
         $helper->currentIndex = ModuleAdminController::$currentIndex;
 
@@ -116,7 +119,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         }
 
         if ($exists) {
-            return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Ajouter') . '</a>';
+            return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
         }
 
         if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
@@ -125,7 +128,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
             $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
         }
         $link = $this->context->link->getAdminLink($this->controller_name) . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
-        return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Ajouter') . '</a>';
+        return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
     }
 
     /**
@@ -169,11 +172,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psManufacturer) {
                     $json['psIdManufacturer'] = $psManufacturer->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Marque créée :') . ' ' . $psManufacturer->name;
+                    $json['growlMessage'] = $this->module->lc('Marque creee') . ' ' . $psManufacturer->name;
                 } else {
                     $json['psIdManufacturer'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->l('Erreur lors de la création de la marque');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la marque');
                 }
                 break;
             case 'addFeatureValue' :
@@ -182,11 +185,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psFeatureValue) {
                     $json['psIdFeatureValue'] = $psFeatureValue->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Caractéristique (valeur) :') . ' ' . $psFeatureValue->value[$this->context->language->id];
+                    $json['growlMessage'] = $this->module->lc('Caracteristique (valeur)') . ' ' . $psFeatureValue->value[$this->context->language->id];
                 } else {
                     $json['psIdFeatureValue'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->l('Erreur lors de la création de la caractéristique (valeur)');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la caracteristique (valeur)');
                 }
                 break;
             case 'addCategory' :
@@ -195,11 +198,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psCategory) {
                     $json['psIdCategory'] = $psCategory->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Catégorie créée :') . ' ' . $psCategory->getName();
+                    $json['growlMessage'] = $this->module->lc('Categorie creee') . ' ' . $psCategory->getName();
                 } else {
                     $json['psIdCategory'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->l('Erreur lors de la création de la catégorie');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la categorie');
                 }
                 break;
         }

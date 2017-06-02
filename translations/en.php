@@ -2,9 +2,9 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{labodata}prestashop>labodatacategoryadmincontroller_b80bb7740288fda1f201890375a60c8f'] = 'id';
-$_MODULE['<{labodata}prestashop>labodatacategoryadmincontroller_99fb48ddce014d8ad24810eeb3bfde68'] = 'Title';
-$_MODULE['<{labodata}prestashop>labodatacategoryadmincontroller_18d925e4d5b1b569288d119420bbcb42'] = 'Add';
+$_MODULE['<{labodata}prestashop>labodata_b80bb7740288fda1f201890375a60c8f'] = 'id';
+$_MODULE['<{labodata}prestashop>labodata_99fb48ddce014d8ad24810eeb3bfde68'] = 'Title';
+$_MODULE['<{labodata}prestashop>labodata_18d925e4d5b1b569288d119420bbcb42'] = 'Add';
 $_MODULE['<{labodata}prestashop>catalog-modals_d12c3b0dcf75614dafb2ac6bdaa77a26'] = 'Cancel';
 $_MODULE['<{labodata}prestashop>catalog-modals_6679e65c932b2c5ad98080ee21a4f0d4'] = 'No';
 $_MODULE['<{labodata}prestashop>catalog-modals_24ace383b70d09954259c15cfeb9b2fd'] = 'Yes';
