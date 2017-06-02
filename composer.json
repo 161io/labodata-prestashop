@@ -4,7 +4,7 @@
   "type": "library",
   "license": "(c) 161 SARL",
   "keywords": [
-    "prestashop", "module", "labodata"
+    "prestashop", "module", "database", "labodata", "pharmacy"
   ],
   "homepage": "https://www.labodata.fr",
   "autoload": {

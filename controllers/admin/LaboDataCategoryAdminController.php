@@ -169,7 +169,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psManufacturer) {
                     $json['psIdManufacturer'] = $psManufacturer->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Marque créée') . ' : ' . $psManufacturer->name;
+                    $json['growlMessage'] = $this->module->l('Marque créée :') . ' ' . $psManufacturer->name;
                 } else {
                     $json['psIdManufacturer'] = null;
                     $json['growlType'] = 'error';
@@ -182,7 +182,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psFeatureValue) {
                     $json['psIdFeatureValue'] = $psFeatureValue->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Caractéristique (valeur)') . ' : ' . $psFeatureValue->value[$this->context->language->id];
+                    $json['growlMessage'] = $this->module->l('Caractéristique (valeur) :') . ' ' . $psFeatureValue->value[$this->context->language->id];
                 } else {
                     $json['psIdFeatureValue'] = null;
                     $json['growlType'] = 'error';
@@ -195,7 +195,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psCategory) {
                     $json['psIdCategory'] = $psCategory->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->l('Catégorie créée') . ' : ' . $psCategory->getName();
+                    $json['growlMessage'] = $this->module->l('Catégorie créée :') . ' ' . $psCategory->getName();
                 } else {
                     $json['psIdCategory'] = null;
                     $json['growlType'] = 'error';
