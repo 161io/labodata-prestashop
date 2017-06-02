@@ -8,7 +8,7 @@
         <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
       </div>
       <div class="col-sm-11 text-right">
-        <span class="hidden-xs">{l s='Raccourcis' mod='labodata'} : &nbsp;</span>
+        <span class="hidden-xs">{l s='Raccourcis :' mod='labodata'} &nbsp;</span>
         <a class="btn btn-default" href="{$labodata_redirect_autoconnect}" target="_blank">
           <i class="icon-user"></i><span class="hidden-xs hidden-sm"> {l s='Accéder à mon compte' mod='labodata'}</span>
         </a>
@@ -16,7 +16,7 @@
           <i class="icon-credit-card"></i> <span class="hidden-xs hidden-sm">{l s='Approvisionner mon compte' mod='labodata'}</span><span class="visible-xs-inline visible-sm-inline">{l s='Approvisionner' mod='labodata'}</span>
         </a>
         <a class="btn btn-default" href="{$labodata_redirect_autopay}">
-          <span class="hidden-xs">{l s='Crédit dispo' mod='labodata'} : </span><span id="labodata-credit">{$labodata_credit}</span><span id="labodata-currency">{$labodata_currency}</span>
+          <span class="hidden-xs">{l s='Crédit dispo :' mod='labodata'} </span><span id="labodata-credit">{$labodata_credit}</span><span id="labodata-currency">{$labodata_currency}</span>
         </a>
       </div>
     </div>
@@ -54,7 +54,7 @@
       <tr>
         <th class="text-center"><i class="icon-camera"></i> {l s='Photo' mod='labodata'}</th>
         <th>
-          <strong>{l s='Brand' mod='labodata'}</strong> - {l s='Titre' mod='labodata'}<br/>
+          <strong>{l s='Marque' mod='labodata'}</strong> - {l s='Titre' mod='labodata'}<br/>
           <span class="text-muted">{l s='Descriptif' mod='labodata'}</span>
           <code>{l s='EAN/CIP' mod='labodata'}</code>
         </th>

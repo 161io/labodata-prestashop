@@ -116,7 +116,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         }
 
         if ($exists) {
-            return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Add') . '</a>';
+            return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Ajouter') . '</a>';
         }
 
         if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
@@ -125,7 +125,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
             $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
         }
         $link = $this->context->link->getAdminLink($this->controller_name) . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
-        return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Add') . '</a>';
+        return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->l('Ajouter') . '</a>';
     }
 
     /**

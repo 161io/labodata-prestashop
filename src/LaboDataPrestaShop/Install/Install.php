@@ -67,7 +67,7 @@ class Install
         $parentTab->active = true;
         $parentTab->name = array();
         foreach ($languages as $lang) {
-            $parentTab->name[$lang['id_lang']] = $module->l('LaboData');
+            $parentTab->name[$lang['id_lang']] = 'LaboData';
         }
         $parentTab->class_name = 'LaboDataCatalogAdmin';
         $parentTab->id_parent = $catalogIdParent;
@@ -80,7 +80,7 @@ class Install
             $parentTab->active = true;
             $parentTab->name = array();
             foreach ($languages as $lang) {
-                $parentTab->name[$lang['id_lang']] = $module->l('LaboData');
+                $parentTab->name[$lang['id_lang']] = 'LaboData';
             }
             $parentTab->class_name = 'LaboDataCatalogAdmin';
             $parentTab->id_parent = 0;

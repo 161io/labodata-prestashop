@@ -42,7 +42,7 @@
           <label><input type="checkbox" name="modal-ignore">{l s='Ne plus afficher cette fenêtre pendant cette session' mod='labodata'}</label>
         </div>
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Cancel' mod='labodata'}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Annuler' mod='labodata'}</button>
         <button type="button" class="btn btn-success" data-submit="modal"><i class="icon-download"></i>
           <span data-bought="0">{l s='Acquérir' mod='labodata'} (<span data-val="price">X&euro;</span>)</span>
           <span data-bought="1">{l s='Importer (Gratuit)' mod='labodata'}</span>
@@ -85,7 +85,7 @@
         <p class="text-center text-danger"><strong>{l s='Durant l\'importation, ne cliquez sur aucun bouton pour ne pas interrompre le traitement.' mod='labodata'}</strong></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Cancel' mod='labodata'}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Annuler' mod='labodata'}</button>
         <button type="button" class="btn btn-success" data-submit="modal"><i class="icon-download"></i>
           <span data-bought="0">{l s='Acquérir' mod='labodata'} (<span data-val="credit">X&euro;</span>)</span>
           <span data-bought="1">{l s='Importer (Gratuit)' mod='labodata'}</span>
@@ -109,8 +109,8 @@
         {l s='Souhaitez-vous approvisionner votre compte ?' mod='labodata'}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='No' mod='labodata'}</button>
-        <button type="button" class="btn btn-success" data-submit="modal">{l s='Yes' mod='labodata'}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Non' mod='labodata'}</button>
+        <button type="button" class="btn btn-success" data-submit="modal">{l s='Oui' mod='labodata'}</button>
       </div>
     </div>
   </div>

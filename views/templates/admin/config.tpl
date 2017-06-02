@@ -12,14 +12,14 @@
     <div class="panel-body">
       <div class="form-wrapper">
         <div class="form-group">
-          <label for="config-input-email" class="control-label col-lg-3">{l s='Adresse e-mail' mod='labodata'}</label>
+            <label for="config-input-email" class="control-label col-lg-3">{l s='Adresse e-mail' mod='labodata'}<sup class="text-danger">*</sup></label>
           <div class="col-lg-9">
             <input type="email" id="config-input-email" name="MOD_LABODATA_EMAIL" value="{$MOD_LABODATA_EMAIL|escape:'html':'UTF-8'}" autocomplete="off" required="required" placeholder="@" class="form-control"/>
             <span id="emailMessage"> </span>
           </div>
         </div>
         <div class="form-group">
-          <label for="config-input-key" class="control-label col-lg-3">{l s='Clé API' mod='labodata'}</label>
+          <label for="config-input-key" class="control-label col-lg-3">{l s='Clé API' mod='labodata'}<sup class="text-danger">*</sup></label>
           <div class="col-lg-9">
             <input type="text" id="config-input-key" name="MOD_LABODATA_KEY" value="{$MOD_LABODATA_KEY|escape:'html':'UTF-8'}" autocomplete="off" required="required" class="form-control"/>
             <span id="keyMessage"> </span>
@@ -32,7 +32,7 @@
     </div>
     <div class="panel-footer">
       <button type="submit" name="submit_{$module_name}" class="btn btn-default pull-right"{if !$account} disabled="disabled"{/if}>
-        <i class="process-icon-save"></i> {l s='Save' mod='labodata'}
+        <i class="process-icon-save"></i> {l s='Enregistrer' mod='labodata'}
       </button>
 
       {if !$account}
@@ -40,13 +40,13 @@
       {/if}
       {if $account.credit}
         <p class="text-success">
-          {l s='Vous êtes connecté en tant que' mod='labodata'} :<br/>
+          {l s='Vous êtes connecté en tant que :' mod='labodata'}<br/>
           {$account.firstname|escape:'html':'UTF-8'} {$account.lastname|escape:'html':'UTF-8'} <strong>{$account.society|escape:'html':'UTF-8'}</strong>
         </p>
       {/if}
       {if $account.error}
         <p class="text-danger">
-          {l s='Vous n\'êtes pas connecté' mod='labodata'} !<br/>
+          {l s='Vous n\'êtes pas connecté!' mod='labodata'}<br/>
           {$account.error.message} <strong>{$account.error.code}</strong>
         </p>
       {/if}
