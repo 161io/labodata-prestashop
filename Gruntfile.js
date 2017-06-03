@@ -17,8 +17,9 @@ module.exports = function(grunt) {
             expand: true,
             src: [
               '**',
+              'src/.htaccess',
               '!bower_components/**', '!node_modules/**',
-              '!composer.lock', '!config_*.xml', '!labodata.zip'
+              '!composer.lock', '!config_*.xml', '!labodata.zip', '!package-lock.json'
             ],
             dest: 'labodata/'
           }
