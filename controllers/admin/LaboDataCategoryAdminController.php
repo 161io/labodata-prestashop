@@ -172,11 +172,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psManufacturer) {
                     $json['psIdManufacturer'] = $psManufacturer->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Marque creee') . ' ' . $psManufacturer->name;
+                    $json['growlMessage'] = $this->module->lc('Marque créée :') . ' ' . $psManufacturer->name;
                 } else {
                     $json['psIdManufacturer'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la marque');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la marque');
                 }
                 break;
             case 'addFeatureValue' :
@@ -185,11 +185,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psFeatureValue) {
                     $json['psIdFeatureValue'] = $psFeatureValue->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Caracteristique (valeur)') . ' ' . $psFeatureValue->value[$this->context->language->id];
+                    $json['growlMessage'] = $this->module->lc('Caractéristique (valeur) :') . ' ' . $psFeatureValue->value[$this->context->language->id];
                 } else {
                     $json['psIdFeatureValue'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la caracteristique (valeur)');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la caractéristique (valeur)');
                 }
                 break;
             case 'addCategory' :
@@ -198,11 +198,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 if ($psCategory) {
                     $json['psIdCategory'] = $psCategory->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Categorie creee') . ' ' . $psCategory->getName();
+                    $json['growlMessage'] = $this->module->lc('Catégorie créée :') . ' ' . $psCategory->getName();
                 } else {
                     $json['psIdCategory'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la creation de la categorie');
+                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la catégorie');
                 }
                 break;
         }

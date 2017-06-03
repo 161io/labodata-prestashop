@@ -3,3 +3,4 @@ node_modules
 composer.lock
 config_*.xml
 labodata.zip
+package-lock.json

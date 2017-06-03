@@ -60,13 +60,13 @@
         </th>
         <th style="width:140px">
           <div class="btn-group" id="labodata-import-group">
-            <button class="btn btn-primary" title="{l s='Importer toutes les photos'}" data-type="image">
+            <button class="btn btn-primary" title="{l s='Importer toutes les photos' mod='labodata'}" data-type="image">
               <i class="icon-camera"></i>
             </button>
-            <button class="btn btn-primary" title="{l s='Importer tous les descriptifs'}" data-type="content">
+            <button class="btn btn-primary" title="{l s='Importer tous les descriptifs' mod='labodata'}" data-type="content">
               <i class="icon-file-text"></i>
             </button>
-            <button class="btn btn-primary" title="{l s='Importer l\'ensemble des photos et des descriptifs'}" data-type="full">
+            <button class="btn btn-primary" title="{l s='Importer l\'ensemble des photos et des descriptifs' mod='labodata'}" data-type="full">
               <i class="icon-camera"></i> + <i class="icon-file-text"></i>
             </button>
           </div>
@@ -85,21 +85,21 @@
         <td>
           <div class="btn-group">
             <button class="btn {if $product.purchase.image}btn-success{else}btn-default{/if}"
-                    title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos'}{else}{l s='Acquérir les photos'} ({$labodata_cost.image}{$labodata_currency}){/if}"
+                    title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos' mod='labodata'}{else}{l s='Acquérir les photos' mod='labodata'} ({$labodata_cost.image}{$labodata_currency}){/if}"
                     data-type="image"
                     data-credit="{if $product.purchase.image}0{else}{$labodata_cost.image}{/if}"
                     data-init-credit="{$labodata_cost.image}">
               <i class="icon-camera"></i>
             </button>
             <button class="btn {if $product.purchase.content}btn-success{else}btn-default{/if}"
-                    title="{if $product.purchase.content}{l s='Vous avez déjà acquis ces descriptifs'}{else}{l s='Acquérir les descriptifs'} ({$labodata_cost.content}{$labodata_currency}){/if}"
+                    title="{if $product.purchase.content}{l s='Vous avez déjà acquis ces descriptifs' mod='labodata'}{else}{l s='Acquérir les descriptifs' mod='labodata'} ({$labodata_cost.content}{$labodata_currency}){/if}"
                     data-type="content"
                     data-credit="{if $product.purchase.content}0{else}{$labodata_cost.content}{/if}"
                     data-init-credit="{$labodata_cost.content}">
               <i class="icon-file-text"></i>
             </button>
             <button class="btn {if $product._purchaseFull}btn-success{else}btn-default{/if}"
-                    title="{if $product._purchaseFull}{l s='Vous avez déjà acquis cette fiche'}{else}{l s='Acquérir les photos et les descriptifs'} ({$product._purchaseFullCredit}{$labodata_currency}){/if}"
+                    title="{if $product._purchaseFull}{l s='Vous avez déjà acquis cette fiche' mod='labodata'}{else}{l s='Acquérir les photos et les descriptifs' mod='labodata'} ({$product._purchaseFullCredit}{$labodata_currency}){/if}"
                     data-type="full"
                     data-credit="{if $product._purchaseFull}0{else}{$product._purchaseFullCredit}{/if}"
                     data-init-credit="{$labodata_cost.full}">

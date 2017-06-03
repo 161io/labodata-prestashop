@@ -117,25 +117,26 @@ class LaboData extends Module
      */
     public function lc($string)
     {
-        switch ($string) {
-            case 'Catalogue LaboData' : return $this->l('Catalogue LaboData');
-            case 'Marques/Caracteristiques' : return $this->l('Marques/Caractéristiques');
-            case 'Configuration' : return $this->l('Configuration');
-            // LaboDataCatalogAdminController
-            // LaboDataCategoryAdminController
-            case 'id' : return $this->l('id');
-            case 'Titre' : return $this->l('Titre');
-            case 'Marque creee' : return $this->l('Marque créée :');
-            case 'Erreur lors de la creation de la marque' : return $this->l('Erreur lors de la création de la marque');
-            case 'Caracteristique (valeur)' : return $this->l('Caractéristique (valeur) :');
-            case 'Erreur lors de la creation de la caracteristique (valeur)' : return $this->l('Erreur lors de la création de la caractéristique (valeur)');
-            case 'Categorie creee' : return $this->l('Catégorie créée :');
-            case 'Erreur lors de la creation de la categorie' : return $this->l('Erreur lors de la création de la catégorie');
-            case 'Ajouter' : return $this->l('Ajouter');
-            // LaboDataConfigAdminController
-            case 'Vos parametres ont ete enregistres' : return $this->l('Vos paramètres ont été enregistrés.');
-            case 'Une erreur s\'est produite lors de l\'enregistrement de vos parametres' : return $this->l('Une erreur s\'est produite lors de l\'enregistrement de vos paramètres.');
-        }
-        return $string;
+        // Forcer la detection des traductions
+        return $this->l($string);
+
+        //   Controllers
+        // $this->l('Catalogue LaboData')
+        // $this->l('Marques/Caractéristiques')
+        // $this->l('Configuration')
+        //   LaboDataCatalogAdminController
+        //   LaboDataCategoryAdminController
+        // $this->l('id')
+        // $this->l('Titre')
+        // $this->l('Marque créée :')
+        // $this->l('Erreur lors de la création de la marque')
+        // $this->l('Caractéristique (valeur) :')
+        // $this->l('Erreur lors de la création de la caractéristique (valeur)')
+        // $this->l('Catégorie créée :')
+        // $this->l('Erreur lors de la création de la catégorie')
+        // $this->l('Ajouter')
+        //   LaboDataConfigAdminController
+        // $this->l('Vos paramètres ont été enregistrés.')
+        // $this->l('Une erreur s\'est produite lors de l\'enregistrement de vos paramètres.')
     }
 }

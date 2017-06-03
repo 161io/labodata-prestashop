@@ -6,6 +6,7 @@
 namespace LaboDataPrestaShop\Install;
 
 use Configuration;
+use Context;
 use Db;
 use LaboData;
 use LaboDataPrestaShop\Api\Category;
@@ -48,8 +49,10 @@ class Install
     {
         $module = $this->getModule();
 
+        //$languages = array( Context::getContext()->language->id );
+        $languages = Language::getLanguages(true, false, true);
+
         // "Catalogue" >> "LaboData"
-        $languages = Language::getLanguages(true);
         $catalogIdParent = null;
         if ($module->getKernel()) {
             $tabServiceId = 'prestashop.core.admin.tab.repository';
@@ -66,8 +69,8 @@ class Install
         $parentTab = new Tab();
         $parentTab->active = true;
         $parentTab->name = array();
-        foreach ($languages as $lang) {
-            $parentTab->name[$lang['id_lang']] = 'LaboData';
+        foreach ($languages as $id_lang) {
+            $parentTab->name[$id_lang] = $module->displayName;
         }
         $parentTab->class_name = 'LaboDataCatalogAdmin';
         $parentTab->id_parent = $catalogIdParent;
@@ -79,8 +82,8 @@ class Install
             $parentTab = new Tab();
             $parentTab->active = true;
             $parentTab->name = array();
-            foreach ($languages as $lang) {
-                $parentTab->name[$lang['id_lang']] = 'LaboData';
+            foreach ($languages as $id_lang) {
+                $parentTab->name[$id_lang] = $module->displayName;
             }
             $parentTab->class_name = 'LaboDataCatalogAdmin';
             $parentTab->id_parent = 0;
@@ -92,8 +95,8 @@ class Install
         $catalogTab = new Tab();
         $catalogTab->active = true;
         $catalogTab->name = array();
-        foreach ($languages as $lang) {
-            $catalogTab->name[$lang['id_lang']] = $module->lc('Catalogue LaboData');
+        foreach ($languages as $id_lang) {
+            $catalogTab->name[$id_lang] = $module->lc('Catalogue LaboData');
         }
         $catalogTab->class_name = 'LaboDataCatalogAdmin';
         $catalogTab->id_parent = $parentTab->id;
@@ -104,8 +107,8 @@ class Install
         $categoryTab = new Tab();
         $categoryTab->active = true;
         $categoryTab->name = array();
-        foreach ($languages as $lang) {
-            $categoryTab->name[$lang['id_lang']] = $module->lc('Marques/Caracteristiques');
+        foreach ($languages as $id_lang) {
+            $categoryTab->name[$id_lang] = $module->lc('Marques/Caractéristiques');
         }
         $categoryTab->class_name = 'LaboDataCategoryAdmin';
         $categoryTab->id_parent = $parentTab->id;
@@ -116,8 +119,8 @@ class Install
         $configTab = new Tab();
         $configTab->active = true;
         $configTab->name = array();
-        foreach ($languages as $lang) {
-            $configTab->name[$lang['id_lang']] = $module->lc('Configuration');
+        foreach ($languages as $id_lang) {
+            $configTab->name[$id_lang] = $module->lc('Configuration');
         }
         $configTab->class_name = 'LaboDataConfigAdmin';
         $configTab->id_parent = $parentTab->id;

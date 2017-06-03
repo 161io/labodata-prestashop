@@ -46,7 +46,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         );
         $this->page_header_toolbar_btn['category'] = array(
             'href' => $this->context->link->getAdminLink('LaboDataCategoryAdmin'),
-            'desc' => $this->module->lc('Marques/Caracteristiques'),
+            'desc' => $this->module->lc('Marques/Caractéristiques'),
             'icon' => 'process-icon-new',
         );
     }
@@ -82,12 +82,12 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         if (Configuration::updateValue(LaboDataQuery::CONF_EMAIL, Tools::getValue(LaboDataQuery::CONF_EMAIL)) &&
             Configuration::updateValue(LaboDataQuery::CONF_SECRET_KEY, Tools::getValue(LaboDataQuery::CONF_SECRET_KEY))
         ) {
-            $this->messageContent = $this->module->lc('Vos parametres ont ete enregistres');
+            $this->messageContent = $this->module->lc('Vos paramètres ont été enregistrés.');
             return true;
         }
 
         $this->messageError = true;
-        $this->messageContent = $this->module->lc('Une erreur s\'est produite lors de l\'enregistrement de vos parametres');
+        $this->messageContent = $this->module->lc('Une erreur s\'est produite lors de l\'enregistrement de vos paramètres.');
         return false;
     }
 }
