@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 use LaboDataPrestaShop\Api\Account;
@@ -90,7 +94,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             'form_controller' => $this->controller_name,
             'form_token'      => $this->token,
             'form_brand'      => (int) Tools::getValue('brand', 0),
-            'form_q'          => mb_substr(trim(Tools::getValue('q', '')), 0, 200),
+            'form_q'          => Tools::substr(trim(Tools::getValue('q', '')), 0, 200),
             'brands'          => LaboDataCategory::getInstance()->getBrands(),
             'products'   => $this->smartyProductsFilter($laboDataSearch->getProducts()),
             'pagination' => $laboDataSearch->getPagination(),
@@ -110,7 +114,8 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $cost = Search::getInstance()->getCostQuery();
 
         foreach ($products as &$product) {
-            $product['_purchaseFull'] = (!empty($product['purchase']['image']) && !empty($product['purchase']['content']));
+            $product['_purchaseFull'] = (!empty($product['purchase']['image'])
+                                      && !empty($product['purchase']['content']));
             $product['_purchaseFullCredit'] = '';
 
             if (!$product['_purchaseFull']) {
@@ -136,11 +141,11 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
     {
         $redirect = Tools::getValue('redirect');
         switch ($redirect) {
-            case 'autoconnect' :
+            case 'autoconnect':
                 Tools::redirect(Account::getInstance()->getAutoconnect());
                 return true;
                 // no break
-            case 'autopay' :
+            case 'autopay':
                 Tools::redirect(Account::getInstance()->getAutopay());
                 return true;
                 // no break
@@ -150,9 +155,9 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
 
     private function xhrProcess()
     {
-        $action = substr(Tools::getValue('action'), 0, 20);
+        $action = Tools::substr(Tools::getValue('action'), 0, 20);
         $id = (int) Tools::getValue('id'); // idLabodata (product)
-        $type = substr(Tools::getValue('type'), 0, 20);
+        $type = Tools::substr(Tools::getValue('type'), 0, 20);
         $psProduct = null;
 
         $json = array(
@@ -175,13 +180,13 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
 
 
         switch ($action) {
-            case self::ACTION_ADD : // Ajout force
+            case self::ACTION_ADD: // Ajout force
                 $psProduct = $laboDataPrestashop->addProduct($laboDataProduct);
                 break;
-            case self::ACTION_EDIT : // Modif. ou ajout si absent
+            case self::ACTION_EDIT: // Modif. ou ajout si absent
                 $psProduct = $laboDataPrestashop->editProduct($laboDataProduct);
                 break;
-            case self::ACTION_BUY : // Achat simple
+            case self::ACTION_BUY: // Achat simple
                 $json['success'] = (bool) $laboDataProduct->getId();
                 break;
         }

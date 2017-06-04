@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Api;
@@ -167,7 +171,9 @@ class Category extends Query
             );
         }
         foreach ($categories as $type) {
-            if (empty($type['items'])) { continue; }
+            if (empty($type['items'])) {
+                continue;
+            }
             unset($type['items']);
 
             $types[] = $type;
@@ -194,7 +200,9 @@ class Category extends Query
             $names[] = self::TYPE_BRAND;
         }
         foreach ($categories as $type) {
-            if (empty($type['items'])) { continue; }
+            if (empty($type['items'])) {
+                continue;
+            }
 
             $names[] = $type['name'];
         }

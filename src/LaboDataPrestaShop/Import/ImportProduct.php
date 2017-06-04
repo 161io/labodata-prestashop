@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Import;
@@ -42,12 +46,12 @@ class ImportProduct extends AbstractImport
         $product->id_shop_default = $product->shop;
         $product->visibility = 'both';
         $product->condition = 'new';
-        $this->_hydrateProduct($product, $laboDataProduct);
+        $this->hydrateProduct($product, $laboDataProduct);
         $product->save();
 
-        $prestashopIds = $this->_convertCategoriesLaboDataToPrestashop($laboDataProduct);
+        $prestashopIds = $this->convertCategoriesLaboDataToPrestashop($laboDataProduct);
         if ('feature' == LaboData::MODE_CATEGORY) {
-            $this->_product_addToFeatureValues($product, $prestashopIds);
+            $this->addToFeatureValues($product, $prestashopIds);
         } else {
             $product->addToCategories($prestashopIds);
         }
@@ -60,7 +64,7 @@ class ImportProduct extends AbstractImport
             $product->addFeaturesToDB($idFeature, $idFeatureValue);
         }
 
-        $this->_addImage($product, $laboDataProduct);
+        $this->addImage($product, $laboDataProduct);
 
         return $product;
     }
@@ -74,15 +78,15 @@ class ImportProduct extends AbstractImport
         if (!$laboDataProduct->getId()) {
             return null;
         }
-        $product = $this->_searchProduct($laboDataProduct);
+        $product = $this->searchProduct($laboDataProduct);
         if (!$product) {
             return $this->addProduct($laboDataProduct);
         }
 
-        $this->_hydrateProduct($product, $laboDataProduct);
+        $this->hydrateProduct($product, $laboDataProduct);
         $product->save();
 
-        $this->_addImage($product, $laboDataProduct);
+        $this->addImage($product, $laboDataProduct);
 
         return $product;
     }
@@ -91,10 +95,12 @@ class ImportProduct extends AbstractImport
      * @param LaboDataProduct $laboDataProduct
      * @return Product|null
      */
-    protected function _searchProduct($laboDataProduct)
+    protected function searchProduct($laboDataProduct)
     {
         $products = Product::searchByName($this->getLang(), $laboDataProduct->getEan13());
-        if (!$products) { return null; }
+        if (!$products) {
+            return null;
+        }
         foreach ($products as $product) {
             $productObj = new Product((int) $product['id_product'], false, $this->getLang());
             if ($productObj->id) {
@@ -109,10 +115,10 @@ class ImportProduct extends AbstractImport
      * @param LaboDataProduct $laboDataProduct
      * @return self
      */
-    protected function _hydrateProduct($product, $laboDataProduct)
+    protected function hydrateProduct($product, $laboDataProduct)
     {
         $smarty = Context::getContext()->smarty;
-        $tplDir = __DIR__ . '/../../../views/templates/import/';
+        $tplDir = dirname(__FILE__) . '/../../../views/templates/admin/import-';
 
         // Nom du produit
         if (empty($product->name[$this->getLang()])) {
@@ -124,7 +130,8 @@ class ImportProduct extends AbstractImport
 
         // Marque
         if (empty($product->id_manufacturer)) {
-            $idManufacturer = ImportManufacturer::getInstance()->getIdManufacturerByIdLabodata($laboDataProduct->getBrandId());
+            $idManufacturer = ImportManufacturer::getInstance()
+                                    ->getIdManufacturerByIdLabodata($laboDataProduct->getBrandId());
             if (!$idManufacturer) {
                 $idManufacturer = Manufacturer::getIdByName($laboDataProduct->getBrandTitle($this->getLangCode()));
             }
@@ -140,7 +147,9 @@ class ImportProduct extends AbstractImport
             $product->ean13 = $laboDataProduct->getEan13();
         }
         if (empty($product->link_rewrite[$this->getLang()])) {
-            $product->link_rewrite = array($this->getLang() => Tools::link_rewrite($laboDataProduct->getTitle($this->getLangCode())));
+            $product->link_rewrite = array(
+                $this->getLang() => Tools::link_rewrite($laboDataProduct->getTitle($this->getLangCode()))
+            );
         }
         if (empty($product->description_short) && $laboDataProduct->getContent($this->getLangCode())) {
             $smarty->assign(array(
@@ -170,7 +179,7 @@ class ImportProduct extends AbstractImport
      * @param LaboDataProduct $laboDataProduct
      * @return int[]
      */
-    protected function _convertCategoriesLaboDataToPrestashop($laboDataProduct)
+    protected function convertCategoriesLaboDataToPrestashop($laboDataProduct)
     {
         $laboDataCategory = $laboDataProduct->getCategoryIds();
         if (!$laboDataCategory) {
@@ -184,7 +193,9 @@ class ImportProduct extends AbstractImport
             } else { // 'category'
                 $prestashopId = ImportCategory::getInstance()->getIdCategoryByIdLabodata($idLabodata);
             }
-            if (!$prestashopId) { continue; }
+            if (!$prestashopId) {
+                continue;
+            }
             $prestashopIds[] = $prestashopId;
         }
 
@@ -196,15 +207,19 @@ class ImportProduct extends AbstractImport
      * @param int[] $featureValueIds
      * @return bool
      */
-    protected function _product_addToFeatureValues($product, $featureValueIds)
+    protected function addToFeatureValues($product, $featureValueIds)
     {
-        if (empty($featureValueIds)) { return false; }
+        if (empty($featureValueIds)) {
+            return false;
+        }
 
         $featureValueIds = array_map('intval', $featureValueIds);
         $sql  = 'SELECT `id_feature_value`, `id_feature` FROM `'._DB_PREFIX_.'feature_value` ';
         $sql .= 'WHERE `id_feature_value` IN (' . implode(', ', $featureValueIds) . ')';
         $featureValues = Db::getInstance()->executeS($sql);
-        if (!$featureValues) { return false; }
+        if (!$featureValues) {
+            return false;
+        }
 
         foreach ($featureValues as $featureValue) {
             Db::getInstance()->insert('feature_product', array(
@@ -222,7 +237,7 @@ class ImportProduct extends AbstractImport
      * @param LaboDataProduct $laboDataProduct
      * @return self
      */
-    protected function _addImage($product, $laboDataProduct)
+    protected function addImage($product, $laboDataProduct)
     {
         $imageUrl = $laboDataProduct->getImage();
         if (!$imageUrl) {
@@ -241,8 +256,7 @@ class ImportProduct extends AbstractImport
             ($image->validateFieldsLang(false, true)) === true && $image->add()
         ) {
             $image->associateTo($shops);
-            if (!CopyPaste::copyImg($product->id, $image->id, $imageUrl, 'products', true))
-            {
+            if (!CopyPaste::copyImg($product->id, $image->id, $imageUrl, 'products', true)) {
                 $image->delete();
             }
         }

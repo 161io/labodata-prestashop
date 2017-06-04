@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Api;
@@ -93,12 +97,20 @@ class Search extends Query
         $last = $result['page_length'];
         $prev = $result['page_number'] - 1;
         $next = $result['page_number'] + 1;
-        if ($prev < $first) { $prev = $first; }
-        if ($next > $last) {$next = $last; }
+        if ($prev < $first) {
+            $prev = $first;
+        }
+        if ($next > $last) {
+            $next = $last;
+        }
         $paginationStart = $result['page_number'] - $pageMax;
         $paginationEnd = $result['page_number'] + $pageMax;
-        if ($paginationStart < $first) { $paginationStart = $first; }
-        if ($paginationEnd > $last ) { $paginationEnd = $last; }
+        if ($paginationStart < $first) {
+            $paginationStart = $first;
+        }
+        if ($paginationEnd > $last) {
+            $paginationEnd = $last;
+        }
 
 
         $pagination = array();
@@ -138,7 +150,7 @@ class Search extends Query
     {
         $result = $this->getLastResult();
         if (isset($result['cost_query'])) {
-            $array = array_map(function($str) {
+            $array = array_map(function ($str) {
                 return str_replace('.', ',', $str);
             }, $result['cost_query']);
             return $array;

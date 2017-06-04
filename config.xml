@@ -2,7 +2,7 @@
 <module>
 	<name>labodata</name>
 	<displayName><![CDATA[LaboData]]></displayName>
-	<version><![CDATA[0.3.2]]></version>
+	<version><![CDATA[0.3.3]]></version>
 	<description><![CDATA[Constituez le catalogue de votre pharmacie ou parapharmacie en ligne avec LaboData avec +12000 fiches produits avec photos et descriptifs. Menu : "Catalogue" >> "LaboData"]]></description>
 	<author><![CDATA[161 SARL]]></author>
 	<tab><![CDATA[others]]></tab>

@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Import;
@@ -45,7 +49,8 @@ class ImportCategory extends AbstractImport
     {
         if (null === $this->categoryLabodataIds) {
             // Nettoyage
-            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'category`);';
+            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` ';
+            $sql .= 'WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'category`)';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();
@@ -124,7 +129,12 @@ class ImportCategory extends AbstractImport
      */
     public function addCategory($laboDataCategory)
     {
-        if (!isset($laboDataCategory['id'], $laboDataCategory['type'], $laboDataCategory['name'], $laboDataCategory['title_fr'])) {
+        if (!isset(
+            $laboDataCategory['id'],
+            $laboDataCategory['type'],
+            $laboDataCategory['name'],
+            $laboDataCategory['title_fr']
+        )) {
             return null;
         }
 
@@ -146,7 +156,7 @@ class ImportCategory extends AbstractImport
         $category->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
         $category->add();
 
-        $this->_addCategoryLabodata($category, $laboDataCategory);
+        $this->addCategoryLabodata($category, $laboDataCategory);
 
         return $category;
     }
@@ -158,7 +168,7 @@ class ImportCategory extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function _addCategoryLabodata($category, $laboDataCategory)
+    protected function addCategoryLabodata($category, $laboDataCategory)
     {
         return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_CATEGORY, array(
             $this->idColumn       => (int) $category->id,

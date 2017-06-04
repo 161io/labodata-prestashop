@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Api;
@@ -171,7 +175,9 @@ class Product extends Query
     public function getBrandId()
     {
         $brand = $this->getProductKey('brand');
-        if ($brand) { return $brand['id']; }
+        if ($brand) {
+            return $brand['id'];
+        }
         return null;
     }
 
@@ -181,7 +187,9 @@ class Product extends Query
     public function getBrandName()
     {
         $brand = $this->getProductKey('brand');
-        if ($brand) { return $brand['name']; }
+        if ($brand) {
+            return $brand['name'];
+        }
         return null;
     }
 
@@ -192,7 +200,9 @@ class Product extends Query
     public function getBrandTitle($lang = 'fr')
     {
         $brand = $this->getProductKey('brand');
-        if ($brand) { return $brand['title_'.$this->keyLang($lang)]; }
+        if ($brand) {
+            return $brand['title_'.$this->keyLang($lang)];
+        }
         return null;
     }
 

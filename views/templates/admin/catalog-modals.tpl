@@ -1,4 +1,10 @@
-{* Copyright (c) 161 SARL, https://161.io *}
+{*
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
+ *}
 
 <div class="modal fade" id="modal-labodata-import">
   <div class="modal-dialog modal-lg">

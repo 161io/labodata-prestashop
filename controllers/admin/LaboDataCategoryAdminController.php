@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
@@ -119,7 +123,8 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         }
 
         if ($exists) {
-            return '<a href="#" disabled="disabled">' ."\n". '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
+            return '<a href="#" disabled="disabled">' ."\n".
+                   '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
         }
 
         if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
@@ -127,8 +132,10 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         } else {
             $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
         }
-        $link = $this->context->link->getAdminLink($this->controller_name) . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
-        return '<a href="#" data-action="' . $link . '">' ."\n". '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
+        $link = $this->context->link->getAdminLink($this->controller_name)
+              . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
+        return '<a href="#" data-action="' . $link . '">' ."\n".
+               '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
     }
 
     /**
@@ -151,12 +158,15 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     public function renderList()
     {
         $helper = $this->initList();
-        return $helper->generateList(LaboDataCategory::getInstance()->getCategoriesByName($this->typeSelected), $this->fields_list);
+        return $helper->generateList(
+            LaboDataCategory::getInstance()->getCategoriesByName($this->typeSelected),
+            $this->fields_list
+        );
     }
 
     private function xhrProcess()
     {
-        $action = substr(Tools::getValue('action'), 0, 20);
+        $action = Tools::substr(Tools::getValue('action'), 0, 20);
         $id = (int) Tools::getValue('id'); // idLabodata (category)
 
         $json = array(
@@ -166,7 +176,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         );
 
         switch ($action) {
-            case 'addManufacturer' :
+            case 'addManufacturer':
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
                 $psManufacturer = ImportManufacturer::getInstance()->addManufacturer($json['ldCategory']);
                 if ($psManufacturer) {
@@ -179,20 +189,23 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                     $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la marque');
                 }
                 break;
-            case 'addFeatureValue' :
+            case 'addFeatureValue':
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
                 $psFeatureValue = ImportFeature::getInstance()->addFeatureValue($json['ldCategory']);
                 if ($psFeatureValue) {
                     $json['psIdFeatureValue'] = $psFeatureValue->id;
                     $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Caractéristique (valeur) :') . ' ' . $psFeatureValue->value[$this->context->language->id];
+                    $json['growlMessage'] = $this->module->lc('Caractéristique (valeur) :')
+                                            . ' ' . $psFeatureValue->value[$this->context->language->id];
                 } else {
                     $json['psIdFeatureValue'] = null;
                     $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la caractéristique (valeur)');
+                    $json['growlMessage'] = $this->module->lc(
+                        'Erreur lors de la création de la caractéristique (valeur)'
+                    );
                 }
                 break;
-            case 'addCategory' :
+            case 'addCategory':
                 $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
                 $psCategory = ImportCategory::getInstance()->addCategory($json['ldCategory']);
                 if ($psCategory) {

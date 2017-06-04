@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Install;
@@ -46,7 +50,9 @@ class Uninstall
     public function tab()
     {
         $tabs = Tab::getCollectionFromModule($this->getModule()->name);
-        if (empty($tabs)) { return true; }
+        if (empty($tabs)) {
+            return true;
+        }
         foreach ($tabs as $tab) {
             $tab->delete();
         }

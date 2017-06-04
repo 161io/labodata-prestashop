@@ -2,8 +2,9 @@
  * JavaScript Cookie v2.1.4
  * https://github.com/js-cookie/js-cookie
  *
- * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
- * Released under the MIT license
+ * @author 2006, 2015 Klaus Hartl & Fagner Brack
+ * @copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * @license Released under the MIT license
  */
 ;(function (factory) {
 	var registeredInModuleLoader = false;

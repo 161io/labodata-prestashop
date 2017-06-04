@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 if (!defined('_PS_VERSION_')) {
@@ -11,7 +15,8 @@ if (!defined('_PS_VERSION_')) {
  * @param LaboData $module
  * @return bool
  */
-function upgrade_module_0_3_0($module) {
+function upgrade_module_0_3_0($module)
+{
     $install = new LaboDataPrestaShop\Install\Install($module);
     $uninstall = new LaboDataPrestaShop\Install\Uninstall($module);
 

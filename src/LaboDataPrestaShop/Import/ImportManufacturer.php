@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Import;
@@ -39,7 +43,8 @@ class ImportManufacturer extends AbstractImport
     {
         if (null === $this->manufacturerLabodataIds) {
             // Nettoyage
-            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'manufacturer`);';
+            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` ';
+            $sql .= 'WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'manufacturer`)';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();
@@ -72,7 +77,12 @@ class ImportManufacturer extends AbstractImport
      */
     public function addManufacturer($laboDataCategory)
     {
-        if (!isset($laboDataCategory['id'], $laboDataCategory['type'], $laboDataCategory['name'], $laboDataCategory['title_fr'])) {
+        if (!isset(
+            $laboDataCategory['id'],
+            $laboDataCategory['type'],
+            $laboDataCategory['name'],
+            $laboDataCategory['title_fr']
+        )) {
             return null;
         }
 
@@ -87,7 +97,7 @@ class ImportManufacturer extends AbstractImport
         $manufacturer->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
         $manufacturer->add();
 
-        $this->_addManufacturerLabodata($manufacturer, $laboDataCategory);
+        $this->addManufacturerLabodata($manufacturer, $laboDataCategory);
 
         return $manufacturer;
     }
@@ -99,7 +109,7 @@ class ImportManufacturer extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function _addManufacturerLabodata($manufacturer, $laboDataCategory)
+    protected function addManufacturerLabodata($manufacturer, $laboDataCategory)
     {
         return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_MANUFACTURER, array(
             $this->idColumn       => (int) $manufacturer->id,

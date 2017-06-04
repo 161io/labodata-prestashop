@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * @copyright (c) 161 SARL, https://161.io
  */
 
 module.exports = function(grunt) {
@@ -17,9 +17,9 @@ module.exports = function(grunt) {
             expand: true,
             src: [
               '**',
-              'src/.htaccess',
+              //'src/.htaccess',
               '!bower_components/**', '!node_modules/**',
-              '!composer.lock', '!config_*.xml', '!labodata.zip', '!package-lock.json'
+              '!*.js*', '!*.lock', '!config_*.xml', '!labodata.zip'
             ],
             dest: 'labodata/'
           }

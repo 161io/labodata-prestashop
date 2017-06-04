@@ -1,4 +1,10 @@
-{* Copyright (c) 161 SARL, https://161.io *}
+{*
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
+ *}
 
 <div class="panel">
   <div class="panel-heading"><i class="icon-search"></i> {l s='Effectuer une cherche dans LaboData' mod='labodata'}</div>
@@ -26,7 +32,7 @@
         <select name="brand">
           <option value="">- {l s='Sélectionner une marque' mod='labodata'} -</option>
             {foreach $brands as $brand}
-              <option value="{$brand.id}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title_fr} [{$brand.length}]</option>
+              <option value="{$brand.id}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title_fr|escape:'html':'UTF-8'} [{$brand.length}]</option>
             {/foreach}
         </select>
       </div>
@@ -78,9 +84,9 @@
       <tr data-product="{$product.id}">
         <td><img src="{$product.image}" alt="labodata" class="img-responsive center-block"/></td>
         <td>
-          <strong>{$product.brand.title_fr}</strong> - <span data-prod-title="">{$product.title_fr}</span><br/>
-          <span class="text-muted">{$product.content_fr}</span><br/>
-          <code>{$product.code}</code>
+          <strong>{$product.brand.title_fr|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title_fr|escape:'html':'UTF-8'}</span><br/>
+          <span class="text-muted">{$product.content_fr|escape:'html':'UTF-8'}</span><br/>
+          <code>{$product.code|escape:'html':'UTF-8'}</code>
         </td>
         <td>
           <div class="btn-group">

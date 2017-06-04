@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Api;
@@ -48,7 +52,8 @@ class Query
     public function query($urlJson, $params = array())
     {
         if (!in_array('curl', get_loaded_extensions())) {
-            echo '<p>cURL was not found <a href="http://php.net/manual/en/book.curl.php" target="_blank">http://php.net/manual/en/book.curl.php</a></p>';
+            echo '<p>cURL was not found <a href="http://php.net/manual/en/book.curl.php">'
+                . 'http://php.net/manual/en/book.curl.php</a></p>';
             exit;
         }
 

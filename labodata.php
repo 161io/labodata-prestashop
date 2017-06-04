@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 //error_reporting(E_ALL); ini_set('display_errors', '1');
@@ -8,7 +12,7 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-require __DIR__ . '/vendor/autoload.php';
+require dirname(__FILE__) . '/vendor/autoload.php';
 
 /**
  * Dev.mode: config/defines.inc.php _PS_MODE_DEV_
@@ -16,6 +20,7 @@ require __DIR__ . '/vendor/autoload.php';
  * @link http://developers.prestashop.com/module/05-CreatingAPrestaShop17Module/index.html
  * @link http://build.prestashop.com/prestashop-ui-kit/
  * @link https://www.prestasoo.com/fr/Blog/prestashop-1-6-icons-list.html
+ * @link https://validator.prestashop.com/module
  */
 class LaboData extends Module
 {
@@ -34,7 +39,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.3.2';
+        $this->version = '0.3.3';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office
@@ -61,7 +66,7 @@ class LaboData extends Module
     public function getKernel()
     {
         if (null === $this->kernel) {
-            global $kernel;
+            global $kernel; // Symfony kernel
             $this->kernel = !empty($kernel) && $kernel instanceof AppKernel ? $kernel : false;
         }
         return $this->kernel;

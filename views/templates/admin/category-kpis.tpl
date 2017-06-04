@@ -1,4 +1,11 @@
-{* Copyright (c) 161 SARL, https://161.io *}
+{*
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
+ *}
+
 
 {* TRANSLATIONS:
 {l s='Marque' mod='labodata'}

@@ -1,6 +1,10 @@
 <?php
 /**
- * Copyright (c) 161 SARL, https://161.io
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
  */
 
 namespace LaboDataPrestaShop\Import;
@@ -49,7 +53,8 @@ class ImportFeature extends AbstractImport
     {
         if (null === $this->featureValueLabodataIds) {
             // Nettoyage
-            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` WHERE `'.$this->idColumn2.'` NOT IN (SELECT `'.$this->idColumn2.'` FROM `'._DB_PREFIX_.'feature_value`);';
+            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` ';
+            $sql .= 'WHERE `'.$this->idColumn2.'` NOT IN (SELECT `'.$this->idColumn2.'` FROM `'._DB_PREFIX_.'feature_value`)';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();
@@ -108,7 +113,8 @@ class ImportFeature extends AbstractImport
         $sql .= 'WHERE `value` = \''.pSQL($name).'\' ';
         if ($idFeature) {
             $sql .= 'AND `id_feature_value` IN ( ';
-            $sql .= 'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` WHERE `id_feature` = \''.$idFeature.'\' ';
+            $sql .= 'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
+            $sql .= 'WHERE `id_feature` = \''.$idFeature.'\' ';
             $sql .= ') ';
         }
         $sql .= 'GROUP BY `id_feature_value`';
@@ -167,7 +173,12 @@ class ImportFeature extends AbstractImport
      */
     public function addFeatureValue($laboDataCategory)
     {
-        if (!isset($laboDataCategory['id'], $laboDataCategory['type'], $laboDataCategory['name'], $laboDataCategory['title_fr'])) {
+        if (!isset(
+            $laboDataCategory['id'],
+            $laboDataCategory['type'],
+            $laboDataCategory['name'],
+            $laboDataCategory['title_fr']
+        )) {
             return null;
         }
 
@@ -184,7 +195,7 @@ class ImportFeature extends AbstractImport
         $featureValue->value = CopyPaste::createMultiLangField($title);
         $featureValue->add();
 
-        $this->_addFeatureValueLabodata($featureValue, $laboDataCategory);
+        $this->addFeatureValueLabodata($featureValue, $laboDataCategory);
 
         return $featureValue;
     }
@@ -196,7 +207,7 @@ class ImportFeature extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function _addFeatureValueLabodata($featureValue, $laboDataCategory)
+    protected function addFeatureValueLabodata($featureValue, $laboDataCategory)
     {
         return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_FEATURE_VALUE, array(
             $this->idColumn2      => (int) $featureValue->id,
