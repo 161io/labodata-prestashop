@@ -21,7 +21,7 @@ Module https://www.labodata.fr permettant d'importer des fiches produits dans Pr
 
 ### Comment personnaliser les templates d'injection du "Résumé" et de la "Description"
 
-Modifier l'un des fichiers `views/templates/import/*.tpl`
+Modifier l'un des fichiers `views/templates/admin/import-*.tpl`
 
 
 ### Comment désinstaller "totalement" le module LaboData ?
