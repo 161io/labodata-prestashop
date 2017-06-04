@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     compress: {
       labodata: {
         options: {
-          archive: 'labodata.zip',
+          archive: 'labodata-0.3.3.zip',
         },
         files: [
           {
@@ -19,7 +19,7 @@ module.exports = function(grunt) {
               '**',
               //'src/.htaccess',
               '!bower_components/**', '!node_modules/**',
-              '!*.js*', '!*.lock', '!config_*.xml', '!labodata.zip'
+              '!*.js*', '!*.lock', '!config*.xml', '!labodata*.zip'
             ],
             dest: 'labodata/'
           }

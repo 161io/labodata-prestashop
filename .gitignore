@@ -1,6 +1,6 @@
 bower_components
 node_modules
 composer.lock
-config_*.xml
-labodata.zip
+config*.xml
+labodata*.zip
 package-lock.json
