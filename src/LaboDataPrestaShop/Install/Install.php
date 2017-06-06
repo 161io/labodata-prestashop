@@ -78,7 +78,7 @@ class Install
         foreach ($languages as $id_lang) {
             $parentTab->name[$id_lang] = $module->displayName;
         }
-        $parentTab->class_name = 'LaboDataCatalogAdmin';
+        $parentTab->class_name = 'LaboDataHomeAdmin';
         $parentTab->id_parent = $catalogIdParent;
         $parentTab->module = $module->name;
         $parentTab->add();

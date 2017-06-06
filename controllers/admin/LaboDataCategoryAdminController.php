@@ -95,6 +95,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         $helper = new HelperList();
         $helper->simple_header = true;
         $helper->actions = array('add');
+        $helper->shopLinkType = '';
         $helper->identifier = 'id';
         //$helper->title = $this->module->lc('Catégories LaboData');
         $helper->token = Tools::getAdminTokenLite($this->controller_name);
@@ -220,7 +221,9 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 break;
         }
 
-        ob_end_clean();
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
         header('Content-Type: application/json');
         $this->ajaxDie(json_encode($json));
     }

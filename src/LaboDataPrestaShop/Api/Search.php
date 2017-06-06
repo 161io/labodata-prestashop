@@ -115,12 +115,14 @@ class Search extends Query
 
         $pagination = array();
         $pagination[] = array(
-            'label' => '&laquo;',
-            'href'  => $link . '&p=' . $first,
+            'label'  => '&laquo;',
+            'href'   => $link . '&p=' . $first,
+            'active' => false,
         );
         $pagination[] = array(
-            'label' => '&lsaquo;',
-            'href'  => $link . '&p=' . $prev,
+            'label'  => '&lsaquo;',
+            'href'   => $link . '&p=' . $prev,
+            'active' => false,
         );
         for ($p = $paginationStart; $p <= $paginationEnd; ++$p) {
             $pagination[] = array(
@@ -130,12 +132,14 @@ class Search extends Query
             );
         }
         $pagination[] = array(
-            'label' => '&rsaquo;',
-            'href'  => $link . '&p=' . $next,
+            'label'  => '&rsaquo;',
+            'href'   => $link . '&p=' . $next,
+            'active' => false,
         );
         $pagination[] = array(
-            'label' => '&raquo;',
-            'href'  => $link . '&p=' . $last,
+            'label'  => '&raquo;',
+            'href'   => $link . '&p=' . $last,
+            'active' => false,
         );
 
         return $pagination;

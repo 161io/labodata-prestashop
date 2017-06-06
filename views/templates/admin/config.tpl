@@ -63,6 +63,7 @@
 
 <p>&nbsp;</p>
 
+{*
 <div class="panel">
   <div class="panel-heading">
     <span class="pull-right hidden-xs">&copy; <a href="https://161.io" target="_blank"><strong>161</strong> SARL</a></span>
@@ -84,3 +85,4 @@
     </div>
   </div>
 </div>
+*}
