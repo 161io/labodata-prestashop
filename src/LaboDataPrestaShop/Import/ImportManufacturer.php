@@ -44,7 +44,9 @@ class ImportManufacturer extends AbstractImport
         if (null === $this->manufacturerLabodataIds) {
             // Nettoyage
             $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` ';
-            $sql .= 'WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'manufacturer`)';
+            $sql .= 'WHERE `'.$this->idColumn.'` NOT IN ( ';
+            $sql .=   'SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'manufacturer` ';
+            $sql .= ') ';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();

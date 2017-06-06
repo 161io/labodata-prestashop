@@ -279,7 +279,7 @@ class Product extends Query
             return $ids;
         }
 
-        foreach ($categories as $categoryType => $_categories) {
+        foreach ($categories as /*$categoryType =>*/ $_categories) {
             foreach ($_categories as $category) {
                 $ids[] = (int) $category['id'];
             }

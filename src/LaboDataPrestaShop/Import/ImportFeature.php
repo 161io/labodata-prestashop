@@ -53,8 +53,10 @@ class ImportFeature extends AbstractImport
     {
         if (null === $this->featureValueLabodataIds) {
             // Nettoyage
-            $sql = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` ';
-            $sql .= 'WHERE `'.$this->idColumn2.'` NOT IN (SELECT `'.$this->idColumn2.'` FROM `'._DB_PREFIX_.'feature_value`)';
+            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` ';
+            $sql .= 'WHERE `'.$this->idColumn2.'` NOT IN (';
+            $sql .=   'SELECT `'.$this->idColumn2.'` FROM `'._DB_PREFIX_.'feature_value` ';
+            $sql .= ')';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();
@@ -87,11 +89,10 @@ class ImportFeature extends AbstractImport
      */
     public function getFeatureIdByName($name)
     {
-        $rq = Db::getInstance()->getRow('
-			SELECT `id_feature` FROM `'._DB_PREFIX_.'feature_lang`
-			WHERE `name` = \''.pSQL($name).'\'
-			GROUP BY `id_feature`
-		');
+        $sql  = 'SELECT `id_feature` FROM `'._DB_PREFIX_.'feature_lang` ';
+        $sql .= 'WHERE `name` = \''.pSQL($name).'\' ';
+        $sql .= 'GROUP BY `id_feature` ';
+        $rq = Db::getInstance()->getRow($sql);
         if (empty($rq[$this->idColumn1])) {
             return null;
         }
@@ -113,11 +114,11 @@ class ImportFeature extends AbstractImport
         $sql .= 'WHERE `value` = \''.pSQL($name).'\' ';
         if ($idFeature) {
             $sql .= 'AND `id_feature_value` IN ( ';
-            $sql .= 'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
-            $sql .= 'WHERE `id_feature` = \''.$idFeature.'\' ';
+            $sql .=   'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
+            $sql .=   'WHERE `id_feature` = \''.pSQL($idFeature).'\' ';
             $sql .= ') ';
         }
-        $sql .= 'GROUP BY `id_feature_value`';
+        $sql .= 'GROUP BY `id_feature_value` ';
 
         $rq = Db::getInstance()->getRow($sql);
         if (empty($rq[$this->idColumn2])) {

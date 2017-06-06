@@ -90,15 +90,28 @@ class CopyPaste
             $tgt_width = $tgt_height = 0;
             $src_width = $src_height = 0;
             $error = 0;
-            ImageManager::resize($tmpfile, $path.'.jpg', null, null, 'jpg', false, $error, $tgt_width, $tgt_height, 5, $src_width, $src_height);
+            ImageManager::resize(
+                $tmpfile,
+                $path.'.jpg',
+                null,
+                null,
+                'jpg',
+                false,
+                $error,
+                $tgt_width,
+                $tgt_height,
+                5,
+                $src_width,
+                $src_height
+            );
             $images_types = ImageType::getImagesTypes($entity, true);
 
             if ($regenerate) {
-                $previous_path = null;
+                //$previous_path = null;
                 $path_infos = array();
                 $path_infos[] = array($tgt_width, $tgt_height, $path.'.jpg');
                 foreach ($images_types as $image_type) {
-                    $tmpfile = self::get_best_path($image_type['width'], $image_type['height'], $path_infos);
+                    $tmpfile = self::getBestPath($image_type['width'], $image_type['height'], $path_infos);
 
                     if (ImageManager::resize(
                         $tmpfile,
@@ -114,16 +127,22 @@ class CopyPaste
                         $src_width,
                         $src_height
                     )) {
-                        // the last image should not be added in the candidate list if it's bigger than the original image
+                        // the last image should not be added in the candidate list if it's bigger than the original img
                         if ($tgt_width <= $src_width && $tgt_height <= $src_height) {
-                            $path_infos[] = array($tgt_width, $tgt_height, $path.'-'.stripslashes($image_type['name']).'.jpg');
+                            $path_infos[] = array(
+                                $tgt_width,
+                                $tgt_height,
+                                $path.'-'.stripslashes($image_type['name']).'.jpg'
+                            );
                         }
                         if ($entity == 'products') {
                             if (is_file(_PS_TMP_IMG_DIR_.'product_mini_'.(int)$id_entity.'.jpg')) {
                                 unlink(_PS_TMP_IMG_DIR_.'product_mini_'.(int)$id_entity.'.jpg');
                             }
-                            if (is_file(_PS_TMP_IMG_DIR_.'product_mini_'.(int)$id_entity.'_'.(int)Context::getContext()->shop->id.'.jpg')) {
-                                unlink(_PS_TMP_IMG_DIR_.'product_mini_'.(int)$id_entity.'_'.(int)Context::getContext()->shop->id.'.jpg');
+                            $tmpFileProdMini = _PS_TMP_IMG_DIR_.'product_mini_'
+                                             .(int)$id_entity.'_'.(int)Context::getContext()->shop->id.'.jpg';
+                            if (is_file($tmpFileProdMini)) {
+                                unlink($tmpFileProdMini);
                             }
                         }
                     }
@@ -144,7 +163,7 @@ class CopyPaste
      * {@inheritDoc}
      * @see \AdminImportControllerCore::get_best_path()
      */
-    protected static function get_best_path($tgt_width, $tgt_height, $path_infos)
+    protected static function getBestPath($tgt_width, $tgt_height, $path_infos)
     {
         $path_infos = array_reverse($path_infos);
         $path = '';

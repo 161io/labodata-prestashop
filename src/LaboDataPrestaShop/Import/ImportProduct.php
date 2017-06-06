@@ -215,7 +215,7 @@ class ImportProduct extends AbstractImport
 
         $featureValueIds = array_map('intval', $featureValueIds);
         $sql  = 'SELECT `id_feature_value`, `id_feature` FROM `'._DB_PREFIX_.'feature_value` ';
-        $sql .= 'WHERE `id_feature_value` IN (' . implode(', ', $featureValueIds) . ')';
+        $sql .= 'WHERE `id_feature_value` IN (' . implode(', ', $featureValueIds) . ') ';
         $featureValues = Db::getInstance()->executeS($sql);
         if (!$featureValues) {
             return false;
