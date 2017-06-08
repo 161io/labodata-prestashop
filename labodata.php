@@ -140,7 +140,6 @@ class LaboData extends Module
         // $this->l('Erreur lors de la création de la caractéristique (valeur)')
         // $this->l('Catégorie créée :')
         // $this->l('Erreur lors de la création de la catégorie')
-        // $this->l('Ajouter')
         //   LaboDataConfigAdminController
         // $this->l('Vos paramètres ont été enregistrés.')
         // $this->l('Une erreur s\'est produite lors de l\'enregistrement de vos paramètres.')

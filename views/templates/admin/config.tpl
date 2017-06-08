@@ -9,7 +9,7 @@
 
 {if $message_content}
   <div class="alert {if $message_error}alert-danger{else}alert-success{/if}">
-    {$message_content}
+    {$message_content|escape:'html':'UTF-8'}
   </div>
 {/if}
 
@@ -38,14 +38,14 @@
       </div>
     </div>
     <div class="panel-footer">
-      <button type="submit" name="submit_{$module_name}" class="btn btn-default pull-right"{if !$account} disabled="disabled"{/if}>
+      <button type="submit" name="submit_{$module_name|escape:'html':'UTF-8'}" class="btn btn-default pull-right"{if !$account} disabled="disabled"{/if}>
         <i class="process-icon-save"></i> {l s='Enregistrer' mod='labodata'}
       </button>
 
       {if !$account}
         <p class="text-danger">{l s='Merci de remplir les champs ci-dessus pour utiliser LaboData.' mod='labodata'}</p>
       {/if}
-      {if $account.credit}
+      {if isset($account.credit)}
         <p class="text-success">
           {l s='Vous êtes connecté en tant que :' mod='labodata'}<br/>
           {$account.firstname|escape:'html':'UTF-8'} {$account.lastname|escape:'html':'UTF-8'} <strong>{$account.society|escape:'html':'UTF-8'}</strong>
@@ -54,7 +54,7 @@
       {if $account.error}
         <p class="text-danger">
           {l s='Vous n\'êtes pas connecté!' mod='labodata'}<br/>
-          {$account.error.message} <strong>{$account.error.code}</strong>
+          {$account.error.message|escape:'html':'UTF-8'} <strong>{$account.error.code|escape:'html':'UTF-8'}</strong>
         </p>
       {/if}
     </div>
@@ -63,7 +63,7 @@
 
 <p>&nbsp;</p>
 
-{*
+{if $from_github}
 <div class="panel">
   <div class="panel-heading">
     <span class="pull-right hidden-xs">&copy; <a href="https://161.io" target="_blank"><strong>161</strong> SARL</a></span>
@@ -81,8 +81,8 @@
       </p>
     </div>
     <div class="col-xs-offset-4 col-xs-4 col-sm-offset-0 col-sm-2 col-md-1">
-      <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img}logo.png" alt="LaboData" class="img-responsive center-block" width="60" height="64"/></a>
+      <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive center-block" width="60" height="64"/></a>
     </div>
   </div>
 </div>
-*}
+{/if}

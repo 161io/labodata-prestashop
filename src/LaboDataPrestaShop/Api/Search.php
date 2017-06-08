@@ -36,7 +36,7 @@ class Search extends Query
             $options = array(
                 'brand' => Tools::getValue('brand', ''),
                 'q'     => trim(Tools::getValue('q', '')),
-                'page'  => Tools::getValue('page', ''),
+                'page'  => Tools::getValue('p', ''),
             );
         }
 

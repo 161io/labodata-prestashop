@@ -11,18 +11,18 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-1 hidden-xs">
-        <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
+        <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
       </div>
       <div class="col-sm-11 text-right">
         <span class="hidden-xs">{l s='Raccourcis :' mod='labodata'} &nbsp;</span>
-        <a class="btn btn-default" href="{$labodata_redirect_autoconnect}" target="_blank">
+        <a class="btn btn-default" href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" target="_blank">
           <i class="icon-user"></i><span class="hidden-xs hidden-sm"> {l s='Accéder à mon compte' mod='labodata'}</span>
         </a>
-        <a class="btn btn-success" href="{$labodata_redirect_autopay}" id="labodata-autopay">
+        <a class="btn btn-success" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}" id="labodata-autopay">
           <i class="icon-credit-card"></i> <span class="hidden-xs hidden-sm">{l s='Approvisionner mon compte' mod='labodata'}</span><span class="visible-xs-inline visible-sm-inline">{l s='Approvisionner' mod='labodata'}</span>
         </a>
-        <a class="btn btn-default" href="{$labodata_redirect_autopay}">
-          <span class="hidden-xs">{l s='Crédit dispo :' mod='labodata'} </span><span id="labodata-credit">{$labodata_credit}</span><span id="labodata-currency">{$labodata_currency}</span>
+        <a class="btn btn-default" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}">
+          <span class="hidden-xs">{l s='Crédit dispo :' mod='labodata'} </span><span id="labodata-credit">{$labodata_credit|escape:'html':'UTF-8'}</span><span id="labodata-currency">{$labodata_currency}</span>
         </a>
       </div>
     </div>
@@ -32,7 +32,7 @@
         <select name="brand">
           <option value="">- {l s='Sélectionner une marque' mod='labodata'} -</option>
             {foreach $brands as $brand}
-              <option value="{$brand.id}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title_fr|escape:'html':'UTF-8'} [{$brand.length}]</option>
+              <option value="{$brand.id|escape:'html':'UTF-8'}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title_fr|escape:'html':'UTF-8'} [{$brand.length|escape:'html':'UTF-8'}]</option>
             {/foreach}
         </select>
       </div>
@@ -40,8 +40,8 @@
         <div class="input-group">
           <input type="search" name="q" placeholder="{l s='Rechercher un produit, un médicament, un code cip...' mod='labodata'}" value="{$form_q|escape:'html':'UTF-8'}" autofocus="autofocus"/>
           <input type="hidden" name="p" value="1"/>
-          <input type="hidden" name="controller" value="{$form_controller}"/>
-          <input type="hidden" name="token" value="{$form_token}"/>
+          <input type="hidden" name="controller" value="{$form_controller|escape:'html':'UTF-8'}"/>
+          <input type="hidden" name="token" value="{$form_token|escape:'html':'UTF-8'}"/>
           <div class="input-group-btn">
             <button type="submit" class="btn btn-primary"><i class="icon-search"></i><span class="hidden-xs"> {l s='Rechercher' mod='labodata'}</span></button>
           </div>
@@ -54,7 +54,7 @@
 
 {if $products}
 
-<div class="panel" id="labodata-result" data-url-import="{$labodata_url_import}">
+<div class="panel" id="labodata-result" data-url-import="{$labodata_url_import|escape:'html':'UTF-8'}">
   <table class="table table-striped">
     <thead>
       <tr>
@@ -81,8 +81,8 @@
     </thead>
     <tbody>
     {foreach $products as $product}
-      <tr data-product="{$product.id}">
-        <td><img src="{$product.image}" alt="labodata" class="img-responsive center-block"/></td>
+      <tr data-product="{$product.id|escape:'html':'UTF-8'}">
+        <td><img src="{$product.image|escape:'html':'UTF-8'}" alt="labodata" class="img-responsive center-block"/></td>
         <td>
           <strong>{$product.brand.title_fr|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title_fr|escape:'html':'UTF-8'}</span><br/>
           <span class="text-muted">{$product.content_fr|escape:'html':'UTF-8'}</span><br/>
@@ -91,24 +91,24 @@
         <td>
           <div class="btn-group">
             <button class="btn {if $product.purchase.image}btn-success{else}btn-default{/if}"
-                    title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos' mod='labodata'}{else}{l s='Acquérir les photos' mod='labodata'} ({$labodata_cost.image}{$labodata_currency}){/if}"
+                    title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos' mod='labodata'}{else}{l s='Acquérir les photos' mod='labodata'} ({$labodata_cost.image|escape:'html':'UTF-8'}{$labodata_currency}){/if}"
                     data-type="image"
-                    data-credit="{if $product.purchase.image}0{else}{$labodata_cost.image}{/if}"
-                    data-init-credit="{$labodata_cost.image}">
+                    data-credit="{if $product.purchase.image}0{else}{$labodata_cost.image|escape:'html':'UTF-8'}{/if}"
+                    data-init-credit="{$labodata_cost.image|escape:'html':'UTF-8'}">
               <i class="icon-camera"></i>
             </button>
             <button class="btn {if $product.purchase.content}btn-success{else}btn-default{/if}"
-                    title="{if $product.purchase.content}{l s='Vous avez déjà acquis ces descriptifs' mod='labodata'}{else}{l s='Acquérir les descriptifs' mod='labodata'} ({$labodata_cost.content}{$labodata_currency}){/if}"
+                    title="{if $product.purchase.content}{l s='Vous avez déjà acquis ces descriptifs' mod='labodata'}{else}{l s='Acquérir les descriptifs' mod='labodata'} ({$labodata_cost.content|escape:'html':'UTF-8'}{$labodata_currency}){/if}"
                     data-type="content"
-                    data-credit="{if $product.purchase.content}0{else}{$labodata_cost.content}{/if}"
-                    data-init-credit="{$labodata_cost.content}">
+                    data-credit="{if $product.purchase.content}0{else}{$labodata_cost.content|escape:'html':'UTF-8'}{/if}"
+                    data-init-credit="{$labodata_cost.content|escape:'html':'UTF-8'}">
               <i class="icon-file-text"></i>
             </button>
             <button class="btn {if $product._purchaseFull}btn-success{else}btn-default{/if}"
-                    title="{if $product._purchaseFull}{l s='Vous avez déjà acquis cette fiche' mod='labodata'}{else}{l s='Acquérir les photos et les descriptifs' mod='labodata'} ({$product._purchaseFullCredit}{$labodata_currency}){/if}"
+                    title="{if $product._purchaseFull}{l s='Vous avez déjà acquis cette fiche' mod='labodata'}{else}{l s='Acquérir les photos et les descriptifs' mod='labodata'} ({$product._purchaseFullCredit|escape:'html':'UTF-8'}{$labodata_currency}){/if}"
                     data-type="full"
-                    data-credit="{if $product._purchaseFull}0{else}{$product._purchaseFullCredit}{/if}"
-                    data-init-credit="{$labodata_cost.full}">
+                    data-credit="{if $product._purchaseFull}0{else}{$product._purchaseFullCredit|escape:'html':'UTF-8'}{/if}"
+                    data-init-credit="{$labodata_cost.full|escape:'html':'UTF-8'}">
               <i class="icon-camera"></i> + <i class="icon-file-text"></i>
             </button>
           </div>
@@ -121,7 +121,7 @@
   <div class="text-center">
     <ul class="pagination">
       {foreach $pagination as $link}
-        <li{if $link.active} class="active"{/if}><a href="{$link.href}">{$link.label}</a></li>
+        <li{if $link.active} class="active"{/if}><a href="{$link.href|escape:'html':'UTF-8'}">{$link.label}</a></li>
       {/foreach}
     </ul>
   </div>
@@ -146,7 +146,7 @@ var LaboDataTranslate={
 <div class="panel text-center" id="labodata-result">
   <h2>{l s='Votre cherche n\'a retrouné aucun résultat...' mod='labodata'}</h2>
   <p><br/>{l s='N\'hésitez pas à nous contacter directement sur le site LaboData, si vous recherchez des produits en particulier.' mod='labodata'}</p>
-  <p><br/><a href="{$labodata_redirect_autoconnect}" class="btn btn-default btn-lg" target="_blank">{l s='Accéder au site LaboData.fr' mod='labodata'}</a></p>
+  <p><br/><a href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" class="btn btn-default btn-lg" target="_blank">{l s='Accéder au site LaboData.fr' mod='labodata'}</a></p>
 </div>
 
 {/if}

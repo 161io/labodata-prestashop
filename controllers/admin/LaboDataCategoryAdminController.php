@@ -124,19 +124,22 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         }
 
         if ($exists) {
-            return '<a href="#" disabled="disabled">' ."\n".
-                   '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
+            $link = false;
+        } else {
+            if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
+                $action = 'addManufacturer';
+            } else {
+                $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
+            }
+            $link = $this->context->link->getAdminLink($this->controller_name)
+                  . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
         }
 
-        if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
-            $action = 'addManufacturer';
-        } else {
-            $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
-        }
-        $link = $this->context->link->getAdminLink($this->controller_name)
-              . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
-        return '<a href="#" data-action="' . $link . '">' ."\n".
-               '<i class="icon-plus"></i> ' . $this->module->lc('Ajouter') . '</a>';
+        $smarty = $this->context->smarty;
+        /* @var Smarty $tpl */
+        $tpl = $smarty->createTemplate($this->getTemplatePath() . 'category-add-link.tpl', $smarty);
+        $tpl->assign('link', $link);
+        return $tpl->fetch();
     }
 
     /**

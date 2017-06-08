@@ -65,6 +65,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
             'message_error'   => $this->messageError,
             'message_content' => $this->messageContent,
             'account'         => $account->canConnect() ? $account->getData() : null,
+            'from_github'     => empty($this->module->module_key),
             LaboDataQuery::CONF_EMAIL      => Configuration::get(LaboDataQuery::CONF_EMAIL),
             LaboDataQuery::CONF_SECRET_KEY => Configuration::get(LaboDataQuery::CONF_SECRET_KEY),
         ));
