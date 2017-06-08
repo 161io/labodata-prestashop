@@ -47,7 +47,7 @@ class LaboData extends Module
 
         $this->ps_versions_compliancy = array('min' => '1.6.1.0', 'max' => _PS_VERSION_);
         $this->bootstrap = true;
-        $this->module_key = 'bf66980dbef2a6ea64c91ac8174bf6f4';
+        //$this->module_key = 'bf66980dbef2a6ea64c91ac8174bf6f4';
 
         parent::__construct();
 

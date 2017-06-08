@@ -26,6 +26,24 @@ module.exports = function(grunt) {
         ]
       }
     },
+    replace: {
+      labodata_build: {
+        src: 'labodata.php',
+        dest: './',
+        replacements: [{
+          from: /(\s+)\/\/(\$this->module_key\s*=)/,
+          to: '$1$2'
+        }]
+      },
+      labodata_restore: {
+        src: 'labodata.php',
+        dest: './',
+        replacements: [{
+          from: /(\s+)(\$this->module_key\s*=)/,
+          to: '$1//$2'
+        }]
+      }
+    },
     cssmin: {
       labodata: {
         files: [
@@ -73,8 +91,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   grunt.registerTask('default', ['cssmin', 'uglify']);
-  grunt.registerTask('build', ['default', 'compress'])
+  grunt.registerTask('build_presta', ['default', 'replace:labodata_build', 'compress', 'replace:labodata_restore']);
+  grunt.registerTask('build_github', ['default', 'replace:labodata_restore', 'compress']);
 
 };
