@@ -115,7 +115,8 @@ class CopyPaste
 
                     if (ImageManager::resize(
                         $tmpfile,
-                        $path.'-'.stripslashes($image_type['name']).'.jpg',
+                        //$path.'-'.stripslashes($image_type['name']).'.jpg',
+                        $path.'-'.self::removeSlashes($image_type['name']).'.jpg',
                         $image_type['width'],
                         $image_type['height'],
                         'jpg',
@@ -132,7 +133,8 @@ class CopyPaste
                             $path_infos[] = array(
                                 $tgt_width,
                                 $tgt_height,
-                                $path.'-'.stripslashes($image_type['name']).'.jpg'
+                                //$path.'-'.stripslashes($image_type['name']).'.jpg'
+                                $path.'-'.self::removeSlashes($image_type['name']).'.jpg'
                             );
                         }
                         if ($entity == 'products') {
@@ -188,5 +190,15 @@ class CopyPaste
         }
 
         return $res;
+    }
+
+    /**
+     * @param string $str
+     * @return string
+     * @see stripslashes()
+     */
+    public static function removeSlashes($str)
+    {
+        return preg_replace('/\\\\(.?)/', '$1', $str);
     }
 }

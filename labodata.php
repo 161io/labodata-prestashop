@@ -39,7 +39,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.3.3';
+        $this->version = '0.3.4';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office
@@ -67,8 +67,10 @@ class LaboData extends Module
     public function getKernel()
     {
         if (null === $this->kernel) {
-            global $kernel; // Symfony kernel
-            $this->kernel = !empty($kernel) && $kernel instanceof AppKernel ? $kernel : false;
+            // TODO Next version
+            //global $kernel; // Symfony kernel
+            //$this->kernel = !empty($kernel) && $kernel instanceof AppKernel ? $kernel : false;
+            $this->kernel = false;
         }
         return $this->kernel;
     }
