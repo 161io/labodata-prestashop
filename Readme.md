@@ -24,7 +24,7 @@ Module https://www.labodata.fr permettant d'importer des fiches produits dans Pr
 Modifier l'un des fichiers `views/templates/admin/import-*.tpl`
 
 
-### Comment désinstaller "totalement" le module LaboData ?
+### Comment désinstaller "totalement" le module LaboData (GitHub uniquement) ?
 
 1. Supprimer le module dans Prestashop
 2. Supprimer les tables :

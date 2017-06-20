@@ -48,9 +48,9 @@ class ImportCategory extends AbstractImport
     public function getCategoryLabodataIds()
     {
         if (null === $this->categoryLabodataIds) {
-            // Nettoyage
+            // Nettoyage ( $this->idColumn )
             $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` ';
-            $sql .= 'WHERE `'.$this->idColumn.'` NOT IN (SELECT `'.$this->idColumn.'` FROM `'._DB_PREFIX_.'category`)';
+            $sql .= 'WHERE `id_category` NOT IN (SELECT `id_category` FROM `'._DB_PREFIX_.'category`)';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 
             $sql = new DbQuery();

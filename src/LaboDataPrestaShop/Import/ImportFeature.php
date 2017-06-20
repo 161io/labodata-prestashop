@@ -52,10 +52,10 @@ class ImportFeature extends AbstractImport
     public function getFeatureValueLabodataIds()
     {
         if (null === $this->featureValueLabodataIds) {
-            // Nettoyage
+            // Nettoyage ( $this->idColumn2 )
             $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` ';
-            $sql .= 'WHERE `'.$this->idColumn2.'` NOT IN (';
-            $sql .=   'SELECT `'.$this->idColumn2.'` FROM `'._DB_PREFIX_.'feature_value` ';
+            $sql .= 'WHERE `id_feature_value` NOT IN (';
+            $sql .=   'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
             $sql .= ')';
             Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
 

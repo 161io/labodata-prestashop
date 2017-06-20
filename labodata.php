@@ -39,7 +39,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.3.4';
+        $this->version = '0.3.5';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office
@@ -102,6 +102,9 @@ class LaboData extends Module
             || !$uninstall->cache()
         ) {
             return false;
+        }
+        if (!empty($this->module_key)) {
+            $uninstall->table();
         }
         return true;
     }
