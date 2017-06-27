@@ -18,10 +18,10 @@
         <a class="btn btn-default" href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" target="_blank">
           <i class="icon-user"></i><span class="hidden-xs hidden-sm"> {l s='Accéder à mon compte' mod='labodata'}</span>
         </a>
-        <a class="btn btn-success" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}" id="labodata-autopay">
+        <a class="btn btn-success" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}" target="_blank" id="labodata-autopay">
           <i class="icon-credit-card"></i> <span class="hidden-xs hidden-sm">{l s='Approvisionner mon compte' mod='labodata'}</span><span class="visible-xs-inline visible-sm-inline">{l s='Approvisionner' mod='labodata'}</span>
         </a>
-        <a class="btn btn-default" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}">
+        <a class="btn btn-default" href="{$labodata_redirect_autopay|escape:'html':'UTF-8'}" target="_blank">
           <span class="hidden-xs">{l s='Crédit dispo :' mod='labodata'} </span><span id="labodata-credit">{$labodata_credit|escape:'html':'UTF-8'}</span><span id="labodata-currency">{$labodata_currency}</span>
         </a>
       </div>

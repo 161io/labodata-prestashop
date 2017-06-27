@@ -265,7 +265,10 @@
 
         // Approvisionner mon compte
         $modalLaboDataCredit.find('[data-submit="modal"]').on('click', function() {
-            window.location.href = $('#labodata-autopay').attr('href');
+            //window.location.href = $('#labodata-autopay').attr('href');
+            window.open($('#labodata-autopay').attr('href'));
+            $modalLaboDataCredit.modal('hide');
+            // TODO Reload page (?)
         });
 
 
