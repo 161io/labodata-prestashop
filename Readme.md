@@ -32,3 +32,8 @@ Modifier l'un des fichiers `views/templates/admin/import-*.tpl`
     * `PREFIX_feature_value_labodata`
     * `PREFIX_manufacturer_labodata`
 
+
+### Comment télécharger l'édition PrestaShop Addons Marketplace ?
+
+https://addons.prestashop.com/fr/performance-site/27294-labodata-fiches-produit-pharmacies-et-parapharmacies.html
+
