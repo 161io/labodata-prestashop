@@ -2,10 +2,13 @@
   "name": "161io-labodata-prestashop",
   "title": "LaboData pour Prestashop",
   "repository": "https://github.com/161io/labodata-prestashop",
+  "dependencies": {
+    "js-cookie": "~2.1.4"
+  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-compress": "^1.4.3",
-    "grunt-contrib-cssmin": "^2.2.0",
+    "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-text-replace": "^0.4.0"
