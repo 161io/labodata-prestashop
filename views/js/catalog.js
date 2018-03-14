@@ -6,7 +6,7 @@
  * @license https://161.io
  */
 
-+function($) {
+(function($) {
     'use strict';
 
     var COOKIE_MODAL_IGNORE = 'LaboDataModalIgnore';
@@ -385,4 +385,4 @@
 
     });
 
-}(jQuery);
+})(jQuery);

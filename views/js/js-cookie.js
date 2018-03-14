@@ -1,10 +1,9 @@
 /*!
- * JavaScript Cookie v2.1.4
+ * JavaScript Cookie v2.2.0
  * https://github.com/js-cookie/js-cookie
  *
- * @author 2006, 2015 Klaus Hartl & Fagner Brack
- * @copyright 2006, 2015 Klaus Hartl & Fagner Brack
- * @license Released under the MIT license
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
  */
 ;(function (factory) {
 	var registeredInModuleLoader = false;
@@ -110,7 +109,7 @@
 				var parts = cookies[i].split('=');
 				var cookie = parts.slice(1).join('=');
 
-				if (cookie.charAt(0) === '"') {
+				if (!this.json && cookie.charAt(0) === '"') {
 					cookie = cookie.slice(1, -1);
 				}
 

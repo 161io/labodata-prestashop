@@ -33,9 +33,9 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         }
     }
 
-    public function setMedia()
+    public function setMedia($isNewTheme = false)
     {
-        parent::setMedia();
+        parent::setMedia($isNewTheme);
 
         //$this->addJS($this->module->getPathUri() . '/views/js/config.js');
         $this->addJS($this->module->getPathUri() . '/views/js/config.min.js');

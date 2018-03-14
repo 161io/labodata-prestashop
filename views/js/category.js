@@ -6,7 +6,7 @@
  * @license https://161.io
  */
 
-+function($) {
+(function($) {
     'use strict';
 
     var Translate;
@@ -135,4 +135,4 @@
 
     });
 
-}(jQuery);
+})(jQuery);

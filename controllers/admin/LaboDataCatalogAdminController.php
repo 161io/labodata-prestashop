@@ -32,9 +32,9 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $this->buildHeaderToolbar();
     }
 
-    public function setMedia()
+    public function setMedia($isNewTheme = false)
     {
-        parent::setMedia();
+        parent::setMedia($isNewTheme);
 
         //$this->addJS($this->module->getPathUri() . '/views/js/js-cookie.js');
         $this->addJS($this->module->getPathUri() . '/views/js/js-cookie.min.js');

@@ -91,6 +91,14 @@ class Search extends Query
     {
         $result = $this->getLastResult();
         $link = Context::getContext()->link->getAdminLink('LaboDataCatalogAdmin');
+        $queryBrand = (int) Tools::getValue('brand', '');
+        $queryQ = trim(Tools::getValue('q', ''));
+        if ($queryBrand) {
+            $link .= '&brand=' . $queryBrand;
+        }
+        if ($queryQ) {
+            $link .= '&q=' . urlencode($queryQ);
+        }
 
         $pageMax = 4;
         $first = 1;

@@ -6,7 +6,7 @@
  * @license https://161.io
  */
 
-+function($) {
+(function($) {
     'use strict';
 
     $(function() {
@@ -22,4 +22,4 @@
         });
     });
 
-}(jQuery);
+})(jQuery);
