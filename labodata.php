@@ -39,7 +39,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.3.7';
+        $this->version = '0.3.8';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office

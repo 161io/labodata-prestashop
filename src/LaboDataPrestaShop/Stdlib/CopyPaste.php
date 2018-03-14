@@ -25,7 +25,7 @@ use Tools;
 class CopyPaste
 {
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      * @see \AdminImportControllerCore::copyImg()
      */
     public static function copyImg($id_entity, $id_image = null, $url = '', $entity = 'products', $regenerate = true)
@@ -80,7 +80,8 @@ class CopyPaste
 
         $orig_tmpfile = $tmpfile;
 
-        if (Tools::copy($url, $tmpfile)) {
+        //if (Tools::copy($url, $tmpfile)) {
+        if (self::copy($url, $tmpfile)) {
             // Evaluate the memory required to resize the image: if it's too much, you can't resize it.
             if (!ImageManager::checkImageMemoryLimit($tmpfile)) {
                 @unlink($tmpfile);
@@ -162,7 +163,7 @@ class CopyPaste
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      * @see \AdminImportControllerCore::get_best_path()
      */
     protected static function getBestPath($tgt_width, $tgt_height, $path_infos)
@@ -179,7 +180,7 @@ class CopyPaste
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      * @see \AdminImportControllerCore::createMultiLangField()
      */
     public static function createMultiLangField($field)
@@ -200,5 +201,16 @@ class CopyPaste
     public static function removeSlashes($str)
     {
         return preg_replace('/\\\\(.?)/', '$1', $str);
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return bool|int
+     * @see \Tools::copy()
+     */
+    public static function copy($source, $destination)
+    {
+        return @file_put_contents($destination, Tools::file_get_contents($source, false, null, 60));
     }
 }
