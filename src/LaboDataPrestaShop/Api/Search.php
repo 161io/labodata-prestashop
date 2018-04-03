@@ -20,9 +20,70 @@ use Tools;
 class Search extends Query
 {
     /**
+     * @const string Valeur par default
+     */
+    const ORDER_BY_TITLE_ASC = 'title-asc';
+
+    /**
+     * @const string
+     */
+    const ORDER_BY_DATE_DESC = 'date-desc';
+
+    /**
      * @var array
      */
     protected $lastResult;
+
+    /**
+     * $_GET: Marque
+     *
+     * @return int
+     */
+    public function getBrandValue()
+    {
+        return (int) Tools::getValue('brand', 0);
+    }
+
+    /**
+     * $_GET: Recherche
+     *
+     * @return string
+     */
+    public function getQValue()
+    {
+        return Tools::substr(trim(Tools::getValue('q', '')), 0, 200);
+    }
+
+    /**
+     * $_GET: Tri
+     *
+     * @return string
+     */
+    public function getOrderValue()
+    {
+        $values = [
+            self::ORDER_BY_TITLE_ASC,
+            self::ORDER_BY_DATE_DESC,
+        ];
+
+        $value = trim(Tools::getValue('order', $values[0]));
+        if (!in_array($value, $values)) {
+            $value = $values[0];
+        }
+        return $value;
+    }
+
+    /**
+     * $_GET: Page
+     *
+     * @return int
+     */
+    public function getPageNumberValue()
+    {
+        return (int) Tools::getValue('p', 1);
+    }
+
+
 
     /**
      * Lancer la recherche
@@ -34,9 +95,10 @@ class Search extends Query
     {
         if ('auto' == $options) {
             $options = array(
-                'brand' => Tools::getValue('brand', ''),
-                'q'     => trim(Tools::getValue('q', '')),
-                'page'  => Tools::getValue('p', ''),
+                'brand' => $this->getBrandValue(),
+                'q'     => $this->getQValue(),
+                'order' => $this->getOrderValue(),
+                'page'  => $this->getPageNumberValue(),
             );
         }
 
@@ -91,13 +153,17 @@ class Search extends Query
     {
         $result = $this->getLastResult();
         $link = Context::getContext()->link->getAdminLink('LaboDataCatalogAdmin');
-        $queryBrand = (int) Tools::getValue('brand', '');
-        $queryQ = trim(Tools::getValue('q', ''));
+        $queryBrand = $this->getBrandValue();
+        $queryQ = $this->getQValue();
+        $queryOrder = $this->getOrderValue();
         if ($queryBrand) {
             $link .= '&brand=' . $queryBrand;
         }
         if ($queryQ) {
             $link .= '&q=' . urlencode($queryQ);
+        }
+        if ($queryOrder) {
+            $link .= '&order=' . urlencode($queryOrder);
         }
 
         $pageMax = 4;

@@ -39,10 +39,21 @@
       <div class="form-group" id="queryGroup">
         <div class="input-group">
           <input type="search" name="q" placeholder="{l s='Rechercher un produit, un médicament, un code cip...' mod='labodata'}" value="{$form_q|escape:'html':'UTF-8'}" autofocus="autofocus"/>
+          <input type="hidden" name="order" value="{$form_order|escape:'html':'UTF-8'}"/>
           <input type="hidden" name="p" value="1"/>
           <input type="hidden" name="controller" value="{$form_controller|escape:'html':'UTF-8'}"/>
           <input type="hidden" name="token" value="{$form_token|escape:'html':'UTF-8'}"/>
           <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" tabindex="-1" data-toggle="dropdown">
+              <span class="visible-xs-inline">{l s='Tri' mod='labodata'}</span>
+              <span class="hidden-xs">{l s='Trier par' mod='labodata'}</span>
+              <strong class="order-value-text">{if 'title-asc' == $form_order}{l s='ABC' mod='labodata'}{elseif 'date-desc' == $form_order}{l s='Date' mod='labodata'}{/if}</strong>
+              <i class="caret"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-order">
+              <li{if 'title-asc' == $form_order} class="active"{/if}><a href="#" data-value="title-asc" data-label="{l s='ABC' mod='labodata'}">{l s='Ordre alphabétique' mod='labodata'}</a></li>
+              <li{if 'date-desc' == $form_order} class="active"{/if}><a href="#" data-value="date-desc" data-label="{l s='Date' mod='labodata'}">{l s='Dernières mises à jour' mod='labodata'}</a></li>
+            </ul>
             <button type="submit" class="btn btn-primary"><i class="icon-search"></i><span class="hidden-xs"> {l s='Rechercher' mod='labodata'}</span></button>
           </div>
         </div>

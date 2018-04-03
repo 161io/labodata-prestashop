@@ -271,6 +271,23 @@
             // TODO Reload page (?)
         });
 
+        // Trier par
+        $('.dropdown-menu-order').each(function() {
+            var $dropdownMenu = $(this);
+            var $dropdownToggle = $dropdownMenu.prev('.dropdown-toggle');
+            var $inputOrder = $dropdownMenu.parents('form').find('input[name="order"]');
+
+            $dropdownMenu.find('a').on('click', function() {
+                var $a = $(this);
+                $dropdownToggle.dropdown('toggle');
+                $dropdownMenu.find('li.active').removeClass('active');
+                $dropdownToggle.find('.order-value-text').text($a.data('label'));
+                $a.parent().addClass('active'); // li
+                $inputOrder.val($a.data('value'));
+                return false;
+            });
+        });
+
 
         // Importer
         $laboDataResult.find('tbody .btn[data-credit]').on('click', function() {
