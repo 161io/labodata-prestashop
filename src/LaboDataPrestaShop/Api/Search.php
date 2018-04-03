@@ -61,10 +61,10 @@ class Search extends Query
      */
     public function getOrderValue()
     {
-        $values = [
+        $values = array(
             self::ORDER_BY_TITLE_ASC,
             self::ORDER_BY_DATE_DESC,
-        ];
+        );
 
         $value = trim(Tools::getValue('order', $values[0]));
         if (!in_array($value, $values)) {
