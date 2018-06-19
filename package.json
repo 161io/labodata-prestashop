@@ -1,6 +1,6 @@
 {
   "name": "161io-labodata-prestashop",
-  "description": "LaboData pour Prestashop",
+  "description": "Module LaboData pour Prestashop",
   "repository": "https://github.com/161io/labodata-prestashop",
   "dependencies": {
     "js-cookie": "~2.2.0"
