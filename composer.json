@@ -7,6 +7,9 @@
     "prestashop", "module", "database", "labodata", "pharmacy"
   ],
   "homepage": "https://www.labodata.fr",
+  "config": {
+    "autoloader-suffix": "LaboDataPrestashop"
+  },
   "autoload": {
     "psr-4": {
       "LaboDataPrestaShop\\": "src/LaboDataPrestaShop/"

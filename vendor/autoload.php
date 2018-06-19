@@ -4,4 +4,4 @@
 
 require_once __DIR__ . '/composer/autoload_real.php';
 
-return ComposerAutoloaderInit352d2f3216ef3570d6604e87c5c16307::getLoader();
+return ComposerAutoloaderInitLaboDataPrestashop::getLoader();

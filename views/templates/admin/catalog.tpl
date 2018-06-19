@@ -155,7 +155,7 @@ var LaboDataTranslate={
 {else}
 
 <div class="panel text-center" id="labodata-result">
-  <h2>{l s='Votre cherche n\'a retrouné aucun résultat...' mod='labodata'}</h2>
+  <h2>{l s='Votre cherche n\'a retourné aucun résultat...' mod='labodata'}</h2>
   <p><br/>{l s='N\'hésitez pas à nous contacter directement sur le site LaboData, si vous recherchez des produits en particulier.' mod='labodata'}</p>
   <p><br/><a href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" class="btn btn-default btn-lg" target="_blank">{l s='Accéder au site LaboData.fr' mod='labodata'}</a></p>
 </div>
