@@ -269,12 +269,13 @@ class Product extends Query
     }
 
     /**
+     * @param string $key "categories", "tree"
      * @return int[]
      */
-    public function getCategoryIds()
+    public function getCategoryIds($key = 'categories')
     {
         $ids = array();
-        $categories = $this->getProductKey('categories');
+        $categories = $this->getProductKey($key);
         if (!$categories) {
             return $ids;
         }
@@ -285,6 +286,14 @@ class Product extends Query
             }
         }
         return $ids;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getTreeIds()
+    {
+        return $this->getCategoryIds('tree');
     }
 
     /**

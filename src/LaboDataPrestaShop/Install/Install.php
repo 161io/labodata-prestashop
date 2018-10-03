@@ -121,6 +121,18 @@ class Install
         $categoryTab->module = $module->name;
         $categoryTab->add();
 
+        // Arborescence
+        $treeTab = new Tab();
+        $treeTab->active = true;
+        $treeTab->name = array();
+        foreach ($languages as $id_lang) {
+            $treeTab->name[$id_lang] = $module->lc('Catégories Para./Médicament');
+        }
+        $treeTab->class_name = 'LaboDataTreeAdmin';
+        $treeTab->id_parent = $parentTab->id;
+        $treeTab->module = $module->name;
+        $treeTab->add();
+
         // Configuration
         $configTab = new Tab();
         $configTab->active = true;

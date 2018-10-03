@@ -15,14 +15,13 @@ if (!defined('_PS_VERSION_')) {
  * @param LaboData $module
  * @return bool
  */
-function upgrade_module_0_3_0($module)
+function upgrade_module_1_0_0($module)
 {
     $install = new LaboDataPrestaShop\Install\Install($module);
     $uninstall = new LaboDataPrestaShop\Install\Uninstall($module);
 
     $uninstall->tab();
     $uninstall->cache();
-    $install->table();
     $install->tab();
 
     return true;

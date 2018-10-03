@@ -14,6 +14,7 @@ use Db;
 use LaboData;
 use LaboDataPrestaShop\Api\Category;
 use LaboDataPrestaShop\Api\Query;
+use LaboDataPrestaShop\Stdlib\Cache;
 use Tab;
 
 class Uninstall
@@ -71,7 +72,7 @@ class Uninstall
 
     public function cache()
     {
-        Category::getInstance()->deleteCache();
+        Cache::clear();
 
         return true;
     }

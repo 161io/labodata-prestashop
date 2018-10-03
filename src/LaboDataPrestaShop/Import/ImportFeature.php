@@ -20,9 +20,9 @@ use LaboDataPrestaShop\Stdlib\CopyPaste;
 /**
  * Injection des elements LaboData vers Prestashop
  *
- * @method static ImportFeature getInstance()
+ * @method static ImportFeature getInstance($renew = false)
  */
-class ImportFeature extends AbstractImport
+class ImportFeature extends AbstractImportCategory
 {
     /**
      * @var string
@@ -37,35 +37,41 @@ class ImportFeature extends AbstractImport
     /**
      * @var int[]
      */
-    protected $featureValueLabodataIds;
+    protected $featureIds;
 
     /**
-     * @var int[]
+     * @return string
      */
-    protected $featureIds;
+    public function getTable()
+    {
+        return LaboDataCategory::DB_TABLE_FEATURE_VALUE;
+    }
 
     /**
      * Correspondance entre les categories LaboData et les caracteristiques (valeurs) Prestashop
      *
+     * @param bool $purgeIds
      * @return int[] id_feature_value
      */
-    public function getFeatureValueLabodataIds()
+    public function getFeatureValueLabodataIds($purgeIds = true)
     {
-        if (null === $this->featureValueLabodataIds) {
+        if (null === $this->dataLabodataIds) {
             // Nettoyage ( $this->idColumn2 )
-            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_FEATURE_VALUE.'` ';
-            $sql .= 'WHERE `id_feature_value` NOT IN (';
-            $sql .=   'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
-            $sql .= ')';
-            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            if ($purgeIds) {
+                $sql  = 'DELETE FROM `'._DB_PREFIX_.$this->getTable().'` ';
+                $sql .= 'WHERE `id_feature_value` NOT IN (';
+                $sql .=   'SELECT `id_feature_value` FROM `'._DB_PREFIX_.'feature_value` ';
+                $sql .= ')';
+                Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            }
 
             $sql = new DbQuery();
-            $sql->from(LaboDataCategory::DB_TABLE_FEATURE_VALUE);
+            $sql->from($this->getTable());
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            $this->featureValueLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn2, $this->labodataColumn);
+            $this->dataLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn2, $this->labodataColumn);
         }
-        return $this->featureValueLabodataIds;
+        return $this->dataLabodataIds;
     }
 
     /**
@@ -208,11 +214,25 @@ class ImportFeature extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function addFeatureValueLabodata($featureValue, $laboDataCategory)
+    public function addFeatureValueLabodata($featureValue, $laboDataCategory)
     {
-        return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_FEATURE_VALUE, array(
+        return Db::getInstance()->insert($this->getTable(), array(
             $this->idColumn2      => (int) $featureValue->id,
             $this->labodataColumn => (int) $laboDataCategory['id'],
         ));
+    }
+
+    /**
+     * Retirer le lien entre ids LaboData et Prestashop
+     *
+     * @param array $laboDataCategory
+     * @return bool
+     */
+    public function deleteFeatureValueLabodata($laboDataCategory)
+    {
+        return Db::getInstance()->delete(
+            $this->getTable(),
+            'id_labodata = ' . (int) $laboDataCategory['id']
+        );
     }
 }

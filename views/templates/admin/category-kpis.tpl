@@ -15,6 +15,9 @@
 {l s='Label' mod='labodata'}
 {l s='Indication / Contre-indication' mod='labodata'}
 {l s='Principe actif' mod='labodata'}
+
+{l s='Parapharmacie' mod='labodata'}
+{l s='Médicaments' mod='labodata'}
 *}
 
 <div class="panel">
@@ -26,7 +29,7 @@
   <button class="btn btn-primary pull-right" id="btn-add-all" data-confirm="{l s='Etes-vous sûr de vouloir ajouter toutes les éléments manquants ci-dessous ?' mod='labodata'}">
     <i class="icon-flash"></i> {l s='Ajouter tout' mod='labodata'}
   </button>
-  <div class="text-muted"><br/>{l s='Avant d\'importer votre premier produit, nous vous conseillons d\'ajouter toutes les marques et toutes les caractéristiques dont vous avez besoin.' mod='labodata'}</div>
+  <div class="text-muted"><br/>{l s='Avant d\'importer votre premier produit, nous vous conseillons d\'ajouter les marques, les caractéristiques et les catégories dont vous avez besoin.' mod='labodata'}</div>
 </div>
 
 <script>

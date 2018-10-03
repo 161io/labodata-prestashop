@@ -9,8 +9,9 @@
 
 use LaboDataPrestaShop\Api\Account;
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
-use LaboDataPrestaShop\Api\Search;
 use LaboDataPrestaShop\Api\Product as LaboDataProduct;
+use LaboDataPrestaShop\Api\Search;
+use LaboDataPrestaShop\Controller\StaticAdminController;
 use LaboDataPrestaShop\Import\ImportProduct;
 use ModuleAdminController as NoTabModuleAdminController;
 
@@ -29,7 +30,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
 
         parent::__construct();
 
-        $this->buildHeaderToolbar();
+        StaticAdminController::buildHeaderToolbar($this, $this->context);
     }
 
     public function setMedia($isNewTheme = false)
@@ -37,23 +38,9 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         parent::setMedia($isNewTheme);
 
         //$this->addJS($this->module->getPathUri() . '/views/js/js-cookie.js');
-        $this->addJS($this->module->getPathUri() . '/views/js/js-cookie.min.js');
         //$this->addJS($this->module->getPathUri() . '/views/js/catalog.js');
+        $this->addJS($this->module->getPathUri() . '/views/js/js-cookie.min.js');
         $this->addJS($this->module->getPathUri() . '/views/js/catalog.min.js');
-    }
-
-    private function buildHeaderToolbar()
-    {
-        $this->page_header_toolbar_btn['category'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataCategoryAdmin'),
-            'desc' => $this->module->lc('Marques/Caractéristiques'),
-            'icon' => 'process-icon-new',
-        );
-        $this->page_header_toolbar_btn['config'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataConfigAdmin'),
-            'desc' => $this->module->lc('Configuration'),
-            'icon' => 'process-icon-configure',
-        );
     }
 
     public function initContent()

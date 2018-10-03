@@ -20,9 +20,9 @@ use Tools;
 /**
  * Injection des elements LaboData vers Prestashop
  *
- * @method static ImportManufacturer getInstance()
+ * @method static ImportManufacturer getInstance($renew = false)
  */
-class ImportManufacturer extends AbstractImport
+class ImportManufacturer extends AbstractImportCategory
 {
     /**
      * @var string
@@ -30,32 +30,38 @@ class ImportManufacturer extends AbstractImport
     protected $idColumn = 'id_manufacturer';
 
     /**
-     * @var int[]
+     * @return string
      */
-    protected $manufacturerLabodataIds;
+    public function getTable()
+    {
+        return LaboDataCategory::DB_TABLE_MANUFACTURER;
+    }
 
     /**
      * Correspondance entre les marques LaboData et les marques Prestashop
      *
+     * @param bool $purgeIds
      * @return int[] id_manufacturer
      */
-    public function getManufacturerLabodataIds()
+    public function getManufacturerLabodataIds($purgeIds = true)
     {
-        if (null === $this->manufacturerLabodataIds) {
+        if (null === $this->dataLabodataIds) {
             // Nettoyage ( $this->idColumn )
-            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_MANUFACTURER.'` ';
-            $sql .= 'WHERE `id_manufacturer` NOT IN ( ';
-            $sql .=   'SELECT `id_manufacturer` FROM `'._DB_PREFIX_.'manufacturer` ';
-            $sql .= ') ';
-            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            if ($purgeIds) {
+                $sql  = 'DELETE FROM `'._DB_PREFIX_.$this->getTable().'` ';
+                $sql .= 'WHERE `id_manufacturer` NOT IN ( ';
+                $sql .=   'SELECT `id_manufacturer` FROM `'._DB_PREFIX_.'manufacturer` ';
+                $sql .= ') ';
+                Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            }
 
             $sql = new DbQuery();
-            $sql->from(LaboDataCategory::DB_TABLE_MANUFACTURER);
+            $sql->from($this->getTable());
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            $this->manufacturerLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn, $this->labodataColumn);
+            $this->dataLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn, $this->labodataColumn);
         }
-        return $this->manufacturerLabodataIds;
+        return $this->dataLabodataIds;
     }
 
     /**
@@ -111,11 +117,25 @@ class ImportManufacturer extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function addManufacturerLabodata($manufacturer, $laboDataCategory)
+    public function addManufacturerLabodata($manufacturer, $laboDataCategory)
     {
-        return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_MANUFACTURER, array(
+        return Db::getInstance()->insert($this->getTable(), array(
             $this->idColumn       => (int) $manufacturer->id,
             $this->labodataColumn => (int) $laboDataCategory['id'],
         ));
+    }
+
+    /**
+     * Retirer le lien entre ids LaboData et Prestashop
+     *
+     * @param array $laboDataCategory
+     * @return bool
+     */
+    public function deleteManufacturerLabodata($laboDataCategory)
+    {
+        return Db::getInstance()->delete(
+            $this->getTable(),
+            'id_labodata = ' . (int) $laboDataCategory['id']
+        );
     }
 }

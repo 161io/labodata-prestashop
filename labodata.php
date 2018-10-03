@@ -25,12 +25,6 @@ require dirname(__FILE__) . '/vendor/autoload.php';
 class LaboData extends Module
 {
     /**
-     * @const string Type d'importation des categories LaboData ( category ou feature )
-     */
-    //const MODE_CATEGORY = 'category'; // 0.2.0
-    const MODE_CATEGORY = 'feature'; // 0.3.0
-
-    /**
      * @var AppKernel
      */
     protected $kernel;
@@ -39,7 +33,7 @@ class LaboData extends Module
     {
         $this->name = 'labodata';
         $this->tab = 'others';
-        $this->version = '0.4.1';
+        $this->version = '1.0.0';
         $this->author = '161 SARL';
 
         // 0 = Front // 1 = Back-office
@@ -134,16 +128,28 @@ class LaboData extends Module
         //   Controllers
         // $this->l('Catalogue LaboData')
         // $this->l('Marques/Caractéristiques')
+        // $this->l('Catégories Para./Médicament')
         // $this->l('Configuration')
         //   LaboDataCatalogAdminController
         //   LaboDataCategoryAdminController
-        // $this->l('id')
-        // $this->l('Titre')
+        // $this->l('ID LaboData')
+        // $this->l('Titre LaboData')
+        // $this->l('ID Prestashop')
+        // $this->l('Titre Prestashop')
         // $this->l('Marque créée :')
+        // $this->l('Marque liée :')
+        // $this->l('Marque déliée')
+        // $this->l('Marque introuvable')
         // $this->l('Erreur lors de la création de la marque')
         // $this->l('Caractéristique (valeur) :')
+        // $this->l('Caractéristique liée :')
+        // $this->l('Caractéristique déliée')
+        // $this->l('Caractéristique introuvable')
         // $this->l('Erreur lors de la création de la caractéristique (valeur)')
         // $this->l('Catégorie créée :')
+        // $this->l('Catégorie liée :')
+        // $this->l('Catégorie déliée')
+        // $this->l('Catégorie introuvable')
         // $this->l('Erreur lors de la création de la catégorie')
         //   LaboDataConfigAdminController
         // $this->l('Vos paramètres ont été enregistrés.')

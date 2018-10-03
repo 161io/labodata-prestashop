@@ -9,44 +9,22 @@
 
 namespace LaboDataPrestaShop\Api;
 
-use FeatureValue;
-use Manufacturer;
-use LaboDataPrestaShop\Import\ImportFeature;
-use LaboDataPrestaShop\Import\ImportManufacturer;
+use Category;
+use LaboDataPrestaShop\Import\ImportCategory;
 use LaboDataPrestaShop\Stdlib\Cache;
 use LaboDataPrestaShop\Stdlib\ObjectModel;
 
 /**
- * Chargement et manipulation des categories LaboData
+ * Chargement et manipulation de l'arborescence des categories LaboData
  *
- * @method static Category getInstance()
+ * @method static Tree getInstance()
  */
-class Category extends Query
+class Tree extends Query
 {
-    /**
-     * @const string Table des marques
-     */
-    const DB_TABLE_MANUFACTURER = 'manufacturer_labodata';
-
-    /**
-     * @const string Table des caracteries (valeurs)
-     */
-    const DB_TABLE_FEATURE_VALUE = 'feature_value_labodata';
-
-    /**
-     * @const string Table des categories
-     */
-    const DB_TABLE_CATEGORY = 'category_labodata';
-
     /**
      * @const string
      */
-    const TYPE_BRAND = 'brand';
-
-    /**
-     * @var array
-     */
-    protected $brands;
+    const TYPE_PUBLIC_CATEGORIES = 'public_categories';
 
     /**
      * @var array
@@ -54,34 +32,7 @@ class Category extends Query
     protected $categories;
 
     /**
-     * Retourner Les marques
-     *
-     * @return array
-     */
-    public function getBrands()
-    {
-        if (null !== $this->brands) {
-            return $this->brands;
-        }
-
-        $data = Cache::get('brands');
-        if ($data) {
-            $this->brands = $data;
-            return $this->brands;
-        }
-
-        $result = $this->query(self::URL . self::API . '/category/brand.json');
-        if (!empty($result['brands'])) {
-            $this->brands = $result['brands'];
-            Cache::set('brands', $this->brands);
-        } else {
-            $this->brands = array();
-        }
-        return $this->brands;
-    }
-
-    /**
-     * Toutes les criteres
+     * Retourner Les categories de l'arborescence
      *
      * @return array
      */
@@ -91,16 +42,16 @@ class Category extends Query
             return $this->categories;
         }
 
-        $data = Cache::get('categories');
+        $data = Cache::get('tree');
         if ($data) {
             $this->categories = $data;
             return $this->categories;
         }
 
-        $result = $this->query(self::URL . self::API . '/category/criteria.json');
-        if (!empty($result['categories'])) {
-            $this->categories = $result['categories'];
-            Cache::set('categories', $this->categories);
+        $result = $this->query(self::URL . self::API . '/category/tree.json');
+        if (!empty($result['tree'])) {
+            $this->categories = $result['tree'];
+            Cache::set('tree', $this->categories);
         } else {
             $this->categories = array();
         }
@@ -108,12 +59,11 @@ class Category extends Query
     }
 
     /**
-     * Uniquement les types de criteres
+     * Uniquement les types d'arborescence
      *
-     * @param bool $withBrand
      * @return array
      */
-    public function getCategoryTypes($withBrand = true)
+    public function getCategoryTypes()
     {
         $categories = $this->getCategories();
         if (!$categories) {
@@ -121,12 +71,6 @@ class Category extends Query
         }
 
         $types = array();
-        if ($withBrand) {
-            $types[] = array(
-                'name'     => self::TYPE_BRAND,
-                'title_fr' => 'Marque',
-            );
-        }
         foreach ($categories as $type) {
             if (empty($type['items'])) {
                 continue;
@@ -140,12 +84,11 @@ class Category extends Query
     }
 
     /**
-     * Uniquement les slugs des criteres
+     * Uniquement les slugs des categories de l'arborescence
      *
-     * @param bool $withBrand
      * @return array
      */
-    public function getCategoryTypeNames($withBrand = true)
+    public function getCategoryTypeNames()
     {
         $categories = $this->getCategories();
         if (!$categories) {
@@ -153,9 +96,6 @@ class Category extends Query
         }
 
         $names = array();
-        if ($withBrand) {
-            $names[] = self::TYPE_BRAND;
-        }
         foreach ($categories as $type) {
             if (empty($type['items'])) {
                 continue;
@@ -170,62 +110,44 @@ class Category extends Query
      */
     public function getDefaultTypeName()
     {
-        return self::TYPE_BRAND;
+        return self::TYPE_PUBLIC_CATEGORIES;
     }
 
     /**
-     * Retourner les categories selon le type
+     * Retourner les categories de l'arborescence selon le type
      *
      * @param string $typeName
      * @return array
      */
     public function getCategoriesByName($typeName)
     {
-        if (self::TYPE_BRAND == $typeName) {
-            return $this->getCategoriesByNameRecurs(true, $this->getBrands());
-        }
-
         $categories = $this->getCategories();
         if (empty($categories[$typeName]['items'])) {
             return array();
         }
 
-        return $this->getCategoriesByNameRecurs(false, $categories[$typeName]['items']);
+        return $this->getCategoriesByNameRecurs($categories[$typeName]['items']);
     }
 
     /**
-     * @param bool $isManufacturer sinon Feature
      * @param array $items
      * @param string $parentTitle LaboData
      * @return array
      */
-    protected function getCategoriesByNameRecurs($isManufacturer, $items, $parentTitle = '')
+    protected function getCategoriesByNameRecurs($items, $parentTitle = '')
     {
         if (empty($items)) {
             return array();
         }
 
-        if ($isManufacturer) {
-            $importInstance = ImportManufacturer::getInstance();
-        } else {
-            $importInstance = ImportFeature::getInstance();
-        }
+        $importInstance = ImportCategory::getInstance();
         $array = array();
         foreach ($items as $item) {
             $item['id_prestashop'] = '';
             $item['title_prestashop'] = '';
-            if ($isManufacturer) {
-                $idPrestashop = $importInstance->getIdManufacturerByIdLabodata($item['id']);
-            } else {
-                $idPrestashop = $importInstance->getIdFeatureValueByIdLabodata($item['id']);
-            }
+            $idPrestashop = $importInstance->getIdCategoryByIdLabodata($item['id']);
             if ($idPrestashop) {
-                if ($isManufacturer) {
-                    $objectPs = new Manufacturer($idPrestashop);
-                } else {
-                    $objectPs = new FeatureValue($idPrestashop);
-                }
-
+                $objectPs = new Category($idPrestashop);
                 if ($objectPs->id) {
                     $item['id_prestashop'] = (int) $objectPs->id;
                     $item['title_prestashop'] = ObjectModel::getName($objectPs);
@@ -239,29 +161,20 @@ class Category extends Query
             }
             $array = array_merge(
                 $array,
-                $this->getCategoriesByNameRecurs($isManufacturer, $item['children'], $item['title_fr'])
+                $this->getCategoriesByNameRecurs($item['children'], $item['title_fr'])
             );
         }
         return $array;
     }
 
     /**
-     * Retourner une categorie selon son ID
+     * Retourner une categorie de l'arboresence selon son ID
      *
      * @param int $id
      * @return array|null
      */
     public function getCategoryById($id)
     {
-        $cType = array(
-            'name'     => self::TYPE_BRAND,
-            'title_fr' => 'Marque',
-        );
-        $return = $this->getCategoryByIdRecurs($this->getBrands(), $id, $cType);
-        if ($return) {
-            return $return;
-        }
-
         foreach ($this->getCategories() as $type) {
             $cType = $type;
             unset($cType['items']);

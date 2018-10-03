@@ -27,7 +27,7 @@ use Tools;
 /**
  * Injection des elements LaboData vers Prestashop
  *
- * @method static ImportProduct getInstance()
+ * @method static ImportProduct getInstance($renew = false)
  */
 class ImportProduct extends AbstractImport
 {
@@ -49,12 +49,14 @@ class ImportProduct extends AbstractImport
         $this->hydrateProduct($product, $laboDataProduct);
         $product->save();
 
-        $prestashopIds = $this->convertCategoriesLaboDataToPrestashop($laboDataProduct);
-        if ('feature' == LaboData::MODE_CATEGORY) {
-            $this->addToFeatureValues($product, $prestashopIds);
-        } else {
-            $product->addToCategories($prestashopIds);
-        }
+        // Marque et caracteristique
+        $idsPrestashop = $this->convertCategoriesLaboDataToPrestashop($laboDataProduct, false);
+        $this->addToFeatureValues($product, $idsPrestashop);
+
+        // Arborescence
+        $idsPrestashop = $this->convertCategoriesLaboDataToPrestashop($laboDataProduct, true);
+        $product->addToCategories($idsPrestashop);
+
         if ($laboDataProduct->getBio()) {
             $idFeature = Feature::addFeatureImport('BIO');
             $idFeatureValue = ImportFeature::getInstance()->getFeatureValueIdByName('BIO', $idFeature);
@@ -177,29 +179,30 @@ class ImportProduct extends AbstractImport
 
     /**
      * @param LaboDataProduct $laboDataProduct
+     * @param bool $isTree Arborescence
      * @return int[]
      */
-    protected function convertCategoriesLaboDataToPrestashop($laboDataProduct)
+    protected function convertCategoriesLaboDataToPrestashop($laboDataProduct, $isTree)
     {
-        $laboDataCategory = $laboDataProduct->getCategoryIds();
+        $laboDataCategory = $isTree ? $laboDataProduct->getTreeIds() : $laboDataProduct->getCategoryIds();
         if (!$laboDataCategory) {
             return array();
         }
 
-        $prestashopIds = array();
+        $idsPrestashop = array();
         foreach ($laboDataCategory as $idLabodata) {
-            if ('feature' == LaboData::MODE_CATEGORY) {
-                $prestashopId = ImportFeature::getInstance()->getIdFeatureValueByIdLabodata($idLabodata);
-            } else { // 'category'
-                $prestashopId = ImportCategory::getInstance()->getIdCategoryByIdLabodata($idLabodata);
+            if ($isTree) {
+                $idPrestashop = ImportCategory::getInstance()->getIdCategoryByIdLabodata($idLabodata);
+            } else {
+                $idPrestashop = ImportFeature::getInstance()->getIdFeatureValueByIdLabodata($idLabodata);
             }
-            if (!$prestashopId) {
+            if (!$idPrestashop) {
                 continue;
             }
-            $prestashopIds[] = $prestashopId;
+            $idsPrestashop[] = $idPrestashop;
         }
 
-        return $prestashopIds;
+        return $idsPrestashop;
     }
 
     /**

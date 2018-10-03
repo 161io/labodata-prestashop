@@ -14,6 +14,7 @@ use Configuration;
 use Db;
 use DbQuery;
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
+use LaboDataPrestaShop\Api\Tree as LaboDataTree;
 use LaboDataPrestaShop\Stdlib\ArrayUtils;
 use LaboDataPrestaShop\Stdlib\CopyPaste;
 use Tools;
@@ -21,9 +22,9 @@ use Tools;
 /**
  * Injection des elements LaboData vers Prestashop
  *
- * @method static ImportCategory getInstance()
+ * @method static ImportCategory getInstance($renew = false)
  */
-class ImportCategory extends AbstractImport
+class ImportCategory extends AbstractImportCategory
 {
     /**
      * @var string
@@ -33,33 +34,41 @@ class ImportCategory extends AbstractImport
     /**
      * @var int[]
      */
-    protected $categoryLabodataIds;
+    protected $categoryTypeIds;
 
     /**
-     * @var int[]
+     * @return string
      */
-    protected $categoryTypeIds;
+    public function getTable()
+    {
+        return LaboDataCategory::DB_TABLE_CATEGORY;
+    }
 
     /**
      * Correspondance entre les categories LaboData et les categories Prestashop
      *
+     * @param bool $purgeIds
      * @return int[] id_category
      */
-    public function getCategoryLabodataIds()
+    public function getCategoryLabodataIds($purgeIds = true)
     {
-        if (null === $this->categoryLabodataIds) {
+        if (null === $this->dataLabodataIds) {
             // Nettoyage ( $this->idColumn )
-            $sql  = 'DELETE FROM `'._DB_PREFIX_.LaboDataCategory::DB_TABLE_CATEGORY.'` ';
-            $sql .= 'WHERE `id_category` NOT IN (SELECT `id_category` FROM `'._DB_PREFIX_.'category`)';
-            Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            if ($purgeIds) {
+                $sql  = 'DELETE FROM `'._DB_PREFIX_.$this->getTable().'` ';
+                $sql .= 'WHERE `id_category` NOT IN (';
+                $sql .=   'SELECT `id_category` FROM `'._DB_PREFIX_.'category` ';
+                $sql .= ')';
+                Db::getInstance(_PS_USE_SQL_SLAVE_)->execute($sql);
+            }
 
             $sql = new DbQuery();
-            $sql->from(LaboDataCategory::DB_TABLE_CATEGORY);
+            $sql->from($this->getTable());
             $ids = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
 
-            $this->categoryLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn, $this->labodataColumn);
+            $this->dataLabodataIds = ArrayUtils::arrayColumn($ids, $this->idColumn, $this->labodataColumn);
         }
-        return $this->categoryLabodataIds;
+        return $this->dataLabodataIds;
     }
 
     /**
@@ -143,6 +152,17 @@ class ImportCategory extends AbstractImport
             return null;
         }
 
+        if (isset($laboDataCategory['parent_id'])) {
+            $findCategory = $this->getIdCategoryByIdLabodata($laboDataCategory['parent_id']);
+            if (!$findCategory) {
+                $parent = LaboDataTree::getInstance()->getCategoryById($laboDataCategory['parent_id']);
+                $newCategory = $this->addCategory($parent);
+                $categoryTypeId = $newCategory->id;
+            } else {
+                $categoryTypeId = $findCategory;
+            }
+        }
+
         $name = $laboDataCategory['name'];
         $title = $laboDataCategory['title_fr'];
 
@@ -168,11 +188,25 @@ class ImportCategory extends AbstractImport
      * @param array $laboDataCategory
      * @return bool
      */
-    protected function addCategoryLabodata($category, $laboDataCategory)
+    public function addCategoryLabodata($category, $laboDataCategory)
     {
-        return Db::getInstance()->insert(LaboDataCategory::DB_TABLE_CATEGORY, array(
+        return Db::getInstance()->insert($this->getTable(), array(
             $this->idColumn       => (int) $category->id,
             $this->labodataColumn => (int) $laboDataCategory['id'],
         ));
+    }
+
+    /**
+     * Retirer le lien entre ids LaboData et Prestashop
+     *
+     * @param array $laboDataCategory
+     * @return bool
+     */
+    public function deleteCategoryLabodata($laboDataCategory)
+    {
+        return Db::getInstance()->delete(
+            $this->getTable(),
+            'id_labodata = ' . (int) $laboDataCategory['id']
+        );
     }
 }

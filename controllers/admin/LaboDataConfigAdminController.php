@@ -10,6 +10,7 @@
 use LaboDataPrestaShop\Api\Account;
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
 use LaboDataPrestaShop\Api\Query as LaboDataQuery;
+use LaboDataPrestaShop\Controller\StaticAdminController;
 use ModuleAdminController as NoTabModuleAdminController;
 
 /**
@@ -29,7 +30,7 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         parent::__construct();
 
         if (LaboDataCategory::getInstance()->canConnect()) {
-            $this->buildHeaderToolbar();
+            StaticAdminController::buildHeaderToolbar($this, $this->context);
         }
     }
 
@@ -41,19 +42,6 @@ class LaboDataConfigAdminController extends NoTabModuleAdminController
         $this->addJS($this->module->getPathUri() . '/views/js/config.min.js');
     }
 
-    private function buildHeaderToolbar()
-    {
-        $this->page_header_toolbar_btn['catalog'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataCatalogAdmin'),
-            'desc' => $this->module->lc('Catalogue LaboData'),
-            'icon' => 'process-icon-new',
-        );
-        $this->page_header_toolbar_btn['category'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataCategoryAdmin'),
-            'desc' => $this->module->lc('Marques/Caractéristiques'),
-            'icon' => 'process-icon-new',
-        );
-    }
     public function renderList()
     {
         $account = new Account();

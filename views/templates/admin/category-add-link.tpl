@@ -6,12 +6,6 @@
  * @license https://161.io
  *}
 
-{if $link}
-<a href="#" data-action="{$link|escape:'html':'UTF-8'}">
+<a href="#" data-action="{$link|escape:'html':'UTF-8'}"{if $disabled} disabled="disabled"{/if}>
   <i class="icon-plus"></i> {l s='Ajouter' mod='labodata'}
 </a>
-{else}
-<a href="#" disabled="disabled">
-  <i class="icon-plus"></i> {l s='Ajouter' mod='labodata'}
-</a>
-{/if}

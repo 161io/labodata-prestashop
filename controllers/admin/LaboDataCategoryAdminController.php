@@ -8,9 +8,13 @@
  */
 
 use LaboDataPrestaShop\Api\Category as LaboDataCategory;
+use LaboDataPrestaShop\Api\Tree as LaboDataTree;
+use LaboDataPrestaShop\Controller\CategoryResponseJson;
+use LaboDataPrestaShop\Controller\StaticAdminController;
 use LaboDataPrestaShop\Import\ImportCategory;
 use LaboDataPrestaShop\Import\ImportFeature;
 use LaboDataPrestaShop\Import\ImportManufacturer;
+use LaboDataPrestaShop\Stdlib\ObjectModel;
 use ModuleAdminController as NoTabModuleAdminController;
 
 /**
@@ -19,9 +23,23 @@ use ModuleAdminController as NoTabModuleAdminController;
 class LaboDataCategoryAdminController extends NoTabModuleAdminController
 {
     /**
+     * @var bool
+     * @see LaboDataTreeAdminController
+     */
+    protected $treeMode = false;
+
+    /**
      * @var string
      */
     protected $typeSelected;
+
+    /**
+     * @return LaboDataCategory|LaboDataTree
+     */
+    protected function getCoreInstance()
+    {
+        return $this->treeMode ? LaboDataTree::getInstance() : LaboDataCategory::getInstance();
+    }
 
     public function __construct()
     {
@@ -30,11 +48,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         parent::__construct();
 
         $this->typeSelected = Tools::getValue('type');
-        if (!in_array($this->typeSelected, LaboDataCategory::getInstance()->getCategoryTypeNames())) {
-            $this->typeSelected = LaboDataCategory::TYPE_BRAND;
+        if (!in_array($this->typeSelected, $this->getCoreInstance()->getCategoryTypeNames())) {
+            $this->typeSelected = $this->getCoreInstance()->getDefaultTypeName();
         }
 
-        $this->buildHeaderToolbar();
+        StaticAdminController::buildHeaderToolbar($this, $this->context);
     }
 
     public function setMedia($isNewTheme = false)
@@ -45,24 +63,10 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
         $this->addJS($this->module->getPathUri() . '/views/js/category.min.js');
     }
 
-    private function buildHeaderToolbar()
-    {
-        $this->page_header_toolbar_btn['catalog'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataCatalogAdmin'),
-            'desc' => $this->module->lc('Catalogue LaboData'),
-            'icon' => 'process-icon-new',
-        );
-        $this->page_header_toolbar_btn['config'] = array(
-            'href' => $this->context->link->getAdminLink('LaboDataConfigAdmin'),
-            'desc' => $this->module->lc('Configuration'),
-            'icon' => 'process-icon-configure',
-        );
-    }
-
     public function initContent()
     {
         // Connexion non configuree
-        if (!LaboDataCategory::getInstance()->canConnect()) {
+        if (!$this->getCoreInstance()->canConnect()) {
             Tools::redirectAdmin($this->context->link->getAdminLink('LaboDataConfigAdmin'));
             return;
         }
@@ -76,16 +80,26 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
 
 
 
-    private function initList()
+    protected function initList()
     {
         $this->fields_list = array(
             'id' => array(
-                'title' => $this->module->lc('id'),
+                'title' => $this->module->lc('ID LaboData'),
                 'width' => 100,
                 'type'  => 'text',
             ),
             'title_fr' => array(
-                'title' => $this->module->lc('Titre'),
+                'title' => $this->module->lc('Titre LaboData'),
+                'width' => 140,
+                'type'  => 'text',
+            ),
+            'id_prestashop' => array(
+                'title' => $this->module->lc('ID Prestashop'),
+                'width' => 100,
+                'type'  => 'editable',
+            ),
+            'title_prestashop' => array(
+                'title' => $this->module->lc('Titre Prestashop'),
                 'width' => 140,
                 'type'  => 'text',
             ),
@@ -113,32 +127,25 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
      */
     public function displayAddLink($token, $id, $name = null)
     {
-        if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
-            $exists = ImportManufacturer::getInstance()->getIdManufacturerByIdLabodata($id);
+        if ($this->treeMode) {
+            $idPrestashop = ImportCategory::getInstance()->getIdCategoryByIdLabodata($id);
+            $linkAction = 'addCategory';
+        } elseif (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
+            $idPrestashop = ImportManufacturer::getInstance()->getIdManufacturerByIdLabodata($id);
+            $linkAction = 'addManufacturer';
         } else {
-            if ('feature' == LaboData::MODE_CATEGORY) {
-                $exists = ImportFeature::getInstance()->getIdFeatureValueByIdLabodata($id);
-            } else { // 'category'
-                $exists = ImportCategory::getInstance()->getIdCategoryByIdLabodata($id);
-            }
+            $idPrestashop = ImportFeature::getInstance()->getIdFeatureValueByIdLabodata($id);
+            $linkAction = 'addFeatureValue';
         }
 
-        if ($exists) {
-            $link = false;
-        } else {
-            if (LaboDataCategory::TYPE_BRAND == $this->typeSelected) {
-                $action = 'addManufacturer';
-            } else {
-                $action = 'feature' == LaboData::MODE_CATEGORY ? 'addFeatureValue' : 'addCategory';
-            }
-            $link = $this->context->link->getAdminLink($this->controller_name)
-                  . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $action;
-        }
+        $link = $this->context->link->getAdminLink($this->controller_name)
+              . '&type=' . $this->typeSelected . '&id=' . $id . '&action=' . $linkAction;
 
         $smarty = $this->context->smarty;
         /* @var Smarty $tpl */
         $tpl = $smarty->createTemplate($this->getTemplatePath() . 'category-add-link.tpl', $smarty);
         $tpl->assign('link', $link);
+        $tpl->assign('disabled', (bool) $idPrestashop);
         return $tpl->fetch();
     }
 
@@ -151,11 +158,10 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     {
         $smarty = $this->context->smarty;
         $smarty->assign(array(
-            'types'         => LaboDataCategory::getInstance()->getCategoryTypes(),
+            'types'         => $this->getCoreInstance()->getCategoryTypes(),
             'type_link'     => $this->context->link->getAdminLink($this->controller_name) . '&type=',
             'type_selected' => $this->typeSelected,
         ));
-
         return $smarty->fetch($this->getTemplatePath() . 'category-kpis.tpl');
     }
 
@@ -163,64 +169,38 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
     {
         $helper = $this->initList();
         return $helper->generateList(
-            LaboDataCategory::getInstance()->getCategoriesByName($this->typeSelected),
+            $this->getCoreInstance()->getCategoriesByName($this->typeSelected),
             $this->fields_list
         );
     }
 
-    private function xhrProcess()
+    protected function xhrProcess()
     {
-        $action = Tools::substr(Tools::getValue('action'), 0, 20);
-        $id = (int) Tools::getValue('id'); // idLabodata (category)
+        $json = new CategoryResponseJson();
+        $json->init();
+        $json->type = $this->typeSelected;
 
-        $json = array(
-            'action' => $action,
-            'id'     => $id,
-            'type'   => $this->typeSelected,
-        );
-
-        switch ($action) {
+        switch ($json->action) {
+            // Marque
             case 'addManufacturer':
-                $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psManufacturer = ImportManufacturer::getInstance()->addManufacturer($json['ldCategory']);
-                if ($psManufacturer) {
-                    $json['psIdManufacturer'] = $psManufacturer->id;
-                    $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Marque créée :') . ' ' . $psManufacturer->name;
-                } else {
-                    $json['psIdManufacturer'] = null;
-                    $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la marque');
-                }
+                $this->actionAddManufacturer($json);
                 break;
+            case 'bindManufacturer':
+                $this->actionBindManufacturer($json);
+                break;
+            // Caracteristique
             case 'addFeatureValue':
-                $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psFeatureValue = ImportFeature::getInstance()->addFeatureValue($json['ldCategory']);
-                if ($psFeatureValue) {
-                    $json['psIdFeatureValue'] = $psFeatureValue->id;
-                    $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Caractéristique (valeur) :')
-                                            . ' ' . $psFeatureValue->value[$this->context->language->id];
-                } else {
-                    $json['psIdFeatureValue'] = null;
-                    $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc(
-                        'Erreur lors de la création de la caractéristique (valeur)'
-                    );
-                }
+                $this->actionAddFeatureValue($json);
                 break;
+            case 'bindFeatureValue':
+                $this->actionBindFeatureValue($json);
+                break;
+            // Arborescence
             case 'addCategory':
-                $json['ldCategory'] = LaboDataCategory::getInstance()->getCategoryById($id);
-                $psCategory = ImportCategory::getInstance()->addCategory($json['ldCategory']);
-                if ($psCategory) {
-                    $json['psIdCategory'] = $psCategory->id;
-                    $json['growlType'] = 'notice';
-                    $json['growlMessage'] = $this->module->lc('Catégorie créée :') . ' ' . $psCategory->getName();
-                } else {
-                    $json['psIdCategory'] = null;
-                    $json['growlType'] = 'error';
-                    $json['growlMessage'] = $this->module->lc('Erreur lors de la création de la catégorie');
-                }
+                $this->actionAddCategory($json);
+                break;
+            case 'bindCategory':
+                $this->actionBindCategory($json);
                 break;
         }
 
@@ -228,6 +208,204 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
             ob_end_clean();
         }
         header('Content-Type: application/json');
-        $this->ajaxDie(json_encode($json));
+        $this->ajaxDie($json->toString());
+    }
+
+    /**
+     * Ajouter une marque
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionAddManufacturer($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        $psObject = ImportManufacturer::getInstance()->addManufacturer($json->ldCategory);
+        if ($psObject) {
+            $json->psIdObject = $psObject->id;
+            $json->psNameObject = ObjectModel::getName($psObject);
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Marque créée :') . ' ' . ObjectModel::getName($psObject);
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Erreur lors de la création de la marque');
+        }
+    }
+
+    /**
+     * Lier une marque
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionBindManufacturer($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        if (!$json->ldCategory) {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Marque introuvable') . ' (LaboData: #' . $json->id . ')';
+            return;
+        }
+
+        if ($json->deleteIdPrestashop()) {
+            ImportManufacturer::getInstance()->deleteManufacturerLabodata($json->ldCategory);
+            $json->psIdObject = $json->idPrestashop;
+
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Marque déliée');
+
+        } elseif ($json->idPrestashop > 0) {
+            $psObject = new Manufacturer($json->idPrestashop);
+            if ($psObject->id) {
+                $json->psIdObject = $psObject->id;
+                $json->psNameObject = ObjectModel::getName($psObject);
+
+                $json->growlType = 'notice';
+                $json->growlMessage = $module->lc('Marque liée :') . ' ' . ObjectModel::getName($psObject);
+
+                ImportManufacturer::getInstance()->addManufacturerLabodata($psObject, $json->ldCategory);
+            } else {
+                $json->growlType = 'error';
+                $json->growlMessage = $module->lc('Marque introuvable')
+                                    . ' (Prestashop: #' . $json->idPrestashop . ')';
+            }
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Marque introuvable') . ' (Prestashop: #' . $json->idPrestashop . ')';
+        }
+    }
+
+    /**
+     * Ajouter une caracteristique
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionAddFeatureValue($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        $psObject = ImportFeature::getInstance()->addFeatureValue($json->ldCategory);
+        if ($psObject) {
+            $json->psIdObject = $psObject->id;
+            $json->psNameObject = ObjectModel::getName($psObject);
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Caractéristique (valeur) :') . ' ' . ObjectModel::getName($psObject);
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Erreur lors de la création de la caractéristique (valeur)');
+        }
+    }
+
+    /**
+     * Lier une caracteristique
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionBindFeatureValue($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        if (!$json->ldCategory) {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Caractéristique introuvable') . ' (LaboData: #' . $json->id . ')';
+            return;
+        }
+
+        if ($json->deleteIdPrestashop()) {
+            ImportFeature::getInstance()->deleteFeatureValueLabodata($json->ldCategory);
+            $json->psIdObject = $json->idPrestashop;
+
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Caractéristique déliée');
+
+        } elseif ($json->idPrestashop > 0) {
+            $psObject = new FeatureValue($json->idPrestashop);
+            if ($psObject->id) {
+                $json->psIdObject = $psObject->id;
+                $json->psNameObject = ObjectModel::getName($psObject);
+
+                $json->growlType = 'notice';
+                $json->growlMessage = $module->lc('Caractéristique liée :') . ' ' . ObjectModel::getName($psObject);
+
+                ImportFeature::getInstance()->addFeatureValueLabodata($psObject, $json->ldCategory);
+            } else {
+                $json->growlType = 'error';
+                $json->growlMessage = $module->lc('Caractéristique introuvable')
+                                    . ' (Prestashop: #' . $json->idPrestashop . ')';
+            }
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Caractéristique introuvable')
+                                . ' (Prestashop: #' . $json->idPrestashop . ')';
+        }
+    }
+
+    /**
+     * Ajouter une categorie arborescence
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionAddCategory($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        $psObject = ImportCategory::getInstance()->addCategory($json->ldCategory);
+        $psParentObject = new Category($psObject->id_parent);
+        if ($psObject) {
+            $json->psIdObject = $psObject->id;
+            $json->psNameObject = ObjectModel::getName($psObject);
+            if ($psParentObject->id) {
+                $json->psIdParentObject = $psObject->id_parent;
+                $json->psNameParentObject = ObjectModel::getName($psParentObject);
+            }
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Catégorie créée :') . ' ' . ObjectModel::getName($psObject);
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Erreur lors de la création de la catégorie');
+        }
+    }
+
+    /**
+     * Lier une categorie arborescence
+     *
+     * @param CategoryResponseJson $json
+     */
+    protected function actionBindCategory($json)
+    {
+        $module = $this->module;
+        $json->ldCategory = $this->getCoreInstance()->getCategoryById($json->id);
+        if (!$json->ldCategory) {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Catégorie introuvable') . ' (LaboData: #' . $json->id . ')';
+            return;
+        }
+
+        if ($json->deleteIdPrestashop()) {
+            ImportCategory::getInstance()->deleteCategoryLabodata($json->ldCategory);
+            $json->psIdObject = $json->idPrestashop;
+
+            $json->growlType = 'notice';
+            $json->growlMessage = $module->lc('Catégorie déliée');
+
+        } elseif ($json->idPrestashop > 0) {
+            $psObject = new Category($json->idPrestashop);
+            if ($psObject->id) {
+                $json->psIdObject = $psObject->id;
+                $json->psNameObject = ObjectModel::getName($psObject);
+
+                $json->growlType = 'notice';
+                $json->growlMessage = $module->lc('Catégorie liée :') . ' ' . ObjectModel::getName($psObject);
+
+                ImportCategory::getInstance()->addCategoryLabodata($psObject, $json->ldCategory);
+            } else {
+                $json->growlType = 'error';
+                $json->growlMessage = $module->lc('Catégorie introuvable')
+                                    . ' (Prestashop: #' . $json->idPrestashop . ')';
+            }
+        } else {
+            $json->growlType = 'error';
+            $json->growlMessage = $module->lc('Catégorie introuvable') . ' (Prestashop: #' . $json->idPrestashop . ')';
+        }
     }
 }

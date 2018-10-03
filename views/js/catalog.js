@@ -90,7 +90,7 @@
         var xhr = $.ajax({
             url     : $laboDataResult.data('url-import'),
             type    : 'POST',
-            cache   : false,
+            //cache : false,
             data    : options,
             dataType: 'json'
         });

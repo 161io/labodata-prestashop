@@ -20,17 +20,13 @@ abstract class AbstractImport
     protected $lang;
 
     /**
-     * @var string
-     */
-    protected $labodataColumn = 'id_labodata';
-
-    /**
+     * @param bool $renew
      * @return self
      */
-    public static function getInstance()
+    public static function getInstance($renew = false)
     {
         static $instance;
-        if (null === $instance) {
+        if (null === $instance || $renew) {
             $instance = new static();
         }
         return $instance;
