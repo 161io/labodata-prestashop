@@ -253,7 +253,6 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
 
             $json->growlType = 'notice';
             $json->growlMessage = $module->lc('Marque déliée');
-
         } elseif ($json->idPrestashop > 0) {
             $psObject = new Manufacturer($json->idPrestashop);
             if ($psObject->id) {
@@ -317,7 +316,6 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
 
             $json->growlType = 'notice';
             $json->growlMessage = $module->lc('Caractéristique déliée');
-
         } elseif ($json->idPrestashop > 0) {
             $psObject = new FeatureValue($json->idPrestashop);
             if ($psObject->id) {
@@ -387,7 +385,6 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
 
             $json->growlType = 'notice';
             $json->growlMessage = $module->lc('Catégorie déliée');
-
         } elseif ($json->idPrestashop > 0) {
             $psObject = new Category($json->idPrestashop);
             if ($psObject->id) {
