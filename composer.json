@@ -6,7 +6,7 @@
   "keywords": [
     "prestashop", "module", "database", "labodata", "pharmacy"
   ],
-  "homepage": "https://www.labodata.fr",
+  "homepage": "https://www.labodata.com",
   "config": {
     "autoloader-suffix": "LaboDataPrestashop"
   },

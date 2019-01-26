@@ -13,7 +13,7 @@ use Configuration;
 
 class Query
 {
-    const URL = 'https://www.labodata.fr';
+    const URL = 'https://www.labodata.com';
     const API = '/api/v1';
 
     const CONF_EMAIL      = 'MOD_LABODATA_EMAIL';

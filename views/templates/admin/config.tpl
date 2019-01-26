@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="text-center">
-          <a href="https://www.labodata.fr/user" target="_blank">{l s='Vous n\'avez pas de compte LaboData ?' mod='labodata'}</a>
+          <a href="https://www.labodata.com/user" target="_blank">{l s='Vous n\'avez pas de compte LaboData ?' mod='labodata'}</a>
         </div>
       </div>
     </div>
@@ -68,7 +68,7 @@
   <div class="panel-heading">
     <span class="pull-right hidden-xs">&copy; <a href="https://161.io" target="_blank"><strong>161</strong> SARL</a></span>
     <i class="icon-phone-sign"></i> {l s='Contacter le support technique' mod='labodata'}
-    &nbsp;<a href="https://www.labodata.fr" target="_blank">www.labodata.fr</a>
+    &nbsp;<a href="https://www.labodata.com" target="_blank">www.labodata.com</a>
   </div>
 
   <div class="row">
@@ -81,7 +81,7 @@
       </p>
     </div>
     <div class="col-xs-offset-4 col-xs-4 col-sm-offset-0 col-sm-2 col-md-1">
-      <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive center-block" width="60" height="64"/></a>
+      <a href="https://www.labodata.com" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive center-block" width="60" height="64"/></a>
     </div>
   </div>
 </div>

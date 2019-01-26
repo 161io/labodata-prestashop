@@ -1,13 +1,13 @@
 # LaboData pour Prestashop
 
-Module https://www.labodata.fr permettant d'importer des fiches produits dans Prestashop version 1.6 et 1.7
+Module https://www.labodata.com permettant d'importer des fiches produits dans Prestashop version 1.6 et 1.7
 
 
 ## FAQ
 
 ### Comment obtenir ma clé API ?
 
-* Vous devez vous inscrire sur le site : https://www.labodata.fr
+* Vous devez vous inscrire sur le site : https://www.labodata.com
 * Puis dans la zone **Mon compte**, consulter la section **Mon compte et API**
 
 

@@ -11,7 +11,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-sm-1 hidden-xs">
-        <a href="https://www.labodata.fr" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
+        <a href="https://www.labodata.com" target="_blank"><img src="{$path_uri_img|escape:'html':'UTF-8'}logo.png" alt="LaboData" class="img-responsive" width="60" height="64"/></a>
       </div>
       <div class="col-sm-11 text-right">
         <span class="hidden-xs">{l s='Raccourcis :' mod='labodata'} &nbsp;</span>
@@ -157,7 +157,7 @@ var LaboDataTranslate={
 <div class="panel text-center" id="labodata-result">
   <h2>{l s='Votre cherche n\'a retourné aucun résultat...' mod='labodata'}</h2>
   <p><br/>{l s='N\'hésitez pas à nous contacter directement sur le site LaboData, si vous recherchez des produits en particulier.' mod='labodata'}</p>
-  <p><br/><a href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" class="btn btn-default btn-lg" target="_blank">{l s='Accéder au site LaboData.fr' mod='labodata'}</a></p>
+  <p><br/><a href="{$labodata_redirect_autoconnect|escape:'html':'UTF-8'}" class="btn btn-default btn-lg" target="_blank">{l s='Accéder au site LaboData' mod='labodata'}</a></p>
 </div>
 
 {/if}
