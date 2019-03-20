@@ -95,7 +95,8 @@
       <tr data-product="{$product.id|escape:'html':'UTF-8'}">
         <td><img src="{$product.image|escape:'html':'UTF-8'}" alt="labodata" class="img-responsive center-block"/></td>
         <td>
-          <strong>{$product.brand.title_fr|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title_fr|escape:'html':'UTF-8'}</span><br/>
+          <strong>{$product.brand.title_fr|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title_fr|escape:'html':'UTF-8'}</span>
+          {if $product.premium} <i class="icon-certificate"></i>{/if}{if $product.private} <i class="icon-lock"></i>{/if}<br/>
           <span class="text-muted">{$product.content_fr|escape:'html':'UTF-8'}</span><br/>
           <code>{$product.code|escape:'html':'UTF-8'}</code>
         </td>
