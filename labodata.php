@@ -46,7 +46,7 @@ class LaboData extends Module
         parent::__construct();
 
         $this->displayName = 'LaboData';
-        $this->description = $this->l('Constituez le catalogue de votre pharmacie ou parapharmacie en ligne avec LaboData avec +12000 fiches produits avec photos et descriptifs. Menu : "Catalogue" >> "LaboData"');
+        $this->description = $this->l('Constituez le catalogue de votre pharmacie ou parapharmacie en ligne avec LaboData avec +20000 fiches produits avec photos et descriptifs. Menu : "Catalogue" >> "LaboData"');
         $this->confirmUninstall = $this->l('Êtes-vous sûr de vouloir désinstaller le module ?');
 
         if (!Configuration::get('LABODATA_NAME')) {

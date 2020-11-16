@@ -27,6 +27,11 @@ class Search extends Query
     /**
      * @const string
      */
+    const ORDER_BY_ID_DESC = 'id-desc';
+
+    /**
+     * @const string
+     */
     const ORDER_BY_DATE_DESC = 'date-desc';
 
     /**
@@ -63,6 +68,7 @@ class Search extends Query
     {
         $values = array(
             self::ORDER_BY_TITLE_ASC,
+            self::ORDER_BY_ID_DESC,
             self::ORDER_BY_DATE_DESC,
         );
 

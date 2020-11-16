@@ -2,7 +2,7 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{labodata}prestashop>labodata_766ab7192e22a790f720bf6b36b20132'] = 'Constituez le catalogue de votre pharmacie ou parapharmacie en ligne avec LaboData avec +12000 fiches produits avec photos et descriptifs. Menu : \"Catalogue\" >> \"LaboData\"';
+$_MODULE['<{labodata}prestashop>labodata_610e602342058322ff2092b71eb86ea5'] = 'Constituez le catalogue de votre pharmacie ou parapharmacie en ligne avec LaboData avec +20000 fiches produits avec photos et descriptifs. Menu : \"Catalogue\" >> \"LaboData\"';
 $_MODULE['<{labodata}prestashop>labodata_b1e96013e1b2ce8a9a979ec14eba64eb'] = 'Êtes-vous sûr de vouloir désinstaller le module ?';
 $_MODULE['<{labodata}prestashop>labodata_dcce417efe27086dea01de2ea913ed63'] = 'Aucun module portant ce nom n\'a été trouvé';
 $_MODULE['<{labodata}prestashop>labodata_556b86f2a35ed919649df4a55c429f83'] = 'Catalogue LaboData';
@@ -41,6 +41,7 @@ $_MODULE['<{labodata}prestashop>catalog_3c5fdc991ed16c44a8365fe66d96d745'] = 'Re
 $_MODULE['<{labodata}prestashop>catalog_b8c4c2cd6e0f11e2fbb894caeaeccef3'] = 'Tri';
 $_MODULE['<{labodata}prestashop>catalog_e375f34b0c7737826e957c5659322dd6'] = 'Trier par';
 $_MODULE['<{labodata}prestashop>catalog_902fbdd2b1df0c4f70b4a5d23525e932'] = 'ABC';
+$_MODULE['<{labodata}prestashop>catalog_c6675ee2d2782288af09e65b77f84349'] = 'Nouveautés';
 $_MODULE['<{labodata}prestashop>catalog_44749712dbec183e983dcd78a7736c41'] = 'Date';
 $_MODULE['<{labodata}prestashop>catalog_69059d1f983234faf2cabda13c0e7fdf'] = 'Ordre alphabétique';
 $_MODULE['<{labodata}prestashop>catalog_bcd693c4a26edb8c2e8cb6065dba36a6'] = 'Dernières mises à jour';
