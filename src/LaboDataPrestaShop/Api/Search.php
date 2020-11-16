@@ -80,6 +80,20 @@ class Search extends Query
     }
 
     /**
+     * $_GET: Deja/jamais achete
+     *
+     * @return string
+     */
+    public function getPurchaseValue()
+    {
+        $purchase = (string) Tools::getValue('purchase');
+        if ('0' === $purchase || '1' === $purchase) {
+            return $purchase;
+        }
+        return '';
+    }
+
+    /**
      * $_GET: Page
      *
      * @return int
@@ -101,10 +115,11 @@ class Search extends Query
     {
         if ('auto' == $options) {
             $options = array(
-                'brand' => $this->getBrandValue(),
-                'q'     => $this->getQValue(),
-                'order' => $this->getOrderValue(),
-                'page'  => $this->getPageNumberValue(),
+                'brand'    => $this->getBrandValue(),
+                'q'        => $this->getQValue(),
+                'order'    => $this->getOrderValue(),
+                'page'     => $this->getPageNumberValue(),
+                'purchase' => $this->getPurchaseValue(),
             );
         }
 
@@ -161,12 +176,16 @@ class Search extends Query
         $link = Context::getContext()->link->getAdminLink('LaboDataCatalogAdmin');
         $queryBrand = $this->getBrandValue();
         $queryQ = $this->getQValue();
+        $queryPurchase = $this->getPurchaseValue();
         $queryOrder = $this->getOrderValue();
         if ($queryBrand) {
             $link .= '&brand=' . $queryBrand;
         }
         if ($queryQ) {
             $link .= '&q=' . urlencode($queryQ);
+        }
+        if ('' !== $queryPurchase) {
+            $link .= '&purchase=' . urlencode($queryPurchase);
         }
         if ($queryOrder) {
             $link .= '&order=' . urlencode($queryOrder);

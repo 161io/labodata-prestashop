@@ -36,6 +36,13 @@
             {/foreach}
         </select>
       </div>
+      <div class="form-group">
+        <select name="purchase">
+          <option value="">- {l s='Toutes les fiches' mod='labodata'} -</option>
+          <option value="1"{if '1' === $form_purchase} selected="selected"{/if}>{l s='Fiches déjà achetées' mod='labodata'}</option>
+          <option value="0"{if '0' === $form_purchase} selected="selected"{/if}>{l s='Fiches jamais achetées' mod='labodata'}</option>
+        </select>
+      </div>
       <div class="form-group" id="queryGroup">
         <div class="input-group">
           <input type="search" name="q" placeholder="{l s='Rechercher un produit, un médicament, un code cip...' mod='labodata'}" value="{$form_q|escape:'html':'UTF-8'}" autofocus="autofocus"/>
