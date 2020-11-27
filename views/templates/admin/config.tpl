@@ -46,16 +46,23 @@
         <p class="text-danger">{l s='Merci de remplir les champs ci-dessus pour utiliser LaboData.' mod='labodata'}</p>
       {/if}
       {if isset($account.credit)}
-        <p class="text-success">
-          {l s='Vous êtes connecté en tant que :' mod='labodata'}<br/>
-          {$account.firstname|escape:'html':'UTF-8'} {$account.lastname|escape:'html':'UTF-8'} <strong>{$account.society|escape:'html':'UTF-8'}</strong>
-        </p>
+        <div>
+          {l s='Vous êtes connecté en tant que :' mod='labodata'}
+          <span class="text-success">{$account.firstname|escape:'html':'UTF-8'} {$account.lastname|escape:'html':'UTF-8'} <strong>{$account.society|escape:'html':'UTF-8'}</strong></span>
+          <br/>
+          {foreach $account.langs as $lang}
+            {if $lang.active}
+              <span title="{$lang.code|escape:'html':'UTF-8'}">{$lang.title|escape:'html':'UTF-8'}&nbsp;:
+              <strong class="text-success">On</strong>{if $lang.default}*{/if} &nbsp;</span>
+            {/if}
+          {/foreach}
+        </div>
       {/if}
       {if $account.error}
-        <p class="text-danger">
+        <div class="text-danger">
           {l s='Vous n\'êtes pas connecté!' mod='labodata'}<br/>
           {$account.error.message|escape:'html':'UTF-8'} <strong>{$account.error.code|escape:'html':'UTF-8'}</strong>
-        </p>
+        </div>
       {/if}
     </div>
   </div>
