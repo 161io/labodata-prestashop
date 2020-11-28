@@ -159,6 +159,7 @@ class Search extends Query
     public function getProducts()
     {
         $result = $this->getLastResult();
+        $this->setLangsFromResult($result);
         if (isset($result['items'])) {
             return $result['items'];
         }

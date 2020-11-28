@@ -10,6 +10,7 @@
 namespace LaboDataPrestaShop\Api;
 
 use Configuration;
+use LaboDataPrestaShop\Stdlib\Cache;
 
 class Query
 {
@@ -23,6 +24,11 @@ class Query
      * @var mixed
      */
     protected $error;
+
+    /**
+     * @var array
+     */
+    protected $langs;
 
     /**
      * @return self
@@ -86,5 +92,108 @@ class Query
     public function canConnect()
     {
         return Configuration::get(self::CONF_EMAIL) && Configuration::get(self::CONF_SECRET_KEY);
+    }
+
+    /**
+     * @return array
+     */
+    public function getLangs()
+    {
+        return $this->langs;
+    }
+
+    /**
+     * @param array $langs
+     * @return self
+     */
+    protected function setLangs($langs)
+    {
+        $this->langs = (array) $langs;
+        return $this;
+    }
+
+    /**
+     * @param array $result sauf account.json
+     * @param bool $setCache
+     * @return self
+     */
+    protected function setLangsFromResult($result, $setCache = true)
+    {
+        if (!empty($result['langs'])) {
+            $this->setLangs($result['langs']);
+            if ($setCache) {
+                Cache::set('langs', $this->langs);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultLang()
+    {
+        $langs = $this->getLangs();
+        return (string) (isset($langs['default']) ? $langs['default'] : 'fr');
+    }
+
+    /**
+     * @return array
+     */
+    public function getActiveLangs()
+    {
+        $langs = $this->getLangs();
+        return (array) (isset($langs['actives']) ? $langs['actives'] : ['fr']);
+    }
+
+    /**
+     * Traduction d'une cle selon les langues disponibles
+     *
+     * @param array $item
+     * @param string $key
+     * @param string $lang
+     * @param string $defaultValue
+     * @return string
+     */
+    public function getTransArray($item, $key = 'title', $lang = null, $defaultValue = '')
+    {
+        if ($lang && !empty($item[$key . '_' . $lang])) {
+            return $item[$key . '_' . $lang];
+        }
+
+        $lang = $this->getDefaultLang();
+        if (!empty($item[$key . '_' . $lang])) {
+            return $item[$key . '_' . $lang];
+        }
+        if (count($this->getActiveLangs()) < 2) {
+            return $defaultValue;
+        }
+
+        foreach ($this->getActiveLangs() as $lang) {
+            if (!empty($item[$key . '_' . $lang])) {
+                return $item[$key . '_' . $lang];
+            }
+        }
+        return $defaultValue;
+    }
+
+    /**
+     * Creer le cle "title"
+     *
+     * @param array $categories
+     * @return array
+     */
+    public function setCategoryTitles($categories)
+    {
+        foreach ($categories as &$category) {
+            $category['title'] = $this->getTransArray($category);
+            if (isset($category['items'])) { // type
+                $category['items'] = $this->setCategoryTitles($category['items']);
+            }
+            if (isset($category['children'])) { // sous-category
+                $category['children'] = $this->setCategoryTitles($category['children']);
+            }
+        }
+        return $categories;
     }
 }

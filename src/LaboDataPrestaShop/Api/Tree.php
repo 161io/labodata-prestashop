@@ -32,6 +32,17 @@ class Tree extends Query
     protected $categories;
 
     /**
+     * @return array
+     */
+    public function getLangs()
+    {
+        if (null === $this->langs) {
+            $this->getCategories();
+        }
+        return $this->langs;
+    }
+
+    /**
      * Retourner Les categories de l'arborescence
      *
      * @return array
@@ -42,15 +53,19 @@ class Tree extends Query
             return $this->categories;
         }
 
-        $data = Cache::get('tree');
-        if ($data) {
-            $this->categories = $data;
+        $langs = Cache::get('langs');
+        $categories = Cache::get('tree');
+        if ($langs && $categories) {
+            $this->setLangs($langs);
+            $this->categories = $categories;
             return $this->categories;
         }
 
         $result = $this->query(self::URL . self::API . '/category/tree.json');
+        $this->setLangsFromResult($result);
         if (!empty($result['tree'])) {
-            $this->categories = $result['tree'];
+            $categories = $this->setCategoryTitles($result['tree']);
+            $this->categories = $categories;
             Cache::set('tree', $this->categories);
         } else {
             $this->categories = array();
@@ -76,6 +91,7 @@ class Tree extends Query
                 continue;
             }
             unset($type['items']);
+            $type['title'] = $this->getTransArray($type);
 
             $types[] = $type;
         }
@@ -153,7 +169,7 @@ class Tree extends Query
                     $item['title_prestashop'] = ObjectModel::getName($objectPs);
                 }
             }
-            $item['title_fr'] = ($parentTitle ? $parentTitle . ' > ' : '') . $item['title_fr'];
+            $item['title'] = ($parentTitle ? $parentTitle . ' > ' : '') . $item['title'];
             $array[] = $item;
 
             if (empty($item['children'])) {
@@ -161,7 +177,7 @@ class Tree extends Query
             }
             $array = array_merge(
                 $array,
-                $this->getCategoriesByNameRecurs($item['children'], $item['title_fr'])
+                $this->getCategoriesByNameRecurs($item['children'], $item['title'])
             );
         }
         return $array;

@@ -24,6 +24,7 @@ class Product extends Query
      * Langues supportees par LaboData
      *
      * @var string[]
+     * TODO non compatible
      */
     protected $langs = array('fr');
 
@@ -98,6 +99,7 @@ class Product extends Query
             'id' => $id,
         ));
 
+        $this->setLangsFromResult($this->lastResult);
         if (isset($this->lastResult[self::ROOT_KEY])) {
             return $this->lastResult[self::ROOT_KEY];
         }

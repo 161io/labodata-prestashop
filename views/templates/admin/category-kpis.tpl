@@ -23,7 +23,7 @@
 <div class="panel">
   <div class="btn-group">
     {foreach $types as $type}
-      <a href="{$type_link|escape:'html':'UTF-8'}{$type.name|escape:'html':'UTF-8'}" class="btn btn-default{if $type.name == $type_selected} active{/if}">{l s=$type.title_fr mod='labodata'}</a>
+      <a href="{$type_link|escape:'html':'UTF-8'}{$type.name|escape:'html':'UTF-8'}" class="btn btn-default{if $type.name == $type_selected} active{/if}">{l s=$type.title mod='labodata'}</a>
     {/foreach}
   </div>
   <button class="btn btn-primary pull-right" id="btn-add-all" data-confirm="{l s='Etes-vous sûr de vouloir ajouter toutes les éléments manquants ci-dessous ?' mod='labodata'}">

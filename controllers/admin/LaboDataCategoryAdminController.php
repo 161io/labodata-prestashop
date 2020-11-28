@@ -88,7 +88,7 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
                 'width' => 100,
                 'type'  => 'text',
             ),
-            'title_fr' => array(
+            'title' => array(
                 'title' => $this->module->lc('Titre LaboData'),
                 'width' => 140,
                 'type'  => 'text',
@@ -208,7 +208,11 @@ class LaboDataCategoryAdminController extends NoTabModuleAdminController
             ob_end_clean();
         }
         header('Content-Type: application/json');
-        $this->ajaxDie($json->toString());
+        if (method_exists($this, 'ajaxRender')) {
+            $this->ajaxRender($json->toString());
+        } else {
+            $this->ajaxDie($json->toString());
+        }
     }
 
     /**

@@ -54,6 +54,17 @@ class Category extends Query
     protected $categories;
 
     /**
+     * @return array
+     */
+    public function getLangs()
+    {
+        if (null === $this->langs) {
+            $this->getBrands();
+        }
+        return $this->langs;
+    }
+
+    /**
      * Retourner Les marques
      *
      * @return array
@@ -64,16 +75,20 @@ class Category extends Query
             return $this->brands;
         }
 
-        $data = Cache::get('brands');
-        if ($data) {
-            $this->brands = $data;
+        $langs = Cache::get('langs');
+        $categories = Cache::get('brands');
+        if ($langs && $categories) {
+            $this->setLangs($langs);
+            $this->brands = $categories;
             return $this->brands;
         }
 
         $result = $this->query(self::URL . self::API . '/category/brand.json');
+        $this->setLangsFromResult($result);
         if (!empty($result['brands'])) {
-            $this->brands = $result['brands'];
-            Cache::set('brands', $this->brands);
+            $categories = $this->setCategoryTitles($result['brands']);
+            $this->brands = $categories;
+            Cache::set('brands', $categories);
         } else {
             $this->brands = array();
         }
@@ -81,7 +96,7 @@ class Category extends Query
     }
 
     /**
-     * Toutes les criteres
+     * Tous les criteres
      *
      * @return array
      */
@@ -91,16 +106,20 @@ class Category extends Query
             return $this->categories;
         }
 
-        $data = Cache::get('categories');
-        if ($data) {
-            $this->categories = $data;
+        $langs = Cache::get('langs');
+        $categories = Cache::get('categories');
+        if ($langs && $categories) {
+            $this->setLangs($langs);
+            $this->categories = $categories;
             return $this->categories;
         }
 
         $result = $this->query(self::URL . self::API . '/category/criteria.json');
+        $this->setLangsFromResult($result);
         if (!empty($result['categories'])) {
-            $this->categories = $result['categories'];
-            Cache::set('categories', $this->categories);
+            $categories = $this->setCategoryTitles($result['categories']);
+            $this->categories = $categories;
+            Cache::set('categories', $categories);
         } else {
             $this->categories = array();
         }
@@ -122,16 +141,21 @@ class Category extends Query
 
         $types = array();
         if ($withBrand) {
-            $types[] = array(
+            $type = array(
                 'name'     => self::TYPE_BRAND,
                 'title_fr' => 'Marque',
+                'title_en' => 'Brand',
             );
+            $type['title'] = $this->getTransArray($type);
+
+            $types[] = $type;
         }
         foreach ($categories as $type) {
             if (empty($type['items'])) {
                 continue;
             }
             unset($type['items']);
+            $type['title'] = $this->getTransArray($type);
 
             $types[] = $type;
         }
@@ -231,7 +255,7 @@ class Category extends Query
                     $item['title_prestashop'] = ObjectModel::getName($objectPs);
                 }
             }
-            $item['title_fr'] = ($parentTitle ? $parentTitle . ' > ' : '') . $item['title_fr'];
+            $item['title'] = ($parentTitle ? $parentTitle . ' > ' : '') . $item['title'];
             $array[] = $item;
 
             if (empty($item['children'])) {
@@ -239,7 +263,7 @@ class Category extends Query
             }
             $array = array_merge(
                 $array,
-                $this->getCategoriesByNameRecurs($isManufacturer, $item['children'], $item['title_fr'])
+                $this->getCategoriesByNameRecurs($isManufacturer, $item['children'], $item['title'])
             );
         }
         return $array;
@@ -256,6 +280,7 @@ class Category extends Query
         $cType = array(
             'name'     => self::TYPE_BRAND,
             'title_fr' => 'Marque',
+            'title_en' => 'Brand',
         );
         $return = $this->getCategoryByIdRecurs($this->getBrands(), $id, $cType);
         if ($return) {

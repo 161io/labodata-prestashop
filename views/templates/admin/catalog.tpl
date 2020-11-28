@@ -32,7 +32,7 @@
         <select name="brand">
           <option value="">- {l s='Sélectionner une marque' mod='labodata'} -</option>
             {foreach $brands as $brand}
-              <option value="{$brand.id|escape:'html':'UTF-8'}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title_fr|escape:'html':'UTF-8'} [{$brand.length|escape:'html':'UTF-8'}]</option>
+              <option value="{$brand.id|escape:'html':'UTF-8'}"{if $brand.id == $form_brand} selected="selected"{/if}>{$brand.title|escape:'html':'UTF-8'} [{$brand.length|escape:'html':'UTF-8'}]</option>
             {/foreach}
         </select>
       </div>
@@ -103,9 +103,9 @@
       <tr data-product="{$product.id|escape:'html':'UTF-8'}">
         <td><img src="{$product.image|escape:'html':'UTF-8'}" alt="labodata" class="img-responsive center-block"/></td>
         <td>
-          <strong>{$product.brand.title_fr|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title_fr|escape:'html':'UTF-8'}</span>
+          <strong>{$product.brand.title|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title|escape:'html':'UTF-8'}</span>
           {if $product.premium} <i class="icon-certificate"></i>{/if}{if $product.private} <i class="icon-lock"></i>{/if}<br/>
-          <span class="text-muted">{$product.content_fr|escape:'html':'UTF-8'}</span><br/>
+          <span class="text-muted">{$product.content|escape:'html':'UTF-8'}</span><br/>
           <code>{$product.code|escape:'html':'UTF-8'}</code>
         </td>
         <td>

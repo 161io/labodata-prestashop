@@ -100,7 +100,8 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
      */
     private function smartyProductsFilter($products)
     {
-        $cost = Search::getInstance()->getCostQuery();
+        $searchInst = Search::getInstance();
+        $cost = $searchInst->getCostQuery();
 
         foreach ($products as &$product) {
             $product['_purchaseFull'] = (!empty($product['purchase']['image'])
@@ -116,6 +117,11 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
                     $product['_purchaseFullCredit'] = $cost['content'];
                 }
             }
+
+            // Traductions
+            $product['brand']['title'] = $searchInst->getTransArray($product['brand']);
+            $product['title'] = $searchInst->getTransArray($product);
+            $product['content'] = $searchInst->getTransArray($product, 'content');
         }
 
         return $products;
@@ -189,6 +195,10 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             ob_end_clean();
         }
         header('Content-Type: application/json');
-        $this->ajaxDie(json_encode($json));
+        if (method_exists($this, 'ajaxRender')) {
+            $this->ajaxRender(json_encode($json));
+        } else {
+            $this->ajaxDie(json_encode($json));
+        }
     }
 }
