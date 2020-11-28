@@ -142,11 +142,11 @@ class ImportFeature extends AbstractImportCategory
      */
     public function getFeatureId($laboDataCategoryType, $autoAdd = false)
     {
-        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title_fr'])) {
+        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title'])) {
             return null;
         }
         $name = $laboDataCategoryType['name'];
-        $title = $laboDataCategoryType['title_fr'];
+        $title = $laboDataCategoryType['title'];
 
         if (isset($this->featureIds[$name])) {
             return $this->featureIds[$name];
@@ -165,7 +165,7 @@ class ImportFeature extends AbstractImportCategory
 
         $feature = new Feature();
         $feature->position = Feature::getHigherPosition() + 1;
-        $feature->name = CopyPaste::createMultiLangField($title);
+        $feature->name = CopyPaste::createMultiLangFieldByItem($laboDataCategoryType);
         $feature->add();
 
         $this->featureIds[$name] = (int) $feature->id;
@@ -184,7 +184,7 @@ class ImportFeature extends AbstractImportCategory
             $laboDataCategory['id'],
             $laboDataCategory['type'],
             $laboDataCategory['name'],
-            $laboDataCategory['title_fr']
+            $laboDataCategory['title']
         )) {
             return null;
         }
@@ -194,12 +194,9 @@ class ImportFeature extends AbstractImportCategory
             return null;
         }
 
-        //$name = $laboDataCategory['name'];
-        $title = $laboDataCategory['title_fr'];
-
         $featureValue = new FeatureValue();
         $featureValue->id_feature = $featureId;
-        $featureValue->value = CopyPaste::createMultiLangField($title);
+        $featureValue->value = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
         $featureValue->add();
 
         $this->addFeatureValueLabodata($featureValue, $laboDataCategory);

@@ -182,12 +182,38 @@ class CopyPaste
     /**
      * @inheritDoc
      * @see \AdminImportControllerCore::createMultiLangField()
+     * @deprecated createMultiLangFieldByItem()
      */
     public static function createMultiLangField($field)
     {
         $res = array();
         foreach (Language::getIDs(false) as $id_lang) {
             $res[$id_lang] = $field;
+        }
+
+        return $res;
+    }
+
+    /**
+     * @param array $item
+     * @param string $key
+     * @param bool $isLink
+     * @return array
+     * @see \AdminImportControllerCore::createMultiLangField()
+     */
+    public static function createMultiLangFieldByItem($item, $key = 'title', $isLink = false)
+    {
+        $res = array();
+        foreach (Language::getIsoIds(false) as $prestaLanguage) {
+            $id_lang = $prestaLanguage['id_lang'];
+            $iso_code = $prestaLanguage['iso_code'];
+            $value = isset($item[$key . '_' . $iso_code]) && $item[$key . '_' . $iso_code]
+                   ? $item[$key . '_' . $iso_code] : $item[$key];
+
+            if ($isLink) {
+                $value = Tools::link_rewrite($value);
+            }
+            $res[$id_lang] = $value;
         }
 
         return $res;

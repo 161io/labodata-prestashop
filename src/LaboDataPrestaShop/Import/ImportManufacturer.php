@@ -89,20 +89,17 @@ class ImportManufacturer extends AbstractImportCategory
             $laboDataCategory['id'],
             $laboDataCategory['type'],
             $laboDataCategory['name'],
-            $laboDataCategory['title_fr']
+            $laboDataCategory['title']
         )) {
             return null;
         }
 
-        $name = $laboDataCategory['name'];
-        $title = $laboDataCategory['title_fr'];
-
         $manufacturer = new Manufacturer();
         $manufacturer->active = true;
-        $manufacturer->name = $title;
-        $manufacturer->meta_title = CopyPaste::createMultiLangField($title);
-        $manufacturer->meta_description = CopyPaste::createMultiLangField($title);
-        $manufacturer->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $manufacturer->name = $laboDataCategory['title'];
+        $manufacturer->meta_title = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
+        $manufacturer->meta_description = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
+        $manufacturer->link_rewrite = CopyPaste::createMultiLangFieldByItem($laboDataCategory, 'title', true);
         $manufacturer->add();
 
         $this->addManufacturerLabodata($manufacturer, $laboDataCategory);

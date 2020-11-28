@@ -155,7 +155,7 @@ class Query
      * @param string $defaultValue
      * @return string
      */
-    public function getTransArray($item, $key = 'title', $lang = null, $defaultValue = '')
+    public function getTransItem($item, $key = 'title', $lang = null, $defaultValue = '')
     {
         if ($lang && !empty($item[$key . '_' . $lang])) {
             return $item[$key . '_' . $lang];
@@ -186,7 +186,7 @@ class Query
     public function setCategoryTitles($categories)
     {
         foreach ($categories as &$category) {
-            $category['title'] = $this->getTransArray($category);
+            $category['title'] = $this->getTransItem($category);
             if (isset($category['items'])) { // type
                 $category['items'] = $this->setCategoryTitles($category['items']);
             }

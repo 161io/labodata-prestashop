@@ -93,11 +93,11 @@ class ImportCategory extends AbstractImportCategory
      */
     public function getCategoryTypeId($laboDataCategoryType, $autoAdd = false)
     {
-        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title_fr'])) {
+        if (!isset($laboDataCategoryType['name'], $laboDataCategoryType['title'])) {
             return null;
         }
         $name = $laboDataCategoryType['name'];
-        $title = $laboDataCategoryType['title_fr'];
+        $title = $laboDataCategoryType['title'];
 
         if (isset($this->categoryTypeIds[$name])) {
             return $this->categoryTypeIds[$name];
@@ -120,10 +120,10 @@ class ImportCategory extends AbstractImportCategory
         $category->is_root_category = false;
         $category->id_parent = $idParentCategory;
         $category->active = true;
-        $category->name = CopyPaste::createMultiLangField($title);
-        $category->meta_title = CopyPaste::createMultiLangField($title);
-        $category->meta_description = CopyPaste::createMultiLangField($title);
-        $category->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $category->name = CopyPaste::createMultiLangFieldByItem($laboDataCategoryType);
+        $category->meta_title = CopyPaste::createMultiLangFieldByItem($laboDataCategoryType);
+        $category->meta_description = CopyPaste::createMultiLangFieldByItem($laboDataCategoryType);
+        $category->link_rewrite = CopyPaste::createMultiLangFieldByItem($laboDataCategoryType, 'title', true);
         $category->add();
 
         $this->categoryTypeIds[$name] = (int) $category->id;
@@ -142,7 +142,7 @@ class ImportCategory extends AbstractImportCategory
             $laboDataCategory['id'],
             $laboDataCategory['type'],
             $laboDataCategory['name'],
-            $laboDataCategory['title_fr']
+            $laboDataCategory['title']
         )) {
             return null;
         }
@@ -163,17 +163,14 @@ class ImportCategory extends AbstractImportCategory
             }
         }
 
-        $name = $laboDataCategory['name'];
-        $title = $laboDataCategory['title_fr'];
-
         $category = new Category();
         $category->is_root_category = false;
         $category->id_parent = $categoryTypeId;
         $category->active = true;
-        $category->name = CopyPaste::createMultiLangField($title);
-        $category->meta_title = CopyPaste::createMultiLangField($title);
-        $category->meta_description = CopyPaste::createMultiLangField($title);
-        $category->link_rewrite = CopyPaste::createMultiLangField(Tools::link_rewrite($name));
+        $category->name = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
+        $category->meta_title = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
+        $category->meta_description = CopyPaste::createMultiLangFieldByItem($laboDataCategory);
+        $category->link_rewrite = CopyPaste::createMultiLangFieldByItem($laboDataCategory, 'title', true);
         $category->add();
 
         $this->addCategoryLabodata($category, $laboDataCategory);

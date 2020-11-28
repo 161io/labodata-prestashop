@@ -91,7 +91,7 @@ class Tree extends Query
                 continue;
             }
             unset($type['items']);
-            $type['title'] = $this->getTransArray($type);
+            $type['title'] = $this->getTransItem($type);
 
             $types[] = $type;
         }

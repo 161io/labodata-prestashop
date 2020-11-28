@@ -146,7 +146,7 @@ class Category extends Query
                 'title_fr' => 'Marque',
                 'title_en' => 'Brand',
             );
-            $type['title'] = $this->getTransArray($type);
+            $type['title'] = $this->getTransItem($type);
 
             $types[] = $type;
         }
@@ -155,7 +155,7 @@ class Category extends Query
                 continue;
             }
             unset($type['items']);
-            $type['title'] = $this->getTransArray($type);
+            $type['title'] = $this->getTransItem($type);
 
             $types[] = $type;
         }

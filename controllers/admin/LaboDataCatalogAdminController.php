@@ -119,9 +119,9 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
             }
 
             // Traductions
-            $product['brand']['title'] = $searchInst->getTransArray($product['brand']);
-            $product['title'] = $searchInst->getTransArray($product);
-            $product['content'] = $searchInst->getTransArray($product, 'content');
+            $product['brand']['title'] = $searchInst->getTransItem($product['brand']);
+            $product['title'] = $searchInst->getTransItem($product);
+            $product['content'] = $searchInst->getTransItem($product, 'content');
         }
 
         return $products;
