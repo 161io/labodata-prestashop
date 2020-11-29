@@ -18,6 +18,7 @@ use Image;
 use LaboData;
 use LaboDataPrestaShop\Api\Product as LaboDataProduct;
 use LaboDataPrestaShop\Stdlib\CopyPaste;
+use Language;
 use Manufacturer;
 use Product;
 use Shop;
@@ -104,7 +105,7 @@ class ImportProduct extends AbstractImport
             return null;
         }
         foreach ($products as $product) {
-            $productObj = new Product((int) $product['id_product'], false, $this->getLang());
+            $productObj = new Product((int) $product['id_product'], true);
             if ($productObj->id) {
                 return $productObj;
             }
@@ -119,23 +120,74 @@ class ImportProduct extends AbstractImport
      */
     protected function hydrateProduct($product, $laboDataProduct)
     {
+        $this->hydrateProductLangs($product, $laboDataProduct);
+        $this->hydrateProductDatas($product, $laboDataProduct);
+
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     * @param LaboDataProduct $laboDataProduct
+     * @return self
+     */
+    protected function hydrateProductLangs($product, $laboDataProduct)
+    {
         $smarty = Context::getContext()->smarty;
         $tplDir = dirname(__FILE__) . '/../../../views/templates/admin/import-';
 
-        // Nom du produit
-        if (empty($product->name[$this->getLang()])) {
-            $product->name = array($this->getLang() => $laboDataProduct->getTitle($this->getLangCode()));
-        }
-        if (empty($product->meta_title[$this->getLang()])) {
-            $product->meta_title = array($this->getLang() => $laboDataProduct->getTitle($this->getLangCode()));
+        foreach (Language::getIsoIds(false) as $prestaLanguage) {
+            $id_lang = $prestaLanguage['id_lang'];
+            $iso_code = $prestaLanguage['iso_code'];
+
+            if (empty($product->name[$id_lang])) {
+                $product->name[$id_lang] = $laboDataProduct->getTitle($iso_code);
+            }
+            if (empty($product->meta_title[$id_lang])) {
+                $product->meta_title[$id_lang] = $laboDataProduct->getTitle($iso_code);
+            }
+
+            if (empty($product->link_rewrite[$id_lang])) {
+                $product->link_rewrite[$id_lang] = Tools::link_rewrite($laboDataProduct->getTitle($iso_code));
+            }
+            if (empty($product->description_short[$id_lang]) && $laboDataProduct->getContent($iso_code)) {
+                $smarty->assign(array(
+                    'description_short' => $laboDataProduct->getContent($iso_code),
+                    'descriptions'      => $laboDataProduct->getAdditionalContent($iso_code),
+                ));
+                $product->description_short[$id_lang] = trim($smarty->fetch($tplDir . 'description_short.tpl'));
+            }
+            if (empty($product->description[$id_lang]) && $laboDataProduct->getAdditionalContent($iso_code)) {
+                $smarty->assign(array(
+                    'description_short' => $laboDataProduct->getContent($iso_code),
+                    'descriptions'      => $laboDataProduct->getAdditionalContent($iso_code),
+                ));
+                $product->description[$id_lang] = trim($smarty->fetch($tplDir . 'description.tpl'));
+            }
         }
 
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     * @param LaboDataProduct $laboDataProduct
+     * @return self
+     */
+    protected function hydrateProductDatas($product, $laboDataProduct)
+    {
         // Marque
         if (empty($product->id_manufacturer)) {
             $idManufacturer = ImportManufacturer::getInstance()
-                                    ->getIdManufacturerByIdLabodata($laboDataProduct->getBrandId());
+                                                ->getIdManufacturerByIdLabodata($laboDataProduct->getBrandId());
             if (!$idManufacturer) {
-                $idManufacturer = Manufacturer::getIdByName($laboDataProduct->getBrandTitle($this->getLangCode()));
+                foreach ($laboDataProduct->getLangs() as $langCode) {
+                    $manufacturerName = $laboDataProduct->getBrandTitle($langCode);
+                    $idManufacturer = Manufacturer::getIdByName($manufacturerName);
+                    if ($idManufacturer) {
+                        break;
+                    }
+                }
             }
             if ($idManufacturer) {
                 $product->id_manufacturer = $idManufacturer;
@@ -148,25 +200,7 @@ class ImportProduct extends AbstractImport
         if (empty($product->ean13)) {
             $product->ean13 = $laboDataProduct->getEan13();
         }
-        if (empty($product->link_rewrite[$this->getLang()])) {
-            $product->link_rewrite = array(
-                $this->getLang() => Tools::link_rewrite($laboDataProduct->getTitle($this->getLangCode()))
-            );
-        }
-        if (empty($product->description_short) && $laboDataProduct->getContent($this->getLangCode())) {
-            $smarty->assign(array(
-                'description_short' => $laboDataProduct->getContent($this->getLangCode()),
-                'descriptions'      => $laboDataProduct->getAdditionalContent($this->getLangCode()),
-            ));
-            $product->description_short = trim($smarty->fetch($tplDir . 'description_short.tpl'));
-        }
-        if (empty($product->description) && $laboDataProduct->getAdditionalContent($this->getLangCode())) {
-            $smarty->assign(array(
-                'description_short' => $laboDataProduct->getContent($this->getLangCode()),
-                'descriptions'      => $laboDataProduct->getAdditionalContent($this->getLangCode()),
-            ));
-            $product->description = trim($smarty->fetch($tplDir . 'description.tpl'));
-        }
+
         if (empty($product->id_tax_rules_group)) {
             $product->id_tax_rules_group = $this->getIdTaxRulesGroup($laboDataProduct->getVat());
         }

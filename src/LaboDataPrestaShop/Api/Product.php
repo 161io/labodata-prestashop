@@ -21,14 +21,6 @@ class Product extends Query
     const TYPE_FULL    = 'full';
 
     /**
-     * Langues supportees par LaboData
-     *
-     * @var string[]
-     * TODO non compatible
-     */
-    protected $langs = array('fr');
-
-    /**
      * @var string
      */
     protected $lastType;
@@ -55,18 +47,6 @@ class Product extends Query
     public function getApiTypes()
     {
         return array(self::TYPE_IMAGE, self::TYPE_CONTENT, self::TYPE_FULL);
-    }
-
-    /**
-     * @param string $lang
-     * @return string
-     */
-    public function keyLang($lang)
-    {
-        if (in_array($lang, $this->langs)) {
-            return $lang;
-        }
-        return $this->langs[0];
     }
 
     /**
@@ -151,14 +131,15 @@ class Product extends Query
 
     /**
      * @param string $key
+     * @param mixed $default
      * @return mixed
      */
-    public function getProductKey($key)
+    public function getProductKey($key, $default = null)
     {
         if (isset($this->lastResult[self::ROOT_KEY][$key])) {
             return $this->lastResult[self::ROOT_KEY][$key];
         }
-        return null;
+        return $default;
     }
 
     /**
@@ -199,13 +180,13 @@ class Product extends Query
      * @param string $lang
      * @return string|null
      */
-    public function getBrandTitle($lang = 'fr')
+    public function getBrandTitle($lang)
     {
         $brand = $this->getProductKey('brand');
-        if ($brand) {
-            return $brand['title_'.$this->keyLang($lang)];
+        if (!$brand) {
+            return null;
         }
-        return null;
+        return !empty($brand['title_' . $lang]) ? $brand['title_' . $lang] : $brand['title_' . $this->getDefaultLang()];
     }
 
     /**
@@ -236,35 +217,42 @@ class Product extends Query
      * @param string $lang
      * @return string|null
      */
-    public function getTitle($lang = 'fr')
+    public function getTitle($lang)
     {
-        return $this->getProductKey('title_'.$this->keyLang($lang));
+        return $this->getProductKey('title_' . $lang)
+            ? $this->getProductKey('title_' . $lang)
+            : $this->getProductKey('title_' . $this->getDefaultLang());
     }
 
     /**
      * @param string $lang
      * @return string|null
      */
-    public function getContent($lang = 'fr')
+    public function getContent($lang)
     {
-        return $this->getProductKey('content_'.$this->keyLang($lang));
+        return $this->getProductKey('content_' . $lang)
+            ? $this->getProductKey('content_' . $lang)
+            : $this->getProductKey('content_' . $this->getDefaultLang());
     }
 
     /**
      * @param string $lang
      * @return string[]|null
      */
-    public function getAdditionalContent($lang = 'fr')
+    public function getAdditionalContent($lang)
     {
         $additionalContent = $this->getProductKey('additional_content');
         if (!$additionalContent) {
             return null;
         }
 
-        $lang = $this->keyLang($lang);
         foreach ($additionalContent as &$item) {
-            $item['title'] = $item['title_' . $lang];
-            $item['content'] = $item['content_' . $lang];
+            $item['title'] = !empty($item['title_' . $lang])
+                           ? $item['title_' . $lang]
+                           : $item['title_' . $this->getDefaultLang()];
+            $item['content'] = !empty($item['content_' . $lang])
+                             ? $item['content_' . $lang]
+                             : $item['content_' . $this->getDefaultLang()];
         }
 
         return $additionalContent;
