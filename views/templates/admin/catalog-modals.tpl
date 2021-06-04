@@ -107,7 +107,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <div class="modal-title"><strong>{l s='Attention' mod='labodata'}</strong>
+        <div class="modal-title">
+          <strong>{l s='Attention' mod='labodata'}</strong>
         </div>
       </div>
       <div class="modal-body">
@@ -117,6 +118,23 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Non' mod='labodata'}</button>
         <button type="button" class="btn btn-success" data-submit="modal">{l s='Oui' mod='labodata'}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-labodata-preview">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <div class="modal-title">
+          <strong>{l s='Photo' mod='labodata'}</strong>
+        </div>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{l s='Annuler' mod='labodata'}</button>
       </div>
     </div>
   </div>

@@ -288,6 +288,17 @@
             });
         });
 
+        // Apercu photo
+        $('.img-labodata-preview').on('click', function() {
+            var $img = $(this).find('img').clone();
+            $img.attr('src', $img.attr('src').replace('100x100', '300x300'));
+
+            var $modal = $('#modal-labodata-preview');
+            $modal.find('.modal-body').html('').append($img);
+            $modal.modal('show');
+            return false;
+        })
+
 
         // Importer
         $laboDataResult.find('tbody .btn[data-credit]').on('click', function() {

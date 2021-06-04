@@ -101,7 +101,7 @@
     <tbody>
     {foreach $products as $product}
       <tr data-product="{$product.id|escape:'html':'UTF-8'}">
-        <td><img src="{$product.image|escape:'html':'UTF-8'}" alt="labodata" class="img-responsive center-block"/></td>
+        <td><a href="#preview" class="img-labodata-preview"><img src="{$product.image|escape:'html':'UTF-8'}" alt="labodata" class="img-responsive center-block"/></a></td>
         <td>
           <strong>{$product.brand.title|escape:'html':'UTF-8'}</strong> - <span data-prod-title="">{$product.title|escape:'html':'UTF-8'}</span>
           {if $product.premium} <i class="icon-certificate"></i>{/if}{if $product.private} <i class="icon-lock"></i>{/if}<br/>
