@@ -297,7 +297,7 @@
             $modal.find('.modal-body').html('').append($img);
             $modal.modal('show');
             return false;
-        })
+        });
 
 
         // Importer
