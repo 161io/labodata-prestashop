@@ -1,6 +1,6 @@
 # LaboData pour Prestashop
 
-Module https://www.labodata.com permettant d'importer des fiches produits dans Prestashop version 1.6 et 1.7
+Module https://www.labodata.com permettant d'importer des fiches produits dans Prestashop version 1.6, 1.7 et 8.0
 
 
 ## FAQ
