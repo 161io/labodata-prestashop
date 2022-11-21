@@ -71,6 +71,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $adminLink = $this->context->link->getAdminLink($this->controller_name);
         $smarty = $this->context->smarty;
         $smarty->assign(array(
+            'labodata_toolbar_width'        => StaticAdminController::isPrestaShopV8() ? '220' : '140',
             'labodata_redirect_autoconnect' => $adminLink . '&redirect=autoconnect',
             'labodata_redirect_autopay'     => $adminLink . '&redirect=autopay',
             'labodata_url_import'           => $adminLink,

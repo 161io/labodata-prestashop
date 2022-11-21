@@ -83,7 +83,7 @@
           <span class="text-muted">{l s='Descriptif' mod='labodata'}</span>
           <code>{l s='EAN/CIP' mod='labodata'}</code>
         </th>
-        <th style="width:140px">
+        <th style="width:{$labodata_toolbar_width}px">
           <div class="btn-group" id="labodata-import-group">
             <button class="btn btn-primary" title="{l s='Importer toutes les photos' mod='labodata'}" data-type="image">
               <i class="icon-camera"></i>
