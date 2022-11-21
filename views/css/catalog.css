@@ -1,0 +1,20 @@
+/**
+ * LaboData for Prestashop
+ *
+ * @author 161 SARL <contact@161.io>
+ * @copyright (c) 161 SARL, https://161.io
+ * @license https://161.io
+ */
+
+#labodata-result .btn-success {
+  color: #fff !important;
+  background-color: #72c279 !important;
+  border-color: #60ba68 !important;
+}
+#labodata-result .btn-success:hover {
+  background-color: #4eb357 !important;
+  border-color: #439a4a !important;
+}
+#labodata-result .btn-success i {
+  color: #fff !important;
+}

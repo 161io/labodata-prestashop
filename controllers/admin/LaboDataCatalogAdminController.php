@@ -37,6 +37,11 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
     {
         parent::setMedia($isNewTheme);
 
+        if (StaticAdminController::isPrestaShopV178()) {
+            //$this->addCSS($this->module->getPathUri() . '/views/css/catalog.css');
+            $this->addCSS($this->module->getPathUri() . '/views/css/catalog.min.css');
+        }
+
         //$this->addJS($this->module->getPathUri() . '/views/js/js-cookie.js');
         //$this->addJS($this->module->getPathUri() . '/views/js/catalog.js');
         $this->addJS($this->module->getPathUri() . '/views/js/js-cookie.min.js');
@@ -71,7 +76,7 @@ class LaboDataCatalogAdminController extends NoTabModuleAdminController
         $adminLink = $this->context->link->getAdminLink($this->controller_name);
         $smarty = $this->context->smarty;
         $smarty->assign(array(
-            'labodata_toolbar_width'        => StaticAdminController::isPrestaShopV8() ? '220' : '140',
+            'labodata_toolbar_width'        => StaticAdminController::isPrestaShopV178() ? '220' : '140',
             'labodata_redirect_autoconnect' => $adminLink . '&redirect=autoconnect',
             'labodata_redirect_autopay'     => $adminLink . '&redirect=autopay',
             'labodata_url_import'           => $adminLink,

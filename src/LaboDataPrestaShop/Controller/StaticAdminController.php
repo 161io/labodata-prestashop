@@ -52,8 +52,8 @@ abstract class StaticAdminController
     /**
      * @return bool
      */
-    public static function isPrestaShopV8()
+    public static function isPrestaShopV178()
     {
-        return version_compare(_PS_VERSION_, '8.0.0', '>=');
+        return version_compare(_PS_VERSION_, '1.7.8', '>=');
     }
 }

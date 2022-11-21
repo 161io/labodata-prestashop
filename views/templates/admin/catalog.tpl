@@ -84,7 +84,7 @@
           <code>{l s='EAN/CIP' mod='labodata'}</code>
         </th>
         <th style="width:{$labodata_toolbar_width}px">
-          <div class="btn-group" id="labodata-import-group">
+          <div class="btn-group pull-right" id="labodata-import-group">
             <button class="btn btn-primary" title="{l s='Importer toutes les photos' mod='labodata'}" data-type="image">
               <i class="icon-camera"></i>
             </button>
@@ -109,7 +109,7 @@
           <code>{$product.code|escape:'html':'UTF-8'}</code>
         </td>
         <td>
-          <div class="btn-group">
+          <div class="btn-group pull-right">
             <button class="btn {if $product.purchase.image}btn-success{else}btn-default{/if}"
                     title="{if $product.purchase.image}{l s='Vous avez déjà acquis ces photos' mod='labodata'}{else}{l s='Acquérir les photos' mod='labodata'} ({$labodata_cost.image|escape:'html':'UTF-8'}{$labodata_currency}){/if}"
                     data-type="image"
