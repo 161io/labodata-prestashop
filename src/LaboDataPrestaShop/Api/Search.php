@@ -35,6 +35,11 @@ class Search extends Query
     const ORDER_BY_DATE_DESC = 'date-desc';
 
     /**
+     * @const string
+     */
+    const ORDER_BY_PURCHASE_DESC = 'purchase-desc';
+
+    /**
      * @var array
      */
     protected $lastResult;
@@ -70,6 +75,7 @@ class Search extends Query
             self::ORDER_BY_TITLE_ASC,
             self::ORDER_BY_ID_DESC,
             self::ORDER_BY_DATE_DESC,
+            self::ORDER_BY_PURCHASE_DESC,
         );
 
         $value = trim(Tools::getValue('order', $values[0]));
